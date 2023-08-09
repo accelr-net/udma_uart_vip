@@ -17,7 +17,7 @@
 // Date: Unknown
 // Description: This module takes data over UART and prints them to the console
 //              A string is printed to the console as soon as a '\n' character is found
-
+`define LOG_UART_SIM
 module uart_sim #(
     parameter int unsigned BAUD_RATE = 115200,
     parameter int unsigned PARITY_EN = 0
@@ -42,8 +42,10 @@ module uart_sim #(
     // uart should idle with 1'b1, since that means no transmission
     tx      = 1'b1;
     newline = 1;
+    $display("working here .......");
 `ifdef LOG_UART_SIM
     file = $fopen("uart.log", "w");
+    $display("Code can see LOG_UART_SIM");
 `endif
   end
 
@@ -81,7 +83,7 @@ module uart_sim #(
         newline = 1;
       end else begin
         if (newline) begin
-          $write("[UART]: ");
+          $write("Time = %0t | [UART]: ",$time);
           newline = 0;
         end
         $write("%c", character);

@@ -3,7 +3,6 @@
 // This is for only learn about uart protocal of pulp
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-
 module manual_data_send();
     localparam L2_AWIDTH_NOAL = 19;
     localparam TRANS_SIZE     = 20;
@@ -78,9 +77,9 @@ module manual_data_send();
         .BAUD_RATE(BAUD_RATE),
         .PARITY_EN(PARITY_EN)
     ) uart_sim(
-        .rx(uart_rx_i),
-        .tx(uart_sim_tx_o),
-        .rx_en(data_rx_ready_i)
+        .rx(uart_tx_o),
+        .tx(uart_rx_i),
+        .rx_en(data_rx_valid_o)
     );
 
     always begin
@@ -91,7 +90,8 @@ module manual_data_send();
     end
     initial begin
         rstn_i              <= 1'b0;
-        uart_rx_i           <= 1'b1;
+        // uart_rx_i           <= 1'b1;
+        // uart_tx_o           <= 1'b0;
 
         cfg_data_i          <= 32'h000000000;
         cfg_addr_i          <= 4'b0000;
@@ -113,10 +113,13 @@ module manual_data_send();
         data_rx_ready_i     <= 1'b0;
         send_data();
         do_configs();
+        rx_data_send();
+        $display("manual_data_send is done!!!");
     end
     // send manual data to uart tx pin
     task send_data();
         #5 rstn_i           <= 1'b1; 
+
     endtask: send_data
 
     task do_configs();
@@ -129,7 +132,7 @@ module manual_data_send();
         #100;
         cfg_rwn_i           <= 1'b0;
         cfg_addr_i          <= 5'b01001;
-        cfg_data_i          <= 32'h01B10308;
+        cfg_data_i          <= 32'h01B20306;
         #10;
         cfg_valid_i         <= 1'b1;
         #10;
@@ -138,6 +141,65 @@ module manual_data_send();
         cfg_data_i          <= 32'h00000000;
         cfg_addr_i          <= 5'b00000;
 
+        #10;
+        cfg_rwn_i           <= 1'b0;
+        cfg_addr_i          <= 5'b00100;
+        cfg_data_i          <= 32'h1c000934;
+        #10;
+        cfg_valid_i         <= 1'b1;
+        #10;
+        cfg_valid_i         <= 1'b0;
+        cfg_rwn_i           <= 1'b1;
+        cfg_data_i          <= 32'h00000000;
+        cfg_addr_i          <= 5'b00000;
+        
+        #10;
+        cfg_rwn_i           <= 1'b0;
+        cfg_addr_i          <= 5'b00101;
+        cfg_data_i          <= 32'h00000080;
+        #10;
+        cfg_valid_i         <= 1'b1;
+        #10;
+        cfg_valid_i         <= 1'b0;
+        cfg_rwn_i           <= 1'b1;
+        cfg_data_i          <= 32'h00000000;
+        cfg_addr_i          <= 5'b00000;
+               
+        #10;
+        cfg_rwn_i           <= 1'b0;
+        cfg_addr_i          <= 5'b00110;
+        cfg_data_i          <= 32'h00000010;
+        #10;
+        cfg_valid_i         <= 1'b1;
+        #10;
+        cfg_valid_i         <= 1'b0;
+        cfg_rwn_i           <= 1'b1;
+        cfg_data_i          <= 32'h00000000;
+        cfg_addr_i          <= 5'b00000;
+        #10;
+        cfg_rx_en_i         <= 1'b1;
+        #10;
     endtask: do_configs
+
+    task rx_data_send();
+        #10;
+        cfg_rwn_i           <= 1'b0;
+        cfg_rx_bytes_left_i <= 20'h00050;
+        cfg_rx_curr_addr_i  <= 19'h00934;
+        #10;
+        cfg_valid_i         <= 1'b1;
+        #10;
+        cfg_valid_i         <= 1'b0;
+        cfg_rwn_i           <= 1'b1;
+        cfg_data_i          <= 32'h00000000;
+        cfg_addr_i          <= 5'b00000;
+        data_rx_ready_i     <= 1'b1;
+        for (int i = 0; i < 10000; i++) begin
+            @(posedge sys_clk_i);
+            uart_sim.send_char(8'b00010101);
+            @(posedge sys_clk_i);
+            uart_sim.send_char(8'b01010110);
+        end
+    endtask : rx_data_send
 
 endmodule:manual_data_send

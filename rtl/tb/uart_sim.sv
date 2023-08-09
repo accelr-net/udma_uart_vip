@@ -83,7 +83,7 @@ module uart_sim #(
         newline = 1;
       end else begin
         if (newline) begin
-          $write("[UART]: ");
+          $write("Time = %t [UART]: ",$time);
           newline = 0;
         end
         $write("%c", character);
