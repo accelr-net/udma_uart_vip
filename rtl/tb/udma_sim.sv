@@ -32,22 +32,32 @@
 //  10-AUG-2023      Kasun        creation
 //
 //**************************************************************************************************
-module udma_sim #(
-    parameter   L2_AWIDTH_NOAL = 12,
-    parameter   TRANS_SIZE     = 16
-) (
+module udma_sim  (
     input   logic         sys_clk_i,
     input   logic         data_tx_req_i,
     input   logic         data_tx_ready_i,
 
     output  logic         data_tx_gnt_o,
     output  logic [31:0]  data_tx_o,
-    output  logic         data_tx_valid_o,
+    output  logic         data_tx_valid_o
 );
     //sending data to uart for tx
+    initial begin
+        $display("At udma_sim");
+    end
     task send_char(input logic [31:0] character);
+        @(posedge sys_clk_i);
         if(data_tx_ready_i) begin
-            data_tx_o   <= character;
+            //sending the data
+            data_tx_gnt_o <= 1'b1;
+            @(posedge sys_clk_i);
+            data_tx_valid_o <= data_tx_ready_i;
+            data_tx_o       <= character;
+            @(posedge sys_clk_i);
+            
+            //end the data
+            data_tx_valid_o <= 1'b0;
+            data_tx_gnt_o   <= 1'b0;
         end
     endtask: send_char
 

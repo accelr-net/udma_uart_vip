@@ -67,8 +67,8 @@ module manual_data_send();
     //uart_sim variables
     logic                      uart_sim_tx_o;
     udma_uart_top #(
-        .L2_AWIDTH_NOAL(L2_AWIDTH_NOAL),
-        .TRANS_SIZE(TRANS_SIZE)
+        .L2_AWIDTH_NOAL (L2_AWIDTH_NOAL),
+        .TRANS_SIZE     (TRANS_SIZE)
     ) uart (
         .*
     );
@@ -77,9 +77,19 @@ module manual_data_send();
         .BAUD_RATE(BAUD_RATE),
         .PARITY_EN(PARITY_EN)
     ) uart_sim(
-        .rx(uart_tx_o),
-        .tx(uart_rx_i),
-        .rx_en(data_rx_valid_o)
+        .rx     (uart_tx_o),
+        .tx     (uart_rx_i),
+        .rx_en  (data_rx_valid_o)
+    );
+
+    udma_sim from_udma_sim(
+        .sys_clk_i          (sys_clk_i),
+        .data_tx_req_i      (data_tx_req_o),
+        .data_tx_ready_i    (data_tx_ready_o),
+        
+        .data_tx_gnt_o      (data_tx_gnt_i),
+        .data_tx_o          (data_tx_i),
+        .data_tx_valid_o    (data_tx_valid_i)
     );
 
     always begin
@@ -89,6 +99,7 @@ module manual_data_send();
         #10 sys_clk_i    <= ~sys_clk_i;
     end
     initial begin
+        $display("Manual_data_send starting...");
         rstn_i              <= 1'b0;
         // uart_rx_i           <= 1'b1;
         // uart_tx_o           <= 1'b0;
@@ -107,14 +118,16 @@ module manual_data_send();
         cfg_tx_curr_addr_i  <= SIZE_18;
         cfg_tx_bytes_left_i <= SIZE_19;
 
-        data_tx_gnt_i       <= 1'b0;
-        data_tx_i           <= 32'h00000000;
-        data_tx_valid_i     <= 1'b0;
+        // data_tx_gnt_i       <= 1'b0;
+        // data_tx_i           <= 32'h00000000;
+        // data_tx_valid_i     <= 1'b0;
         data_rx_ready_i     <= 1'b0;
         send_data();
         do_configs();
         rx_data_send();
+        from_udma_sim.send_char(32'h55);
         $display("manual_data_send is done!!!");
+        $display("New version 2");
     end
     // send manual data to uart tx pin
     task send_data();
@@ -194,12 +207,14 @@ module manual_data_send();
         cfg_data_i          <= 32'h00000000;
         cfg_addr_i          <= 5'b00000;
         data_rx_ready_i     <= 1'b1;
-        for (int i = 0; i < 10000; i++) begin
+        for (int i = 0; i < 10; i++) begin
             @(posedge sys_clk_i);
             uart_sim.send_char(8'b00010101);
             @(posedge sys_clk_i);
             uart_sim.send_char(8'b01010110);
         end
+        @(posedge sys_clk_i);
+        cfg_rx_en_i         <= 1'b0;
     endtask : rx_data_send
 
 endmodule:manual_data_send
