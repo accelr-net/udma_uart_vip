@@ -56,6 +56,7 @@ module uart_sim #(
       for (int i = 0; i <= 7; i++) begin
         #BIT_PERIOD character[i] = rx;
       end
+      $display("character display : %c",character);
 
       if (PARITY_EN == 1) begin
         // check parity
