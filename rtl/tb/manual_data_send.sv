@@ -83,7 +83,7 @@ module manual_data_send();
     assign rx_char_event_o                              =   intf_udma_side.udma_top_if.rx_char_event_o;
     assign err_event_o                                  =   intf_udma_side.udma_top_if.err_event_o;
 
-    assign intf_udma_side.udma_top_if.cfg_data_i         =    cfg_data_i;
+    // assign intf_udma_side.udma_top_if.cfg_data_i         =    cfg_data_i;
     assign intf_udma_side.udma_top_if.cfg_addr_i         =    cfg_addr_i;
     assign intf_udma_side.udma_top_if.cfg_valid_i        =    cfg_valid_i;
     assign intf_udma_side.udma_top_if.cfg_rwn_i          =    cfg_rwn_i;
@@ -117,12 +117,12 @@ module manual_data_send();
 
     assign data_tx_req_o                                 =  intf_udma_side.udma_top_if.data_tx_req_o;
 
-    assign intf_udma_side.udma_top_if.data_tx_gnt_i      =    data_tx_gnt_i;
+    // assign intf_udma_side.udma_top_if.data_tx_gnt_i      =    data_tx_gnt_i;
     
     assign data_tx_datasize_o                            =  intf_udma_side.udma_top_if.data_tx_datasize_o;
 
-    assign intf_udma_side.udma_top_if.data_tx_i          =    data_tx_i;
-    assign intf_udma_side.udma_top_if.data_tx_valid_i    =    data_tx_valid_i;
+    // assign intf_udma_side.udma_top_if.data_tx_i          =    data_tx_i;
+    // assign intf_udma_side.udma_top_if.data_tx_valid_i    =    data_tx_valid_i;
 
     assign data_tx_ready_o                               = intf_udma_side.udma_top_if.data_tx_ready_o;
 
@@ -133,63 +133,63 @@ module manual_data_send();
     // assign intf_udma_side.udma_top_if.data_rx_ready_i    =    data_rx_ready_i; 
 
     //assign values to modport uart_tx_driver_if
-    assign intf_uart_side.uart_peripherial_if.uart_rx_i    =  uart_rx_i;
-    assign uart_tx_o                                     =  intf_uart_side.uart_peripherial_if.uart_tx_o;
+    assign intf_uart_side.uart_dut_if.uart_rx_i    =  uart_rx_i;
+    assign uart_tx_o                                     =  intf_uart_side.uart_dut_if.uart_tx_o;
 
     udma_uart_top #(
         .L2_AWIDTH_NOAL (L2_AWIDTH_NOAL),
         .TRANS_SIZE     (TRANS_SIZE)
     ) uart (
-        .sys_clk_i              (intf_udma_side.udma_top_if.sys_clk_i),
-        .periph_clk_i           (intf_udma_side.udma_top_if.periph_clk_i),
-        .rstn_i                 (intf_udma_side.udma_top_if.rstn_i),
+        .sys_clk_i              (intf_udma_side.udma_top_if.sys_clk_i               ),
+        .periph_clk_i           (intf_udma_side.udma_top_if.periph_clk_i            ),
+        .rstn_i                 (intf_udma_side.udma_top_if.rstn_i                  ),
 
-        .uart_rx_i              (intf_uart_side.uart_peripherial_if.uart_rx_i),
-        .uart_tx_o              (intf_uart_side.uart_peripherial_if.uart_tx_o),
+        .uart_rx_i              (intf_uart_side.uart_dut_if.uart_rx_i               ),
+        .uart_tx_o              (intf_uart_side.uart_dut_if.uart_tx_o               ),
 
-        .rx_char_event_o        (intf_udma_side.udma_top_if.rx_char_event_o),
-        .err_event_o            (intf_udma_side.udma_top_if.err_event_o),
+        .rx_char_event_o        (intf_udma_side.udma_top_if.rx_char_event_o         ),
+        .err_event_o            (intf_udma_side.udma_top_if.err_event_o             ),
 
-        .cfg_data_i             (intf_udma_side.udma_top_if.cfg_data_i),
-        .cfg_addr_i             (intf_udma_side.udma_top_if.cfg_addr_i),
-        .cfg_valid_i            (intf_udma_side.udma_top_if.cfg_valid_i),
-        .cfg_rwn_i              (intf_udma_side.udma_top_if.cfg_rwn_i),
-        .cfg_ready_o            (intf_udma_side.udma_top_if.cfg_ready_o),
-        .cfg_data_o             (intf_udma_side.udma_top_if.cfg_data_o),
+        .cfg_data_i             (intf_udma_side.udma_top_if.cfg_data_i              ),
+        .cfg_addr_i             (intf_udma_side.udma_top_if.cfg_addr_i              ),
+        .cfg_valid_i            (intf_udma_side.udma_top_if.cfg_valid_i             ),
+        .cfg_rwn_i              (intf_udma_side.udma_top_if.cfg_rwn_i               ),
+        .cfg_ready_o            (intf_udma_side.udma_top_if.cfg_ready_o             ),
+        .cfg_data_o             (intf_udma_side.udma_top_if.cfg_data_o              ),
 
-        .cfg_rx_startaddr_o     (intf_udma_side.udma_top_if.cfg_rx_startaddr_o),
-        .cfg_rx_size_o          (intf_udma_side.udma_top_if.cfg_rx_size_o),
-        .cfg_rx_datasize_o      (intf_udma_side.udma_top_if.cfg_rx_datasize_o),
-        .cfg_rx_continuous_o    (intf_udma_side.udma_top_if.cfg_rx_continuous_o),
-        .cfg_rx_en_o            (intf_udma_side.udma_top_if.cfg_rx_en_o),
-        .cfg_rx_clr_o           (intf_udma_side.udma_top_if.cfg_rx_clr_o),
-        .cfg_rx_en_i            (intf_udma_side.udma_top_if.cfg_rx_en_i),
-        .cfg_rx_pending_i       (intf_udma_side.udma_top_if.cfg_rx_pending_i),
-        .cfg_rx_curr_addr_i     (intf_udma_side.udma_top_if.cfg_rx_curr_addr_i),
-        .cfg_rx_bytes_left_i    (intf_udma_side.udma_top_if.cfg_rx_bytes_left_i),
+        .cfg_rx_startaddr_o     (intf_udma_side.udma_top_if.cfg_rx_startaddr_o      ),
+        .cfg_rx_size_o          (intf_udma_side.udma_top_if.cfg_rx_size_o           ),
+        .cfg_rx_datasize_o      (intf_udma_side.udma_top_if.cfg_rx_datasize_o       ),
+        .cfg_rx_continuous_o    (intf_udma_side.udma_top_if.cfg_rx_continuous_o     ),
+        .cfg_rx_en_o            (intf_udma_side.udma_top_if.cfg_rx_en_o             ),
+        .cfg_rx_clr_o           (intf_udma_side.udma_top_if.cfg_rx_clr_o            ),
+        .cfg_rx_en_i            (intf_udma_side.udma_top_if.cfg_rx_en_i             ),
+        .cfg_rx_pending_i       (intf_udma_side.udma_top_if.cfg_rx_pending_i        ),
+        .cfg_rx_curr_addr_i     (intf_udma_side.udma_top_if.cfg_rx_curr_addr_i      ),
+        .cfg_rx_bytes_left_i    (intf_udma_side.udma_top_if.cfg_rx_bytes_left_i     ),
         
-        .cfg_tx_startaddr_o     (intf_udma_side.udma_top_if.cfg_tx_startaddr_o),
-        .cfg_tx_size_o          (intf_udma_side.udma_top_if.cfg_tx_size_o),
-        .cfg_tx_datasize_o      (intf_udma_side.udma_top_if.cfg_tx_datasize_o),
-        .cfg_tx_continuous_o    (intf_udma_side.udma_top_if.cfg_tx_continuous_o),
-        .cfg_tx_en_o            (intf_udma_side.udma_top_if.cfg_tx_en_o),
-        .cfg_tx_clr_o           (intf_udma_side.udma_top_if.cfg_tx_clr_o),
-        .cfg_tx_en_i            (intf_udma_side.udma_top_if.cfg_tx_en_i),
-        .cfg_tx_pending_i       (intf_udma_side.udma_top_if.cfg_tx_pending_i),
-        .cfg_tx_curr_addr_i     (intf_udma_side.udma_top_if.cfg_tx_curr_addr_i),
-        .cfg_tx_bytes_left_i    (intf_udma_side.udma_top_if.cfg_tx_bytes_left_i),
+        .cfg_tx_startaddr_o     (intf_udma_side.udma_top_if.cfg_tx_startaddr_o      ),
+        .cfg_tx_size_o          (intf_udma_side.udma_top_if.cfg_tx_size_o           ),
+        .cfg_tx_datasize_o      (intf_udma_side.udma_top_if.cfg_tx_datasize_o       ),
+        .cfg_tx_continuous_o    (intf_udma_side.udma_top_if.cfg_tx_continuous_o     ),
+        .cfg_tx_en_o            (intf_udma_side.udma_top_if.cfg_tx_en_o             ),
+        .cfg_tx_clr_o           (intf_udma_side.udma_top_if.cfg_tx_clr_o            ),
+        .cfg_tx_en_i            (intf_udma_side.udma_top_if.cfg_tx_en_i             ),
+        .cfg_tx_pending_i       (intf_udma_side.udma_top_if.cfg_tx_pending_i        ),
+        .cfg_tx_curr_addr_i     (intf_udma_side.udma_top_if.cfg_tx_curr_addr_i      ),
+        .cfg_tx_bytes_left_i    (intf_udma_side.udma_top_if.cfg_tx_bytes_left_i     ),
         
-        .data_tx_req_o          (intf_udma_side.udma_top_if.data_tx_req_o),
-        .data_tx_gnt_i          (intf_udma_side.udma_top_if.data_tx_gnt_i),
-        .data_tx_datasize_o     (intf_udma_side.udma_top_if.data_tx_datasize_o),
-        .data_tx_i              (intf_udma_side.udma_top_if.data_tx_i),
-        .data_tx_valid_i        (intf_udma_side.udma_top_if.data_tx_valid_i),
-        .data_tx_ready_o        (intf_udma_side.udma_top_if.data_tx_ready_o),
+        .data_tx_req_o          (intf_udma_side.udma_top_if.data_tx_req_o           ),
+        .data_tx_gnt_i          (intf_udma_side.udma_top_if.data_tx_gnt_i           ),
+        .data_tx_datasize_o     (intf_udma_side.udma_top_if.data_tx_datasize_o      ),
+        .data_tx_i              (intf_udma_side.udma_top_if.data_tx_i               ),
+        .data_tx_valid_i        (intf_udma_side.udma_top_if.data_tx_valid_i         ),
+        .data_tx_ready_o        (intf_udma_side.udma_top_if.data_tx_ready_o         ),
 
-        .data_rx_datasize_o     (intf_udma_side.udma_top_if.data_rx_datasize_o),
-        .data_rx_o              (intf_udma_side.udma_top_if.data_rx_o),
-        .data_rx_valid_o        (intf_udma_side.udma_top_if.data_rx_valid_o),
-        .data_rx_ready_i        (intf_udma_side.udma_top_if.data_rx_ready_i)
+        .data_rx_datasize_o     (intf_udma_side.udma_top_if.data_rx_datasize_o      ),
+        .data_rx_o              (intf_udma_side.udma_top_if.data_rx_o               ),
+        .data_rx_valid_o        (intf_udma_side.udma_top_if.data_rx_valid_o         ),
+        .data_rx_ready_i        (intf_udma_side.udma_top_if.data_rx_ready_i         )
     );
 
     uart_sim #(
@@ -202,13 +202,13 @@ module manual_data_send();
     );
 
     udma_sim from_udma_sim(
-        .sys_clk_i          (intf_udma_side.udma_tx_driver_if.sys_clk_i),
-        .data_tx_req_i      (intf_udma_side.udma_tx_driver_if.data_tx_req_o),
-        .data_tx_ready_i    (intf_udma_side.udma_tx_driver_if.data_tx_ready_o),
+        .sys_clk_i          (intf_udma_side.udma_tx_driver_if.sys_clk_i         ),
+        .data_tx_req_i      (intf_udma_side.udma_tx_driver_if.data_tx_req_o     ),
+        .data_tx_ready_i    (intf_udma_side.udma_tx_driver_if.data_tx_ready_o   ),
         
-        .data_tx_gnt_o      (data_tx_gnt_i),
-        .data_tx_o          (data_tx_i),
-        .data_tx_valid_o    (data_tx_valid_i)
+        .data_tx_gnt_o      (intf_udma_side.udma_tx_driver_if.data_tx_gnt_i     ),
+        .data_tx_o          (intf_udma_side.udma_tx_driver_if.data_tx_i         ),
+        .data_tx_valid_o    (intf_udma_side.udma_tx_driver_if.data_tx_valid_i   )
     );
 
     always begin
@@ -223,7 +223,7 @@ module manual_data_send();
         // uart_rx_i           <= 1'b1;
         // uart_tx_o           <= 1'b0;
 
-        cfg_data_i          <= 32'h00000000;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00000000;
         cfg_addr_i          <= 4'b0000;
         cfg_valid_i         <= 1'b0;
         cfg_rwn_i           <= 1'b1;
@@ -278,37 +278,35 @@ module manual_data_send();
         //     cfg_tx_byte_left_i
         // );
         // test_task(
-        //     .clk_i(intf_udma_side.cfg_driver_if.sys_clk_i),
-        //     .data_i(intf_udma_side.cfg_driver_if.cfg_data_i),
-        //     .addr_i(intf_udma_side.cfg_driver_if.cfg_addr_i),
-        //     .valid_i(intf_udma_side.cfg_driver_if.cfg_valid_i),
-        //     .rwn_i(intf_udma_side.cfg_driver_if.cfg_rwn_i),
-        //     .ready_o(intf_udma_side.cfg_driver_if.cfg_ready_o),
-        //     .data_o(intf_udma_side.cfg_driver_if.cfg_data_o),
-        //     .rx_startaddr_o(intf_udma_side.cfg_driver_if.cfg_rx_startaddr_o),
-        //     .rx_size_o(intf_udma_side.cfg_driver_if.cfg_rx_datasize_o),
-        //     .rx_datasize_o(intf_udma_side.cfg_driver_if.cfg_rx_datasize_o),
-        //     .rx_continuous_o(intf_udma_side.cfg_driver_if.cfg_rx_continuous_o),
-        //     .rx_en_o(intf_udma_side.cfg_driver_if.cfg_rx_en_o),
-        //     .rx_clr_o(intf_udma_side.cfg_driver_if.cfg_rx_clr_o),
-        //     .rx_en_i(intf_udma_side.cfg_driver_if.cfg_rx_en_i),
-        //     .rx_pending_i(intf_udma_side.cfg_driver_if.cfg_rx_pending_i),
-        //     .rx_curr_addr_i(intf_udma_side.cfg_driver_if.cfg_rx_curr_addr_i),
-        //     .rx_bytes_left_i(intf_udma_side.cfg_driver_if.cfg_rx_bytes_left_i),
-        //     .tx_startaddr_o(intf_udma_side.cfg_driver_if.cfg_tx_startaddr_o),
-        //     .tx_size_o(intf_udma_side.cfg_driver_if.cfg_tx_size_o),
-        //     .tx_datasize_o(intf_udma_side.cfg_driver_if.cfg_tx_datasize_o),
-        //     .tx_continuous_o(intf_udma_side.cfg_driver_if.cfg_tx_continuous_o),
-        //     .tx_en_o(intf_udma_side.cfg_driver_if.cfg_tx_en_o),
-        //     .tx_clr_o(intf_udma_side.cfg_driver_if.cfg_tx_clr_o),
-        //     .tx_en_i(intf_udma_side.cfg_driver_if.cfg_tx_en_i),
-        //     .tx_pending_i(intf_udma_side.cfg_driver_if.cfg_tx_pending_i),
-        //     .tx_curr_addr_i(intf_udma_side.cfg_driver_if.cfg_tx_curr_addr_i),
-        //     .tx_bytes_left_i(intf_udma_side.cfg_driver_if.cfg_tx_bytes_left_i)
+        //     .clk_i              (intf_udma_side.cfg_driver_if.sys_clk_i             ),
+        //     .data_i             (intf_udma_side.cfg_driver_if.cfg_data_i            ),
+        //     .addr_i             (intf_udma_side.cfg_driver_if.cfg_addr_i            ),
+        //     .valid_i            (intf_udma_side.cfg_driver_if.cfg_valid_i           ),
+        //     .rwn_i              (intf_udma_side.cfg_driver_if.cfg_rwn_i             ),
+        //     .ready_o            (intf_udma_side.cfg_driver_if.cfg_ready_o           ),
+        //     .data_o             (intf_udma_side.cfg_driver_if.cfg_data_o            ),
+        //     .rx_startaddr_o     (intf_udma_side.cfg_driver_if.cfg_rx_startaddr_o    ),
+        //     .rx_size_o          (intf_udma_side.cfg_driver_if.cfg_rx_datasize_o     ),
+        //     .rx_datasize_o      (intf_udma_side.cfg_driver_if.cfg_rx_datasize_o     ),
+        //     .rx_continuous_o    (intf_udma_side.cfg_driver_if.cfg_rx_continuous_o   ),
+        //     .rx_en_o            (intf_udma_side.cfg_driver_if.cfg_rx_en_o           ),
+        //     .rx_clr_o           (intf_udma_side.cfg_driver_if.cfg_rx_clr_o          ),
+        //     .rx_en_i            (intf_udma_side.cfg_driver_if.cfg_rx_en_i           ),
+        //     .rx_pending_i       (intf_udma_side.cfg_driver_if.cfg_rx_pending_i      ),
+        //     .rx_curr_addr_i     (intf_udma_side.cfg_driver_if.cfg_rx_curr_addr_i    ),
+        //     .rx_bytes_left_i    (intf_udma_side.cfg_driver_if.cfg_rx_bytes_left_i   ),
+        //     .tx_startaddr_o     (intf_udma_side.cfg_driver_if.cfg_tx_startaddr_o    ),
+        //     .tx_size_o          (intf_udma_side.cfg_driver_if.cfg_tx_size_o         ),
+        //     .tx_datasize_o      (intf_udma_side.cfg_driver_if.cfg_tx_datasize_o     ),
+        //     .tx_continuous_o    (intf_udma_side.cfg_driver_if.cfg_tx_continuous_o   ),
+        //     .tx_en_o            (intf_udma_side.cfg_driver_if.cfg_tx_en_o           ),
+        //     .tx_clr_o           (intf_udma_side.cfg_driver_if.cfg_tx_clr_o          ),
+        //     .tx_en_i            (intf_udma_side.cfg_driver_if.cfg_tx_en_i           ),
+        //     .tx_pending_i       (intf_udma_side.cfg_driver_if.cfg_tx_pending_i      ),
+        //     .tx_curr_addr_i     (intf_udma_side.cfg_driver_if.cfg_tx_curr_addr_i    ),
+        //     .tx_bytes_left_i    (intf_udma_side.cfg_driver_if.cfg_tx_bytes_left_i   )
         // );
-        // rx_data_send();
-        
-        //
+        rx_data_send();
 
         from_udma_sim.send_char(32'h41); //A
         addr_06_read_write();
@@ -394,52 +392,52 @@ module manual_data_send();
         //setting up baudrate as exmaple 4345500
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h09;
-        cfg_data_i          <= 32'h01b10306;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h01b10306;
         cfg_rwn_i           <= 1'b0;
         @(posedge sys_clk_i);
         cfg_valid_i         <= 1'b1;
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h00;
-        cfg_data_i          <= 32'h00;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         cfg_rwn_i           <= 1'b1;
         cfg_valid_i         <= 1'b0;
 
         // TX_addr as example 43661000000
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h04;
-        cfg_data_i          <= 32'h1c000934;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h1c000934;
         cfg_rwn_i           <= 1'b0;
         @(posedge sys_clk_i);
         cfg_valid_i         <= 1'b1;
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h00;
-        cfg_data_i          <= 32'h00;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         cfg_rwn_i           <= 1'b1;
         cfg_valid_i         <= 1'b0;
 
         // tx buffer size as example 4366200
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h05;
-        cfg_data_i          <= 32'h00000080;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00000080;
         cfg_rwn_i           <= 1'b0;
         @(posedge sys_clk_i);
         cfg_valid_i         <= 1'b1;
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h00;
-        cfg_data_i          <= 32'h00;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         cfg_rwn_i           <= 1'b1;
         cfg_valid_i         <= 1'b0;
 
         // TX_CFG as example  
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h06;
-        cfg_data_i          <= 32'h00000010;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00000010;
         cfg_rwn_i           <= 1'b0;
         @(posedge sys_clk_i);
         cfg_valid_i         <= 1'b1;
         @(posedge sys_clk_i);
         cfg_addr_i          <= 5'h00;
-        cfg_data_i          <= 32'h00;
+        intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         cfg_rwn_i           <= 1'b1;
         cfg_valid_i         <= 1'b0;
     endtask: do_configs
