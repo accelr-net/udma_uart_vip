@@ -3,8 +3,18 @@
 // This is for only learn about uart protocal of pulp
 //
 //////////////////////////////////////////////////////////////////////////////////////////
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+
 `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/uart_if.sv"
 `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/udma_if.sv"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_seq_item.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_sequence.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_driver.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_monitor.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_agent.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_env.svh"
+`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_test.svh"
 module manual_data_send();
     localparam L2_AWIDTH_NOAL = 19;
     localparam TRANS_SIZE     = 20;
@@ -196,7 +206,7 @@ module manual_data_send();
         .BAUD_RATE(BAUD_RATE),
         .PARITY_EN(PARITY_EN)
     ) uart_sim(
-        .rx     (uart_tx_o),
+        .rx     (intf_uart_side.uart_dut_if.uart_tx_o),
         .tx     (uart_rx_i),
         .rx_en  (1'b1)
     );
@@ -390,52 +400,52 @@ module manual_data_send();
     // change config registes 
     task do_configs();
         //setting up baudrate as exmaple 4345500
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h09;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h01b10306;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b0;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b1;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h00;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b1;
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b0;
 
         // TX_addr as example 43661000000
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h04;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h1c000934;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b0;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b1;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h00;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b1;
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b0;
 
         // tx buffer size as example 4366200
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h05;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00000080;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b0;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b1;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h00;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b1;
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b0;
 
         // TX_CFG as example  
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h06;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00000010;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b0;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_valid_i         <= 1'b1;
-        @(posedge sys_clk_i);
+        @(posedge intf_udma_side.cfg_driver_if.sys_clk_i);
         intf_udma_side.cfg_driver_if.cfg_addr_i          <= 5'h00;
         intf_udma_side.cfg_driver_if.cfg_data_i          <= 32'h00;
         intf_udma_side.cfg_driver_if.cfg_rwn_i           <= 1'b1;
@@ -616,3 +626,4 @@ module manual_data_send();
     endtask : rx_data_send
 
 endmodule:manual_data_send
+
