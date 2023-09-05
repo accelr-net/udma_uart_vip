@@ -51,6 +51,8 @@ sources:
       - rtl/tb/pulp_tap_pkg.sv
       - rtl/tb/srec/srec_pkg.sv
       - rtl/tb/tb_clk_gen.sv
+      - rtl/pulp_uart_top/if/uart_if.sv
+      - rtl/pulp_uart_top/if/udma_if.sv
       - rtl/tb/udma_sim.sv
       - rtl/tb/manual_data_send.sv
       - rtl/tb/SimJTAG.sv

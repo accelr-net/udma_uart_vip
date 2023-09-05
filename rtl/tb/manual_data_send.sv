@@ -7,8 +7,8 @@ import uvm_pkg::*;
 `include "uvm_macros.svh"
 
 //interfaces
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/uart_if.sv"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/udma_if.sv"
+// `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/uart_if.sv"
+// `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/udma_if.sv"
 
 //included cfg uvm files
 `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_seq_item.svh"
