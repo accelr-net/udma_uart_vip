@@ -74,6 +74,7 @@ class cfg_monitor extends uvm_monitor;
             
             // check this is a valid signal
             if(vif.cfg_valid_i) begin
+                $display("cfg_data_i %d", vif.cfg_data_i);
                 a_port.write(cfg_transaction);
             end
         end
