@@ -35,10 +35,10 @@ sources:
 # TB sources
 - target: any(test,simulation)
   include_dirs:
-  - rtl/pulp_uart_top/uvm_components
+  - rtl/uart_vip/uvm_components
   files:
-  - rtl/pulp_uart_top/if/uart_if.sv
-  - rtl/pulp_uart_top/if/udma_if.sv
+  - rtl/uart_vip/if/uart_if.sv
+  - rtl/uart_vip/if/udma_if.sv
   - rtl/tb/udma_sim.sv
   - rtl/tb/tb_top.sv
 
