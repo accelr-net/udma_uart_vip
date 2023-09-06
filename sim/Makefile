@@ -30,7 +30,7 @@ VMAP            ?= vmap
 SVLIB	    =  ../rtl/tb/remote_bitbang/librbs
 
 # top-level (tesbench)
-SIM_TOP     = manual_data_send
+SIM_TOP     = tb_top 
 
 ## Compile RTL with Questasim
 all: lib build opt

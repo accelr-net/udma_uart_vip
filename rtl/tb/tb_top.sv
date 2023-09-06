@@ -11,15 +11,15 @@ import uvm_pkg::*;
 // `include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/if/udma_if.sv"
 
 //included cfg uvm files
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_seq_item.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_sequence.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_sequencer.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_driver.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_monitor.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_agent.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_env.svh"
-`include "/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/pulp_uart_top/uvm_components/cfg_test.svh"
-
+`include "cfg_seq_item.svh"
+`include "cfg_sequence.svh"
+`include "cfg_sequencer.svh"
+`include "cfg_driver.svh"
+`include "cfg_monitor.svh"
+`include "cfg_agent.svh"
+`include "cfg_env.svh"
+`include "cfg_test.svh"
+// import cfg_agent_pkg::*;
 // module manual_data_send();
 //     localparam L1_AWIDTH_NOAL = 19;
 //     localparam TRANS_SIZE     = 19;
@@ -633,7 +633,7 @@ import uvm_pkg::*;
 // endmodule:manual_data_send
 
 
-module manual_data_send();
+module tb_top();
     localparam L2_AWIDTH_NOAL = 19;
     localparam TRANS_SIZE     = 20;
     localparam SIZE_18        =  18'b000000000000000000;
@@ -770,7 +770,7 @@ module manual_data_send();
     initial begin
         vif.udma_top_if.sys_clk_i <= 1'b1;
         vif.udma_top_if.periph_clk_i <= 1'b1;
-        $display("[manual_data_send] - before run test v.2");
+        $display("[manual_data_send] - before run test v.3");
         run_test("cfg_test");      
     end
 
@@ -778,4 +778,4 @@ module manual_data_send();
         uvm_config_db #(virtual udma_if)::set(null,"*","vif",vif);
     end
 
-endmodule: manual_data_send 
+endmodule: tb_top
