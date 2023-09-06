@@ -33,7 +33,10 @@
 //
 //**************************************************************************************************
 package cfg_agent_pkg;
-    //includes goes here
+    import uvm_pkg::*;
+    `include "uvm_macros.svh"
+
+    //includes uvm header goes here
     `include "cfg_seq_item.svh"
     `include "cfg_sequence.svh"
     `include "cfg_sequencer.svh"
