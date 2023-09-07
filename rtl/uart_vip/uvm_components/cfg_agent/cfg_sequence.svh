@@ -41,7 +41,7 @@ class cfg_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_sequence");
         super.new(name);
-        $display("[SEQUENCE] - contructor");
+        `uvm_info("[SEQUENCE]","constructor", UVM_MEDIUM)
     endfunction : new
 
 //---------------------------------------------------------------------------------------------------------------------

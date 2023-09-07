@@ -45,7 +45,7 @@ class cfg_monitor extends uvm_monitor;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_monitor", uvm_component parent);
         super.new(name,parent);
-        $display("[MONITOR] - constructor");
+        `uvm_info("[MONITOR]","constructor", UVM_MEDIUM)
         a_port = new("a_port",this);
     endfunction: new
 
@@ -53,7 +53,7 @@ class cfg_monitor extends uvm_monitor;
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
-        $display("[MONITOR] - build_phase");
+        `uvm_info("[MONITOR]","build_phase", UVM_MEDIUM)
         if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
             `uvm_fatal("cfg_monitor/build_phase","No virtual interface specified for this monitor instance");
         end
@@ -64,7 +64,7 @@ class cfg_monitor extends uvm_monitor;
 //---------------------------------------------------------------------------------------------------------------------
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        $display("[MONITOR] - run_phase");
+        `uvm_info("[MONITOR]","run_phase", UVM_MEDIUM)
         forever begin
             cfg_seq_item cfg_transaction;
 

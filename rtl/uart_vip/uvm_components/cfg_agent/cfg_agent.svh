@@ -49,15 +49,14 @@ class cfg_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_agent",uvm_component parent);
         super.new(name,parent);
-        $display("[AGENT] - constructor");
-        `uvm_info("AGENT","constructor",UVM_HIGH)
+        `uvm_info("[UVM agent]","constructor", UVM_MEDIUM)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        $display("[AGENT] - build_phase");
+        `uvm_info("[UVM agent]","build_phase", UVM_MEDIUM)
         driver  = cfg_driver::type_id::create("driver",this);
         monitor = cfg_monitor::type_id::create("monitor",this);
         sequencer = cfg_sequencer::type_id::create("sequencer",this);
@@ -73,7 +72,7 @@ class cfg_agent extends uvm_agent;
 // connect phase
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
-        $display("[AGENT] - connect_phase");
+        `uvm_info("[UVM agent]","connect_phase", UVM_MEDIUM)
         driver.seq_item_port.connect(sequencer.seq_item_export);
     endfunction: connect_phase
 
@@ -83,5 +82,4 @@ class cfg_agent extends uvm_agent;
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
     endtask
-
 endclass : cfg_agent

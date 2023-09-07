@@ -52,7 +52,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         if(!uvm_config_db #(virtual udma_if)::get(this, "*", "vif",vif)) begin
             `uvm_fatal("cfg_driver/build_phase","No virtual interface specified for this driver instance");
         end
-        $display("[DRIVER] - build_phase");
+        `uvm_info("[DRIVER]","build_phase", UVM_MEDIUM)
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -60,6 +60,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
+        `uvm_info("[DRIVER]","connect_phase", UVM_MEDIUM)
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -67,35 +68,30 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        $display("[DRIVER] - run_phase");
+        `uvm_info("[DRIVER]","run_phase", UVM_MEDIUM)
         forever begin
             cfg_seq_item cfg_transaction;
-            $display("[DRIVER] - after create cfg_transaction variable");
 
             //First get an item from sequencer
             // seq_item_port.get_next_item(cfg_transaction);
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");
-            $display("[DRIVER] - after line 79");
-
             seq_item_port.get_next_item(cfg_transaction);
-            $display("[DRIVER] - after called get_next_item v: %s",cfg_transaction.rw.name());
             
-            uvm_report_info("CFG_DRIVER","Transaction has sent");
+            `uvm_info("[DRIVER]","Transaction is sent", UVM_MEDIUM)
             if(cfg_transaction.rw.name() == "WRITE") begin
-                drive(cfg_transaction);
+                do_config(cfg_transaction);
             end
             seq_item_port.item_done();
         end
     endtask : run_phase
 
-    task drive(cfg_seq_item transaction);
+    task do_config(cfg_seq_item transaction);
         @(posedge vif.sys_clk_i);
-
         vif.cfg_addr_i      <= transaction.addr;
         vif.cfg_data_i      <= transaction.data;
         vif.cfg_rwn_i       <= 1'b1;
         vif.cfg_valid_i     <= 1'b1;
-    endtask: drive
+    endtask: do_config 
 
     //should remove this task after testing
     virtual protected task do_configs();
@@ -151,5 +147,4 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         vif.cfg_rwn_i           <= 1'b1;
         vif.cfg_valid_i         <= 1'b0;
     endtask: do_configs
-
 endclass: cfg_driver

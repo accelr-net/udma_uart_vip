@@ -43,7 +43,7 @@ class cfg_test extends uvm_test;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_test",uvm_component parent);
         super.new(name,parent);
-        $display("[TEST] - constructor");
+        `uvm_info("[TEST]","constructor", UVM_MEDIUM)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ class cfg_test extends uvm_test;
     //In build phase construct the cfg_env class using factory and
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
-        $display("[TEST] - build_phase");
+        `uvm_info("[TEST]","build_phase", UVM_MEDIUM)
         env = cfg_env::type_id::create("env",this);
 
         // if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
