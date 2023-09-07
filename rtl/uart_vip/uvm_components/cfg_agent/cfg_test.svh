@@ -54,29 +54,21 @@ class cfg_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_MEDIUM)
         env = cfg_env::type_id::create("env",this);
-
-        // if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
-        //     `uvm_fatal("cfg_driver/build_phase","No virtual interface specified");
-        // end
-        // uvm_config_db #(virtual udma_if)::set(this,"*","vif",vif);
-    endfunction: build_phase
+   endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------   
     //Run phase create an cfg_sequence
     task run_phase(uvm_phase phase);
-        // $display("[TEST] - run_phase");
         cfg_sequence    cfg_seq;
         phase.raise_objection(this, "Starting uvm sequence...");
         repeat(5) begin
             cfg_seq = cfg_sequence::type_id::create("cfg_seq");
             cfg_seq.start(env.cfg_agnt.sequencer);
-            $display("Starting uvm sequence...");
             #10;
         end
         #1000000;
         phase.drop_objection(this);
     endtask: run_phase
-
 endclass: cfg_test

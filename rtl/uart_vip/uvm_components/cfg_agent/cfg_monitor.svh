@@ -79,5 +79,4 @@ class cfg_monitor extends uvm_monitor;
             end
         end
     endtask: run_phase
-
 endclass : cfg_monitor

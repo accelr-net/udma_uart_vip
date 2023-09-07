@@ -36,8 +36,6 @@ class cfg_env extends uvm_env;
     `uvm_component_utils(cfg_env);
 
     cfg_agent           cfg_agnt;
-    //virtual interface for udma
-    // virtual udma_if     vif; 
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -54,9 +52,5 @@ class cfg_env extends uvm_env;
     function void build_phase(uvm_phase phase);
         `uvm_info("[DRIVER]","build_phase", UVM_MEDIUM)
         cfg_agnt   = cfg_agent::type_id::create("cfg_agnt",this);
-        // if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
-        //     `uvm_fatal("cfg_env/build_phase","No virtual interface specified");
-        // end
-        // uvm_config_db #(virtual udma_if)::set(this,"*","vif",vif);
     endfunction: build_phase
 endclass: cfg_env

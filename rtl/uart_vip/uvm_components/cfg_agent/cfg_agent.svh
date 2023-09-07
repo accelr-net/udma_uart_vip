@@ -60,12 +60,6 @@ class cfg_agent extends uvm_agent;
         driver  = cfg_driver::type_id::create("driver",this);
         monitor = cfg_monitor::type_id::create("monitor",this);
         sequencer = cfg_sequencer::type_id::create("sequencer",this);
-
-        // if(!uvm_config_db#(virtual udma_if)::get(this,"*","vif",vif)) begin
-        //     `uvm_fatal("cfg_agent","No virtual interface specified for this agent instance")
-        // end
-        // uvm_config_db #(virtual udma_if)::set(this,"driver","vif",vif);
-        // uvm_config_db #(virtual udma_if)::set(this,"monitor","vif",vif);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
