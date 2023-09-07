@@ -91,8 +91,8 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
     task drive(cfg_seq_item transaction);
         @(posedge vif.sys_clk_i);
 
-        vif.cfg_addr_i      <= transaction.cfg_addr_i;
-        vif.cfg_data_i      <= transaction.cfg_data_i;
+        vif.cfg_addr_i      <= transaction.addr;
+        vif.cfg_data_i      <= transaction.data;
         vif.cfg_rwn_i       <= 1'b1;
         vif.cfg_valid_i     <= 1'b1;
     endtask: drive
