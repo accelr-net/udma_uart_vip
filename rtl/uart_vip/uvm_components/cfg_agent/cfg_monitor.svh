@@ -38,7 +38,7 @@ class cfg_monitor extends uvm_monitor;
 
     virtual udma_if vif;
     
-    uvm_analysis_port #(cfg_seq_item) a_port;
+    uvm_analysis_port #(cfg_seq_item) cfg_analysis_port;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -46,7 +46,7 @@ class cfg_monitor extends uvm_monitor;
     function new(string name="cfg_monitor", uvm_component parent);
         super.new(name,parent);
         `uvm_info("[MONITOR]","constructor", UVM_MEDIUM)
-        a_port = new("a_port",this);
+        cfg_analysis_port = new("cfg_analysis_port",this);
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ class cfg_monitor extends uvm_monitor;
             // check this is a valid signal
             if(vif.cfg_valid_i) begin
                 $display("cfg_data_i %d", vif.cfg_data_i);
-                a_port.write(cfg_transaction);
+                cfg_analysis_port.write(cfg_transaction);
             end
         end
     endtask: run_phase
