@@ -39,7 +39,6 @@ package cfg_agent_pkg;
     //includes uvm header goes here
     `include "cfg_seq_item.svh"
     `include "cfg_sequence.svh"
-    `include "cfg_sequencer.svh"
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
     `include "cfg_agent.svh"
