@@ -41,7 +41,7 @@ class cfg_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_sequence");
         super.new(name);
-        $display("[SEQUENCE] - contructor");
+        `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -52,35 +52,27 @@ class cfg_sequence extends uvm_sequence;
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
         start_item(cfg_item);
-        //Write sequence here
-        cfg_item.cfg_addr_i     <= 5'h09;
-        cfg_item.cfg_data_i     <= 32'h01b10306;
-        cfg_item.rw             =  1;
-        // cfg_item.randomize();
+        cfg_item.addr           <= 5'h09;
+        cfg_item.data           <= 32'h01b10306;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        //Write sequence here
-        cfg_item.cfg_addr_i     <= 5'h04;
-        cfg_item.cfg_data_i     <= 32'h1c000934;
-        cfg_item.rw             =  1;
-        // cfg_item.randomize();
+        cfg_item.addr           <= 5'h04;
+        cfg_item.data           <= 32'h1c00934;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        //Write sequence here
-        cfg_item.cfg_addr_i     <= 5'h05;
-        cfg_item.cfg_data_i     <= 32'h00000080;
-        cfg_item.rw             =  1;
-        // cfg_item.randomize();
+        cfg_item.addr           <= 5'h05;
+        cfg_item.data           <= 32'h00000080;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        //Write sequence here
-        cfg_item.cfg_addr_i     <= 5'h06;
-        cfg_item.cfg_data_i     <= 32'h00000010;
-        cfg_item.rw             =  1;
-        // cfg_item.randomize();
+        cfg_item.addr           <= 5'h06;
+        cfg_item.data           <= 32'h00000010;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
     endtask: body
 endclass: cfg_sequence

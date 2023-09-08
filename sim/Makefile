@@ -34,6 +34,7 @@ SIM_TOP     = tb_top
 
 ## Compile RTL with Questasim
 all: lib build opt
+	vsim vopt_tb
 
 # build the bitbang library, needed for simulating a jtag bridge to OpenOCD
 .PHONY: build-deps

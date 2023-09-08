@@ -39,7 +39,7 @@ class cfg_agent extends uvm_agent;
     //Agent will have driver, monitor component
     cfg_driver      driver;
     cfg_monitor     monitor;
-    cfg_sequencer   sequencer;
+    uvm_sequencer #(cfg_seq_item) sequencer;
     
     //virtual interface
     virtual udma_if vif;
@@ -49,31 +49,24 @@ class cfg_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_agent",uvm_component parent);
         super.new(name,parent);
-        $display("[AGENT] - constructor");
-        `uvm_info("AGENT","constructor",UVM_HIGH)
+        `uvm_info("[UVM agent]","constructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        $display("[AGENT] - build_phase");
+        `uvm_info("[UVM agent]","build_phase", UVM_LOW)
         driver  = cfg_driver::type_id::create("driver",this);
         monitor = cfg_monitor::type_id::create("monitor",this);
-        sequencer = cfg_sequencer::type_id::create("sequencer",this);
-
-        // if(!uvm_config_db#(virtual udma_if)::get(this,"*","vif",vif)) begin
-        //     `uvm_fatal("cfg_agent","No virtual interface specified for this agent instance")
-        // end
-        // uvm_config_db #(virtual udma_if)::set(this,"driver","vif",vif);
-        // uvm_config_db #(virtual udma_if)::set(this,"monitor","vif",vif);
+        sequencer = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // connect phase
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
-        $display("[AGENT] - connect_phase");
+        `uvm_info("[UVM agent]","connect_phase", UVM_LOW)
         driver.seq_item_port.connect(sequencer.seq_item_export);
     endfunction: connect_phase
 
@@ -83,5 +76,4 @@ class cfg_agent extends uvm_agent;
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
     endtask
-
 endclass : cfg_agent

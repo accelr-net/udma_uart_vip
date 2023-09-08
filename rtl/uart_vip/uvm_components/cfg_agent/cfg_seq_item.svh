@@ -34,16 +34,16 @@
 //**************************************************************************************************
 class cfg_seq_item extends uvm_sequence_item;
     `uvm_object_utils(cfg_seq_item)
-    typedef enum        {READ, WRITE}   rw_type;
-	logic               [31:0] cfg_data_i;
-    logic                [4:0] cfg_addr_i;
-    rw_type                    rw;
+    typedef enum        {READ, WRITE}   rw_t;
+	logic               [31:0]          data;
+    logic                [4:0]          addr;
+    rw_t                                rw;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_seq_item");
         super.new(name);
-        $display("[SEQUENCE ITEM] - constructor");
+        `uvm_info("[SQU_ITEM]","constructor", UVM_LOW)
     endfunction: new
     
 endclass : cfg_seq_item
