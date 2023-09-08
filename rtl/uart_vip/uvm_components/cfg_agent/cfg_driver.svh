@@ -52,7 +52,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         if(!uvm_config_db #(virtual udma_if)::get(this, "*", "vif",vif)) begin
             `uvm_fatal("cfg_driver/build_phase","No virtual interface specified for this driver instance");
         end
-        `uvm_info("[DRIVER]","build_phase", UVM_MEDIUM)
+        `uvm_info("[DRIVER]","build_phase", UVM_LOW)
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        `uvm_info("[DRIVER]","connect_phase", UVM_MEDIUM)
+        `uvm_info("[DRIVER]","connect_phase", UVM_LOW)
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        `uvm_info("[DRIVER]","run_phase", UVM_MEDIUM)
+        `uvm_info("[DRIVER]","run_phase", UVM_LOW)
         forever begin
             cfg_seq_item cfg_transaction;
 
@@ -77,7 +77,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");
             seq_item_port.get_next_item(cfg_transaction);
             
-            `uvm_info("[DRIVER]","Transaction is sent", UVM_MEDIUM)
+            `uvm_info("[DRIVER]","Transaction is sent", UVM_LOW)
             if(cfg_transaction.rw.name() == "WRITE") begin
                 do_config(cfg_transaction);
             end

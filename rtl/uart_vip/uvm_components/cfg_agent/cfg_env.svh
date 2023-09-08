@@ -42,7 +42,7 @@ class cfg_env extends uvm_env;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_env", uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[DRIVER]","constructor", UVM_MEDIUM)
+        `uvm_info("[ENV]","constructor", UVM_MEDIUM)
     endfunction:new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ class cfg_env extends uvm_env;
 //---------------------------------------------------------------------------------------------------------------------
     //In Build_phase - construct agent and get virtual interface handle from test and pass it down to agent
     function void build_phase(uvm_phase phase);
-        `uvm_info("[DRIVER]","build_phase", UVM_MEDIUM)
+        `uvm_info("[ENV]","build_phase", UVM_MEDIUM)
         cfg_agnt   = cfg_agent::type_id::create("cfg_agnt",this);
     endfunction: build_phase
 endclass: cfg_env

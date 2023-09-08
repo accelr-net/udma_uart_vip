@@ -43,7 +43,7 @@ class cfg_seq_item extends uvm_sequence_item;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_seq_item");
         super.new(name);
-        `uvm_info("[SQU_ITEM]","constructor", UVM_MEDIUM)
+        `uvm_info("[SQU_ITEM]","constructor", UVM_LOW)
     endfunction: new
     
 endclass : cfg_seq_item
