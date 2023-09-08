@@ -35,9 +35,9 @@ sources:
 # TB sources
 - target: any(test,simulation)
   include_dirs:
-  - rtl/uart_vip/uvm_components/cfg_agent
+  - rtl/uart_vip/cfg_agent
   files:
-  - rtl/uart_vip/uvm_components/cfg_agent/cfg_agent_pkg.sv
+  - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
   - rtl/uart_vip/if/uart_if.sv
   - rtl/uart_vip/if/udma_if.sv
   - rtl/tb/udma_sim.sv
