@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_monitor.sv
+// FILE         :   uart_rx_agent.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm monitor for cfg. 
+// DESCRIPTION  :   This is uvm agent for uart RX. 
 //
 // ************************************************************************************************
 //
@@ -29,54 +29,51 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  25-Aug-2023      Kasun        creation
+//  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
 
-class cfg_monitor extends uvm_monitor;
-    `uvm_component_utils(cfg_monitor)
+class uart_rx_agent extends uvm_agent;
+    `uvm_component_utils(uart_rx_agent)
 
-    virtual udma_if vif;
+    //Agent have driver, monitor and sequencer
+    uart_rx_driver                          driver;
+    uart_rx_monitor                         monitor; 
+    uvm_sequencer  #(uart_rx_seq_item)      sequencer;
     
-    uvm_analysis_port #(cfg_seq_item) cfg_analysis_port;
+    //virtual interface
+    virtual uart_if                         vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="cfg_monitor", uvm_component parent);
-        super.new(name,parent);
-        `uvm_info("[MONITOR]","constructor", UVM_LOW)
-        cfg_analysis_port = new("cfg_analysis_port",this);
+    function new(string name="uart_rx_agent",uvm_component parent);
+        super.new(name, parent);
+        `uvm_info("[UVM agent / uart_rx]","constructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
-    virtual function void build_phase(uvm_phase phase);
-        `uvm_info("[MONITOR]","build_phase", UVM_LOW)
-        if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
-            `uvm_fatal("cfg_monitor/build_phase","No virtual interface specified for this monitor instance");
-        end
+    function void build_phase(uvm_phase phase);
+        `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_LOW)
+        driver      = uart_rx_driver::type_id::create("driver", this);
+        monitor     = uart_rx_monitor::type_id::create("monitor",this);
+        sequencer   = uvm_sequencer #(uart_rx_seq_item)::type_id::create("sequencer",this);
     endfunction: build_phase
+
+//---------------------------------------------------------------------------------------------------------------------
+// connect phase
+//---------------------------------------------------------------------------------------------------------------------
+    function void connect_phase(uvm_phase phase);
+        `uvm_info("AGENT","connect_phase",UVM_LOW)
+        driver.seq_item_port.connect(sequencer.seq_item_export);
+    endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
-    virtual task run_phase(uvm_phase phase);
-        super.run_phase(phase);
-        `uvm_info("[MONITOR]","run_phase", UVM_LOW)
-        forever begin
-            cfg_seq_item cfg_transaction;
-
-            @(posedge vif.sys_clk_i);
-            //create a transaction object
-            cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction",this);
-            `uvm_info("[MONITOR]","after create transaction",UVM_LOW)
-            // check this is a valid signal
-            if(vif.cfg_valid_i) begin
-                $display("cfg_data_i %d", vif.cfg_data_i);
-                cfg_analysis_port.write(cfg_transaction);
-            end
-        end
+    task run_phase(uvm_phase phase);
+       super.run_phase(phase);
     endtask: run_phase
-endclass : cfg_monitor
+endclass : uart_rx_agent

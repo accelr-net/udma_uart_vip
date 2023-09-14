@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_driver.sv
+// FILE         :   uart_rx_driver.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm driver for cfg. 
+// DESCRIPTION  :   This is uvm driver for uart RX. 
 //
 // ************************************************************************************************
 //
@@ -29,19 +29,18 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  25-Aug-2023      Kasun        creation
+//  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class cfg_driver extends uvm_driver #(cfg_seq_item);
-    `uvm_component_utils(cfg_driver)
-    virtual udma_if vif;
+class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
+    `uvm_component_utils(uart_rx_driver)
+    virtual uart_if     vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name = "cfg_driver", uvm_component parent);
+    function new(string name="uart_rx_driver", uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[DRIVER]","constructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -49,10 +48,10 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual udma_if)::get(this, "*", "vif",vif)) begin
-            `uvm_fatal("cfg_driver/build_phase","No virtual interface specified for this driver instance");
+        if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
+            `uvm_fatal("uart_rx_driver/build_phase","No virtual interface is found");
         end
-        `uvm_info("[DRIVER]","build_phase", UVM_LOW)
+        `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -60,7 +59,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        `uvm_info("[DRIVER]","connect_phase", UVM_LOW)
+        `uvm_info("[DRIVER]","connect_phase",UVM_LOW);
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -68,28 +67,38 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        `uvm_info("[DRIVER]","run_phase", UVM_LOW)
-        forever begin
-            cfg_seq_item cfg_transaction;
+        `uvm_info("[DRIVER]","run_phase",UVM_LOW)
 
-            //First get an item from sequencer
-            // seq_item_port.get_next_item(cfg_transaction);
-            cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");
-            seq_item_port.get_next_item(cfg_transaction);
-            
-            `uvm_info("[DRIVER]","Transaction is sent", UVM_LOW)
-            if(cfg_transaction.rw.name() == "WRITE") begin
-                do_config(cfg_transaction);
-            end
+        forever begin
+            uart_rx_seq_item    uart_rx_transaction;
+            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
+            seq_item_port.get_next_item(uart_rx_transaction);
+
+            do_uart_rx(uart_rx_transaction);
+
             seq_item_port.item_done();
         end
-    endtask : run_phase
-
-    task do_config(cfg_seq_item transaction);
+    endtask: run_phase
+    
+    task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         @(posedge vif.sys_clk_i);
-        vif.cfg_addr_i      <= transaction.addr;
-        vif.cfg_data_i      <= transaction.data;
-        vif.cfg_rwn_i       <= 1'b1;
-        vif.cfg_valid_i     <= 1'b1;
-    endtask: do_config 
-endclass: cfg_driver
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[0];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[1];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[2];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[3];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[4];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[5];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[6];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[7];
+        @(posedge vif.sys_clk_i);
+        vif.uart_rx_i   <= uart_rx_transaction.charactor[8];
+    endtask: do_uart_rx
+endclass: uart_rx_driver
+
