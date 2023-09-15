@@ -33,7 +33,7 @@
 //
 //**************************************************************************************************
 class uart_rx_seq_item extends uvm_sequence_item;
-    `uvm_object_utils(uvm_sequence_item)
+    `uvm_object_utils(uart_rx_seq_item)
     rand logic [7:0]    charactor;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

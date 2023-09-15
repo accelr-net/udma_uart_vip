@@ -42,7 +42,7 @@ class uart_rx_agent extends uvm_agent;
     uvm_sequencer  #(uart_rx_seq_item)      sequencer;
     
     //virtual interface
-    virtual uart_if                         vif;
+    virtual uart_if                         intf_uart_side;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

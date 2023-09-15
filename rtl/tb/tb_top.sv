@@ -8,6 +8,7 @@ import uvm_pkg::*;
 
 // cfg_agent_pkg is a UVM agent
 import cfg_agent_pkg::*;
+import uart_rx_agent_pkg::*;
 
 module tb_top();
     localparam L2_AWIDTH_NOAL = 19;
@@ -146,9 +147,17 @@ module tb_top();
         vif.udma_top_if.periph_clk_i <= 1'b1;
         $display("[manual_data_send] - before run test v.3");
         run_test("cfg_test");      
+        $display("[tb_pulp after cfg_test]");
+        run_test("uart_rx_test");
     end
+
+    // initial begin
+    //     $display("[tb_pulp after cfg_test]");
+    //     run_test("uart_rx_test");
+    // end
 
     initial begin
         uvm_config_db #(virtual udma_if)::set(null,"*","vif",vif);
+        uvm_config_db #(virtual uart_if)::set(null,"*","intf_uart_side",intf_uart_side);
     end
 endmodule: tb_top

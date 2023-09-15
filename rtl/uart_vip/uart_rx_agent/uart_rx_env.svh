@@ -50,6 +50,6 @@ class uart_rx_env extends uvm_env;
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         `uvm_info("[ENV]", "build_phase", UVM_LOW)
-    agent = uart_rx_agent::type_id::create("agent", this);
+        agent = uart_rx_agent::type_id::create("agent", this);
     endfunction: build_phase
 endclass : uart_rx_env

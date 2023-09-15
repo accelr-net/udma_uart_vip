@@ -68,7 +68,6 @@ class cfg_test extends uvm_test;
             cfg_seq.start(env.cfg_agnt.sequencer);
             #10;
         end
-        #1000000;
         phase.drop_objection(this);
     endtask: run_phase
 endclass: cfg_test

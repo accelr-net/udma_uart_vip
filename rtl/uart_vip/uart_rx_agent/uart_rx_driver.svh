@@ -34,7 +34,7 @@
 //**************************************************************************************************
 class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     `uvm_component_utils(uart_rx_driver)
-    virtual uart_if     vif;
+    virtual uart_if     intf_uart_side;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -48,7 +48,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
+        if(!uvm_config_db #(virtual uart_if)::get(this,"*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("uart_rx_driver/build_phase","No virtual interface is found");
         end
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
@@ -81,24 +81,25 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     endtask: run_phase
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[0];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[1];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[2];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[3];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[4];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[5];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[6];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[7];
-        @(posedge vif.sys_clk_i);
-        vif.uart_rx_i   <= uart_rx_transaction.charactor[8];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[0];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[1];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[2];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[3];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[4];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[5];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[6];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[7];
+        #10;
+        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[8];
+        $display("charactor %d",uart_rx_transaction.charactor);
     endtask: do_uart_rx
 endclass: uart_rx_driver
 
