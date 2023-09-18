@@ -61,6 +61,7 @@ class cfg_test extends uvm_test;
 //---------------------------------------------------------------------------------------------------------------------   
     //Run phase create an cfg_sequence
     task run_phase(uvm_phase phase);
+        // `uvm_info("[TEST]","run_phase",UVM_LOW)
         cfg_sequence    cfg_seq;
         phase.raise_objection(this, "Starting uvm sequence...");
         repeat(5) begin

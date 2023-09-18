@@ -40,6 +40,7 @@ sources:
   files:
   - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
   - rtl/uart_vip/uart_rx_agent/uart_rx_agent_pkg.sv
+  - rtl/uart_vip/uart_uvm_pkg.sv
   - rtl/uart_vip/if/uart_if.sv
   - rtl/uart_vip/if/udma_if.sv
   - rtl/tb/udma_sim.sv

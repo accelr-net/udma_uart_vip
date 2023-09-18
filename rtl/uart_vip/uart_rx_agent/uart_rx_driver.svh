@@ -62,6 +62,11 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
         `uvm_info("[DRIVER]","connect_phase",UVM_LOW);
     endfunction: connect_phase
 
+    task configure_phase(uvm_phase phase);
+        super.configure_phase(phase);
+        `uvm_info("[DRIVER]", "configure_phase", UVM_LOW)
+    endtask : configure_phase
+
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
@@ -73,7 +78,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             uart_rx_seq_item    uart_rx_transaction;
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
-
+            $display("calling do_uart_rx");
             do_uart_rx(uart_rx_transaction);
 
             seq_item_port.item_done();
@@ -81,24 +86,11 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     endtask: run_phase
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[0];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[1];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[2];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[3];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[4];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[5];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[6];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[7];
-        #10;
-        intf_uart_side.uart_rx_i   <= uart_rx_transaction.charactor[8];
+        $display("[DRIVER] - called do_uart_rx %p", uart_rx_transaction);
+        for(integer i=0; i < $size(uart_rx_transaction.charactor); i++) begin
+            #10;
+            intf_uart_side.uart_rx_i   = uart_rx_transaction.charactor[i];
+        end
         $display("charactor %d",uart_rx_transaction.charactor);
     endtask: do_uart_rx
 endclass: uart_rx_driver

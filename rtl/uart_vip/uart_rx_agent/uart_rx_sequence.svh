@@ -51,7 +51,7 @@ class uart_rx_sequence extends uvm_sequence;
         uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
 
         start_item(uart_rx_transaction);
-        uart_rx_transaction.charactor <= 8'd23;
+        uart_rx_transaction.charactor <= 8'd30;
         finish_item(uart_rx_transaction);
         
     endtask: body

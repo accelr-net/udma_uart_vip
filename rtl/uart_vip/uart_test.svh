@@ -19,43 +19,69 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_env.sv
+// FILE         :   uart_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm environment for cfg. 
+// DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Description
+//  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  25-Aug-2023      Kasun        creation
+//  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class cfg_env extends uvm_env;
-    `uvm_component_utils(cfg_env);
+class uart_test extends uvm_test;
+    `uvm_component_utils(uart_test)
 
-    cfg_agent           cfg_agnt;
+    cfg_env             env;
+    uart_rx_env         rx_env;
+
+    virtual     uart_if     uart_vif;
+    virtual     udma_if     vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="cfg_env", uvm_component parent);
+    function new(string name="cfg_test",uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[ENV]","constructor", UVM_MEDIUM)
-    endfunction:new
+        `uvm_info("[TEST]","top level tconstructor", UVM_LOW)
+    endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
-    //In Build_phase - construct agent and get virtual interface handle from test and pass it down to agent
+    //In build phase construct the cfg_env class using factory and
+    //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
-        `uvm_info("[ENV]","build_phase", UVM_MEDIUM)
-        cfg_agnt   = cfg_agent::type_id::create("cfg_agnt",this);
-    endfunction: build_phase
+        `uvm_info("[TEST]","build_phase", UVM_LOW)
+        env     = cfg_env::type_id::create("env",this);
+        rx_env  = uart_rx_env::type_id::create("rx_env",this);
+   endfunction: build_phase
 
+//---------------------------------------------------------------------------------------------------------------------
+// Run phase
+//---------------------------------------------------------------------------------------------------------------------   
+    //Run phase create an cfg_sequence
     task run_phase(uvm_phase phase);
-        `uvm_info("[ENV]","run_phase",UVM_LOW)
-        super.run_phase(phase);
+        // `uvm_info("[TEST]","run_phase",UVM_LOW)
+        cfg_sequence        cfg_seq;
+        uart_rx_sequence    rx_seq;
+        phase.raise_objection(this, "Starting uvm sequence...");
+        repeat(5) begin
+            cfg_seq = cfg_sequence::type_id::create("cfg_seq");
+            cfg_seq.start(env.cfg_agnt.sequencer);
+            #10;
+        end
+        phase.drop_objection(this);
+
+        phase.raise_objection(this,"rx_data");
+        repeat(5) begin
+            rx_seq = uart_rx_sequence::type_id::create("uart_rx_seq");
+            rx_seq.start(rx_env.agent.sequencer);
+        end
+        phase.drop_objection(this);
     endtask: run_phase
-endclass: cfg_env
+
+endclass: uart_test
