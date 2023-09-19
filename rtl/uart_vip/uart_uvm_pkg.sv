@@ -42,14 +42,13 @@ package uart_uvm_pkg;
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
     `include "cfg_agent.svh"
-    `include "cfg_env.svh"
 
     `include "uart_rx_seq_item.svh"
     `include "uart_rx_sequence.svh"
     `include "uart_rx_driver.svh"
     `include "uart_rx_monitor.svh"
     `include "uart_rx_agent.svh"
-    `include "uart_rx_env.svh"
     
+    `include "uart_env.svh"
     `include "uart_test.svh"
 endpackage: uart_uvm_pkg

@@ -35,8 +35,7 @@
 class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
 
-    cfg_env             env;
-    uart_rx_env         rx_env;
+    uart_env                env;
 
     virtual     uart_if     uart_vif;
     virtual     udma_if     vif;
@@ -56,8 +55,7 @@ class uart_test extends uvm_test;
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
-        env     = cfg_env::type_id::create("env",this);
-        rx_env  = uart_rx_env::type_id::create("rx_env",this);
+        env     = uart_env::type_id::create("env",this);
    endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -78,7 +76,7 @@ class uart_test extends uvm_test;
 
         phase.raise_objection(this,"rx_data");
         rx_seq = uart_rx_sequence::type_id::create("uart_rx_seq");
-        rx_seq.start(rx_env.agent.sequencer);
+        rx_seq.start(env.uart_rx_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
 
