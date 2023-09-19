@@ -37,7 +37,7 @@ class uart_rx_monitor extends uvm_monitor;
 
     virtual uart_if     intf_uart_side;
 
-    uvm_analysis_port #(uart_rx_seq_item)       uart_rx_analysis_port;
+    uvm_analysis_port #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8)))       uart_rx_analysis_port;
 
     function new(string name="uart_rx_monitor", uvm_component parent);
         super.new(name,parent);
@@ -58,11 +58,11 @@ class uart_rx_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_LOW)
 
         forever begin
-            uart_rx_seq_item    uart_rx_transaction;
+            uart_rx_seq_item #(.CHARACTOR_LENGTH(8))   uart_rx_transaction;
 
             #10;
             //create a transaction object 
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
+            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(8))::type_id::create("uart_rx_transaction",this);
             $display("after creating transaction");
             uart_rx_analysis_port.write(uart_rx_transaction);
         end

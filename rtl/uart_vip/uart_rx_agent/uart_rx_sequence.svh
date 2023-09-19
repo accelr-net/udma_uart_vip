@@ -34,7 +34,7 @@
 //**************************************************************************************************
 class uart_rx_sequence extends uvm_sequence;
     `uvm_object_utils(uart_rx_sequence)
-    uart_rx_seq_item            uart_rx_transaction;
+    uart_rx_seq_item #(.CHARACTOR_LENGTH(8))           uart_rx_transaction;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -49,7 +49,7 @@ class uart_rx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         repeat(5) begin
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
+            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(8))::type_id::create("uart_rx_transaction");
             uart_rx_transaction.randomize();
             start_item(uart_rx_transaction);
             // uart_rx_transaction.charactor <= 8'd10;

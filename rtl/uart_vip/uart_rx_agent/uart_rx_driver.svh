@@ -32,7 +32,7 @@
 //  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
+class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8)));
     `uvm_component_utils(uart_rx_driver)
     virtual uart_if     intf_uart_side;
 
@@ -76,7 +76,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
 
         forever begin
             uart_rx_seq_item    uart_rx_transaction;
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
+            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(8))::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
             $display("calling do_uart_rx");
             do_uart_rx(uart_rx_transaction);

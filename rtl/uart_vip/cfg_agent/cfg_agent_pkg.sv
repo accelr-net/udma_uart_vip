@@ -42,6 +42,4 @@ package cfg_agent_pkg;
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
     `include "cfg_agent.svh"
-    `include "cfg_env.svh"
-    `include "cfg_test.svh"
 endpackage: cfg_agent_pkg
