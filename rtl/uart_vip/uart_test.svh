@@ -77,10 +77,8 @@ class uart_test extends uvm_test;
         phase.drop_objection(this);
 
         phase.raise_objection(this,"rx_data");
-        repeat(5) begin
-            rx_seq = uart_rx_sequence::type_id::create("uart_rx_seq");
-            rx_seq.start(rx_env.agent.sequencer);
-        end
+        rx_seq = uart_rx_sequence::type_id::create("uart_rx_seq");
+        rx_seq.start(rx_env.agent.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
 

@@ -87,10 +87,14 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         $display("[DRIVER] - called do_uart_rx %p", uart_rx_transaction);
+        #10;
+        intf_uart_side.uart_rx_i = 1'b0; //start bit
         for(integer i=0; i < $size(uart_rx_transaction.charactor); i++) begin
             #10;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.charactor[i];
         end
+        #10;
+        intf_uart_side.uart_rx_i = 1'b1; //stop bit
         $display("charactor %d",uart_rx_transaction.charactor);
     endtask: do_uart_rx
 endclass: uart_rx_driver

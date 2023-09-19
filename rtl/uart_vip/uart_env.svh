@@ -19,41 +19,45 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_sequence.sv
+// FILE         :   uart_env.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence object for cfg. 
+// DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Description
+//  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  11-Sep-2023      Kasun        creation
+//  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_sequence extends uvm_sequence;
-    `uvm_object_utils(uart_rx_sequence)
-    uart_rx_seq_item            uart_rx_transaction;
+class uart_env extends uvm_env;
+    `uvm_component_utils(uart_env)
+    cfg_agent           cfg_agnt;
+    uart_rx_agent       uart_rx_agnt;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_rx_sequence");
-        super.new(name);
-        `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
+    function new(string name="uart_env",uvm_component parent);
+        super.new(name,parent);
+        `uvm_info("[ENV]","constructor",UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
-// Body
+// Build phase
 //---------------------------------------------------------------------------------------------------------------------
-    task body();
-        repeat(5) begin
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
-            uart_rx_transaction.randomize();
-            start_item(uart_rx_transaction);
-            // uart_rx_transaction.charactor <= 8'd10;
-            finish_item(uart_rx_transaction);
-        end
-    endtask: body
-endclass: uart_rx_sequence
+    function void build_phase(uvm_phase phase);
+        `uvm_info("[ENV]","build_phase",UVM_LOW)
+        cfg_agnt     = cfg_agent::type_id::create("cfg_agent",this);
+        uart_rx_agnt = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+    endfunction: build_phase
+
+//---------------------------------------------------------------------------------------------------------------------
+// Run phase
+//---------------------------------------------------------------------------------------------------------------------
+    task run_phase(uvm_phase phase);
+        `uvm_info("[ENV]","run_phase",UVM_LOW)
+    endtask: run_phase
+endclass : uart_env

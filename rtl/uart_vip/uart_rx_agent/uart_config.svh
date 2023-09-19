@@ -19,29 +19,20 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_seq_item.sv
+// FILE         :   uart_config.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for uart RX. 
+// DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Description
+//  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  11-Seq-2023      Kasun        creation
+//  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_seq_item extends uvm_sequence_item;
-    `uvm_object_utils(uart_rx_seq_item)
-    rand logic [7:0]    charactor;
-    rand logic          parity;
-//---------------------------------------------------------------------------------------------------------------------
-// Constructor
-//---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_rx_seq_item");
-        super.new(name);
-        `uvm_info("[SEQ_ITEM]","constructor",UVM_LOW)
-    endfunction: new
+class uart_config;
+    
 
-endclass : uart_rx_seq_item
+endclass: uart_config
