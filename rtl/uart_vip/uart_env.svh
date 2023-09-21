@@ -34,8 +34,11 @@
 //**************************************************************************************************
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
-    cfg_agent           cfg_agnt;
-    uart_rx_agent       uart_rx_agnt;
+    cfg_agent               cfg_agnt;
+    uart_rx_agent           uart_rx_agnt;
+    env_config              env_configs;
+    uart_rx_agent_config    rx_config;
+    cfg_agent_config        cfg_config;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -49,9 +52,28 @@ class uart_env extends uvm_env;
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt     = cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+
+        //create configuration objects for agents
+        rx_config    = uart_rx_agent_config::type_id::create("rx_config",this);
+        cfg_config   = cfg_agent_config::type_id::create("cfg_config",this);
+
+        //get environment configs
+        if(!uvm_config_db #(env_config)::get(this,"*","env_configs",env_configs)) begin
+            $display("cannot find environment configs ");
+        end
+
+        //set for agent configuration
+        cfg_config.baud_rate = env_configs.baud_rate;
+        cfg_config.frequency = env_configs.frequency;
+
+        //set configuration into the databse 
+        uvm_config_db #(cfg_agent_config)::set(null,"*","cfg_config",cfg_config);
+        $display("baud rate :- %d",env_configs.baud_rate);
+
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

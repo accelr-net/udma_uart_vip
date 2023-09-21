@@ -35,7 +35,11 @@
 class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
 
+    localparam              BAUD_RATE = 115200;
+    integer                 frequency;
+
     uart_env                env;
+    env_config              env_config_obj;
 
     virtual     uart_if     uart_vif;
     virtual     udma_if     vif;
@@ -55,8 +59,19 @@ class uart_test extends uvm_test;
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
+        //get values from top
+        uvm_config_db #(integer)::get(null,"*","clock_frequency",frequency);
+
+        env_config_obj = env_config::type_id::create("env_config_obj",this);
         env     = uart_env::type_id::create("env",this);
-   endfunction: build_phase
+
+        //assign values to objects 
+        env_config_obj.baud_rate    = BAUD_RATE;
+        env_config_obj.frequency    = frequency;
+
+        //set environment configuration into the config_db
+        uvm_config_db #(env_config)::set(null,"*","env_configs",env_config_obj);
+    endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase

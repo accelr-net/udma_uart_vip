@@ -37,9 +37,10 @@ class cfg_agent extends uvm_agent;
     `uvm_component_utils(cfg_agent)
     
     //Agent will have driver, monitor component
-    cfg_driver      driver;
-    cfg_monitor     monitor;
-    uvm_sequencer #(cfg_seq_item) sequencer;
+    cfg_driver                      driver;
+    cfg_monitor                     monitor;
+    uvm_sequencer #(cfg_seq_item)   sequencer;
+    cfg_agent_config                cfg_config;
     
     //virtual interface
     virtual udma_if vif;
@@ -60,6 +61,7 @@ class cfg_agent extends uvm_agent;
         driver  = cfg_driver::type_id::create("driver",this);
         monitor = cfg_monitor::type_id::create("monitor",this);
         sequencer = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
+
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

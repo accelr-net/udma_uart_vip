@@ -19,20 +19,26 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_config.svh
+// FILE         :   uart_rx_agent_config.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is contain all svh file for uart RX agent
+// DESCRIPTION  :   This is for configuration for uart_rx_agent. 
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Descriptio
+//  Date            Developer     Description
 //  -----------     ---------     -----------
-//  18-Sep-2023      Kasun        creation
+//  20-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_config;
-    
+class uart_rx_agent_config extends uvm_object;
+    `uvm_object_utils(uart_rx_agent_config)
 
-endclass: uart_config
+    int baud_rate = 115200;
+    
+    function new(string name="uart_rx_agent_config");
+        super.new(name);
+        `uvm_info("[uart_rx_agent_config]","constructor",UVM_LOW)
+    endfunction: new
+endclass : uart_rx_agent_config

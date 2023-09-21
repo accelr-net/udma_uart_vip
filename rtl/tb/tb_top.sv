@@ -7,11 +7,12 @@ import uvm_pkg::*;
 `include "uvm_macros.svh"
 
 // cfg_agent_pkg is a UVM agent
-import cfg_agent_pkg::*;
-import uart_rx_agent_pkg::*;
+// import cfg_agent_pkg::*;
+// import uart_rx_agent_pkg::*;
 import uart_uvm_pkg::*;
 
 module tb_top();
+    localparam CLOCK_PERIOD   = 10;
     localparam L2_AWIDTH_NOAL = 19;
     localparam TRANS_SIZE     = 20;
     localparam SIZE_18        =  18'b000000000000000000;
@@ -20,6 +21,9 @@ module tb_top();
     //for uart_sim
     localparam BAUD_RATE      = 115200;
     localparam PARITY_EN      = 0;
+
+    //data
+    integer    clock_frequency;
 
     logic                      sys_clk_i    = 1'b0;
     logic                      periph_clk_i = 1'b0;
@@ -137,10 +141,10 @@ module tb_top();
     );
 
     always begin
-        #10 vif.udma_top_if.periph_clk_i <= ~vif.udma_top_if.periph_clk_i; 
+        #CLOCK_PERIOD vif.udma_top_if.periph_clk_i <= ~vif.udma_top_if.periph_clk_i; 
     end
     always begin
-        #10 vif.udma_top_if.sys_clk_i    <= ~vif.udma_top_if.sys_clk_i;
+        #CLOCK_PERIOD vif.udma_top_if.sys_clk_i    <= ~vif.udma_top_if.sys_clk_i;
     end      
 
 
@@ -165,7 +169,10 @@ module tb_top();
 
 
     initial begin
+        clock_frequency = 10**9/(2*CLOCK_PERIOD);
+        $display("[tb_top] clock_frequency %d",clock_frequency);
         uvm_config_db #(virtual udma_if)::set(null,"*","vif",vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","intf_uart_side",intf_uart_side);
+        uvm_config_db #(integer)::set(null,"*","clock_frequency",clock_frequency);
     end
 endmodule: tb_top

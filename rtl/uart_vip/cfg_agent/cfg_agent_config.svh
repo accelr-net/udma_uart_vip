@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_uvm_pkg.sv
+// FILE         :   cfg_agent_config.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is contain all svh file for uart RX agent
+// DESCRIPTION  :   This is contain all configuration for  cfg_agent
 //
 // ************************************************************************************************
 //
@@ -32,26 +32,16 @@
 //  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package uart_uvm_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class cfg_agent_config extends uvm_object;
+    `uvm_object_utils(cfg_agent_config)
+    int     baud_rate = 115200;
+    integer frequency = 50000000;
+//---------------------------------------------------------------------------------------------------------------------
+// Constructor
+//---------------------------------------------------------------------------------------------------------------------
+    function new(string name="cfg_agent_config");
+        super.new(name);
+        `uvm_info("[cfg_agent_config]","constructor",UVM_LOW)
+    endfunction: new
 
-    //includes uvm header goes here
-    `include "cfg_agent_config.svh"
-    `include "cfg_seq_item.svh"
-    `include "cfg_sequence.svh"
-    `include "cfg_driver.svh"
-    `include "cfg_monitor.svh"
-    `include "cfg_agent.svh"
-
-    `include "uart_rx_agent_config.svh"
-    `include "uart_rx_seq_item.svh"
-    `include "uart_rx_sequence.svh"
-    `include "uart_rx_driver.svh"
-    `include "uart_rx_monitor.svh"
-    `include "uart_rx_agent.svh"
-    
-    `include "env_config.svh"
-    `include "uart_env.svh"
-    `include "uart_test.svh"
-endpackage: uart_uvm_pkg
+endclass : cfg_agent_config
