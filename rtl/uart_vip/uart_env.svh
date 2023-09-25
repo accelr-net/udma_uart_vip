@@ -37,7 +37,7 @@ class uart_env extends uvm_env;
     cfg_agent               cfg_agnt;
     uart_rx_agent           uart_rx_agnt;
     env_config              env_configs;
-    uart_rx_agent_config    rx_config;
+    uart_rx_agent_config    uart_rx_config;
     cfg_agent_config        cfg_config;
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -58,20 +58,26 @@ class uart_env extends uvm_env;
         uart_rx_agnt = uart_rx_agent::type_id::create("uart_rx_agnt",this);
 
         //create configuration objects for agents
-        rx_config    = uart_rx_agent_config::type_id::create("rx_config",this);
+        uart_rx_config    = uart_rx_agent_config::type_id::create("uart_rx_config",this);
         cfg_config   = cfg_agent_config::type_id::create("cfg_config",this);
 
         //get environment configs
-        if(!uvm_config_db #(env_config)::get(this,"*","env_configs",env_configs)) begin
+        if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
             $display("cannot find environment configs ");
         end
 
         //set for agent configuration
-        cfg_config.baud_rate = env_configs.baud_rate;
-        cfg_config.frequency = env_configs.frequency;
+        cfg_config.baud_rate        = env_configs.baud_rate;
+        cfg_config.frequency        = env_configs.frequency;
+
+        uart_rx_config.baud_rate    = env_configs.baud_rate;
+        uart_rx_config.parity_en    = env_configs.parity_bit_enable;
+        uart_rx_config.char_length  = env_configs.char_length;
+        uart_rx_config.stop_bits    = env_configs.stop_bits;
 
         //set configuration into the databse 
-        uvm_config_db #(cfg_agent_config)::set(null,"*","cfg_config",cfg_config);
+        uvm_config_db #(cfg_agent_config)::set(this,"cfg_agent.*","cfg_config",cfg_config);
+        uvm_config_db #(uart_rx_agent_config)::set(this,"uart_rx_agnt.*","uart_config",uart_rx_config);
         $display("baud rate :- %d",env_configs.baud_rate);
 
     endfunction: build_phase

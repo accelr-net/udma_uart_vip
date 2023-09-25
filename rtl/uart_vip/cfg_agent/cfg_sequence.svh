@@ -36,8 +36,9 @@ class cfg_sequence extends uvm_sequence;
     `uvm_object_utils(cfg_sequence)
     cfg_seq_item        cfg_item;
     cfg_agent_config    config_obj;
-    integer             frequency;
-    integer             clkdiv;
+    int                 frequency;
+    int                 baud_rate;
+    int                 clkdiv;
     logic [31:0]        setup_value;
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -45,12 +46,17 @@ class cfg_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_sequence");
         super.new(name);
-        if(!uvm_config_db #(cfg_agent_config)::get(null,"*","cfg_config",config_obj)) begin
-            $display("Cannot find configs on sequence");
+        if(!uvm_config_db #(int)::get(null,"*","sequence_baud_rate",baud_rate)) begin
+            $display("Cannot find baud_rate");
         end
-        $display("cfg_config frequency %d and baud_rate %d",config_obj.frequency,config_obj.baud_rate);
-        clkdiv  = config_obj.frequency/config_obj.baud_rate;
+        if(!uvm_config_db #(int)::get(null, "*","frequency",frequency)) begin
+            $display("Cannot find frequency");
+        end
+        clkdiv  = frequency/baud_rate;
         setup_value = {clkdiv[15:0],16'h0306};
+        $display("setup_value %h",setup_value);
+        $display("frequency %d",frequency);
+        $display("baud_rate %d",baud_rate);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 
@@ -61,12 +67,6 @@ class cfg_sequence extends uvm_sequence;
 
         $display("[cfg_sequence] - at body task");
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
-
-        start_item(cfg_item);
-        cfg_item.addr           <= 5'h09;
-        cfg_item.data           <= setup_value;
-        cfg_item.rw             <= cfg_seq_item::WRITE;
-        finish_item(cfg_item);
 
         start_item(cfg_item);
         cfg_item.addr           <= 5'h04;
@@ -83,6 +83,12 @@ class cfg_sequence extends uvm_sequence;
         start_item(cfg_item);
         cfg_item.addr           <= 5'h06;
         cfg_item.data           <= 32'h00000010;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
+        finish_item(cfg_item);
+
+        start_item(cfg_item);
+        cfg_item.addr           <= 5'h09;
+        cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
     endtask: body

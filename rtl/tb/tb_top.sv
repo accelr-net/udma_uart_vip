@@ -23,7 +23,7 @@ module tb_top();
     localparam PARITY_EN      = 0;
 
     //data
-    integer    clock_frequency;
+    int        clock_frequency;
 
     logic                      sys_clk_i    = 1'b0;
     logic                      periph_clk_i = 1'b0;
@@ -173,6 +173,6 @@ module tb_top();
         $display("[tb_top] clock_frequency %d",clock_frequency);
         uvm_config_db #(virtual udma_if)::set(null,"*","vif",vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","intf_uart_side",intf_uart_side);
-        uvm_config_db #(integer)::set(null,"*","clock_frequency",clock_frequency);
+        uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
     end
 endmodule: tb_top

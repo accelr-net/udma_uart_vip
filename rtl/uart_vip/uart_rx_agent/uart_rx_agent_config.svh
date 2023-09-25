@@ -35,8 +35,12 @@
 class uart_rx_agent_config extends uvm_object;
     `uvm_object_utils(uart_rx_agent_config)
 
-    int baud_rate = 115200;
-    
+    int baud_rate   = 115200;
+    int frequency   = 50000000;
+    int stop_bits   = 1;
+    bit parity_en   = 1;
+    int char_length = 8;
+
     function new(string name="uart_rx_agent_config");
         super.new(name);
         `uvm_info("[uart_rx_agent_config]","constructor",UVM_LOW)

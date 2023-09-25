@@ -34,14 +34,15 @@
 //**************************************************************************************************
 class uart_rx_sequence extends uvm_sequence;
     `uvm_object_utils(uart_rx_sequence)
-    uart_rx_seq_item #(.CHARACTOR_LENGTH(8))           uart_rx_transaction;
-
+    parameter char_length = 8;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_rx_sequence");
         super.new(name);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
+        uvm_config_db #(integer)::get(null,"*","char_length",char_length);
+        $display("word length is ",char_length);
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -49,10 +50,12 @@ class uart_rx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         repeat(5) begin
-            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(8))::type_id::create("uart_rx_transaction");
-            // uart_rx_transaction.randomize();
+            uart_rx_seq_item #(.CHARACTOR_LENGTH(char_length))           uart_rx_transaction;
+            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(char_length))::type_id::create("uart_rx_transaction");
+            // // uart_rx_transaction.randomize();
             start_item(uart_rx_transaction);
-            // uart_rx_transaction.charactor <= 8'd10;
+            uart_rx_transaction.charactor <= 8'd10;
+            uart_rx_transaction.parity    <= 1'b1;
             finish_item(uart_rx_transaction);
         end
     endtask: body

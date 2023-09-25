@@ -34,7 +34,9 @@
 //**************************************************************************************************
 class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8)));
     `uvm_component_utils(uart_rx_driver)
-    virtual uart_if     intf_uart_side;
+    virtual uart_if         intf_uart_side;
+
+    uart_rx_agent_config    rx_config;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -51,6 +53,8 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
         if(!uvm_config_db #(virtual uart_if)::get(this,"*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("uart_rx_driver/build_phase","No virtual interface is found");
         end
+        uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config);
+        $display("rx_config baud_rate %d",rx_config.baud_rate);
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
 
@@ -75,7 +79,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
         `uvm_info("[DRIVER]","run_phase",UVM_LOW)
 
         forever begin
-            uart_rx_seq_item    uart_rx_transaction;
+            uart_rx_seq_item #(.CHARACTOR_LENGTH(8))    uart_rx_transaction;
             uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(8))::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
             $display("calling do_uart_rx");
@@ -86,6 +90,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
     endtask: run_phase
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
+        bit     parity;
         $display("[DRIVER] - called do_uart_rx %p", uart_rx_transaction);
         #10;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
@@ -93,8 +98,18 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
             #10;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.charactor[i];
         end
-        #10;
-        intf_uart_side.uart_rx_i = 1'b1; //stop bit
+        if(rx_config.parity_en) begin
+            #10;
+            for(int j=0; j < $size(uart_rx_transaction.charactor); j++) begin
+                parity = parity ^ uart_rx_transaction.charactor[j];
+            end
+            intf_uart_side.uart_rx_i   = parity;
+            $display("parity value : %d",parity);
+        end
+        for(int j=0; j < rx_config.stop_bits; j++) begin
+            #10;
+            intf_uart_side.uart_rx_i = 1'b1; //stop bit
+        end
         $display("charactor %d",uart_rx_transaction.charactor);
     endtask: do_uart_rx
 endclass: uart_rx_driver
