@@ -62,10 +62,8 @@ class uart_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         //get values from top
-        uvm_config_db #(integer)::get(this,"*","clock_frequency",frequency);
-        $display("[test]-frequency %d",frequency);
-        env_config_obj = env_config::type_id::create("env_config_obj",this);
-        env     = uart_env::type_id::create("env",this);
+        env_config_obj  = env_config::type_id::create("env_config_obj",this);
+        env             = uart_env::type_id::create("env",this);
 
         //assign values to objects 
         env_config_obj.baud_rate    = baud_rate;

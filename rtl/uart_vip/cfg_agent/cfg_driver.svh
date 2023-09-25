@@ -55,7 +55,6 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         end
         `uvm_info("[DRIVER]","build_phase", UVM_LOW)
         uvm_config_db #(cfg_agent_config)::get(this,"","cfg_config",config_obj);
-        $display("[DRIVER]-config values : %d",config_obj.baud_rate);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

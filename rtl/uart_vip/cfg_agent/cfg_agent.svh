@@ -58,9 +58,9 @@ class cfg_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         `uvm_info("[UVM agent]","build_phase", UVM_LOW)
-        driver  = cfg_driver::type_id::create("driver",this);
-        monitor = cfg_monitor::type_id::create("monitor",this);
-        sequencer = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
+        driver      = cfg_driver::type_id::create("driver",this);
+        monitor     = cfg_monitor::type_id::create("monitor",this);
+        sequencer   = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
 
     endfunction: build_phase
 

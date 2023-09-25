@@ -54,12 +54,12 @@ class uart_env extends uvm_env;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         `uvm_info("[ENV]","build_phase",UVM_LOW)
-        cfg_agnt     = cfg_agent::type_id::create("cfg_agent",this);
-        uart_rx_agnt = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+        cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
+        uart_rx_agnt        = uart_rx_agent::type_id::create("uart_rx_agnt",this);
 
         //create configuration objects for agents
-        uart_rx_config    = uart_rx_agent_config::type_id::create("uart_rx_config",this);
-        cfg_config   = cfg_agent_config::type_id::create("cfg_config",this);
+        uart_rx_config      = uart_rx_agent_config::type_id::create("uart_rx_config",this);
+        cfg_config          = cfg_agent_config::type_id::create("cfg_config",this);
 
         //get environment configs
         if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
@@ -78,8 +78,6 @@ class uart_env extends uvm_env;
         //set configuration into the databse 
         uvm_config_db #(cfg_agent_config)::set(this,"cfg_agent.*","cfg_config",cfg_config);
         uvm_config_db #(uart_rx_agent_config)::set(this,"uart_rx_agnt.*","uart_config",uart_rx_config);
-        $display("baud rate :- %d",env_configs.baud_rate);
-
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

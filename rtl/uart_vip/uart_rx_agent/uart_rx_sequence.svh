@@ -42,7 +42,6 @@ class uart_rx_sequence extends uvm_sequence;
         super.new(name);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
         uvm_config_db #(integer)::get(null,"*","char_length",char_length);
-        $display("word length is ",char_length);
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------

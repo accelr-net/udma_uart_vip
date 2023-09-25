@@ -54,9 +54,6 @@ class cfg_sequence extends uvm_sequence;
         end
         clkdiv  = frequency/baud_rate;
         setup_value = {clkdiv[15:0],16'h0306};
-        $display("setup_value %h",setup_value);
-        $display("frequency %d",frequency);
-        $display("baud_rate %d",baud_rate);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 

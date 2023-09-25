@@ -54,7 +54,6 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
             `uvm_fatal("uart_rx_driver/build_phase","No virtual interface is found");
         end
         uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config);
-        $display("rx_config baud_rate %d",rx_config.baud_rate);
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
 
@@ -91,7 +90,6 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         bit     parity;
-        $display("[DRIVER] - called do_uart_rx %p", uart_rx_transaction);
         #10;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
         for(integer i=0; i < $size(uart_rx_transaction.charactor); i++) begin
@@ -104,13 +102,11 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item #(.CHARACTOR_LENGTH(8
                 parity = parity ^ uart_rx_transaction.charactor[j];
             end
             intf_uart_side.uart_rx_i   = parity;
-            $display("parity value : %d",parity);
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
             #10;
             intf_uart_side.uart_rx_i = 1'b1; //stop bit
         end
-        $display("charactor %d",uart_rx_transaction.charactor);
     endtask: do_uart_rx
 endclass: uart_rx_driver
 

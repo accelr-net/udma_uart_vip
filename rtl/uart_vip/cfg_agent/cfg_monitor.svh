@@ -74,7 +74,6 @@ class cfg_monitor extends uvm_monitor;
             `uvm_info("[MONITOR]","after create transaction",UVM_LOW)
             // check this is a valid signal
             if(vif.cfg_valid_i) begin
-                $display("cfg_data_i %d", vif.cfg_data_i);
                 cfg_analysis_port.write(cfg_transaction);
             end
         end
