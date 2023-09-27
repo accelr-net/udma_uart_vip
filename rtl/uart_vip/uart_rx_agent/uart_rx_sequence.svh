@@ -34,14 +34,16 @@
 //**************************************************************************************************
 class uart_rx_sequence extends uvm_sequence;
     `uvm_object_utils(uart_rx_sequence)
-    parameter char_length = 8;
+    int char_length = 8;
+    bit parity_en   = 1;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_rx_sequence");
         super.new(name);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
-        uvm_config_db #(integer)::get(null,"*","char_length",char_length);
+        uvm_config_db #(int)::get(null,"*","char_length",char_length);
+        uvm_config_db #(int)::get(null,"*","parity_en",parity_en);
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -49,12 +51,15 @@ class uart_rx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         repeat(5) begin
-            uart_rx_seq_item #(.CHARACTOR_LENGTH(char_length))           uart_rx_transaction;
-            uart_rx_transaction = uart_rx_seq_item #(.CHARACTOR_LENGTH(char_length))::type_id::create("uart_rx_transaction");
+            uart_rx_seq_item          uart_rx_transaction;
+            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
             // // uart_rx_transaction.randomize();
             start_item(uart_rx_transaction);
-            uart_rx_transaction.charactor <= 8'd10;
-            uart_rx_transaction.parity    <= 1'b1;
+            // uart_rx_transaction.charactor <= 8'd10;
+            uart_rx_transaction.charactor <= '{1'b0,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b0,1'b1,1'b0,1'b0,1'b0};
+            if(parity_en == 1) begin
+                uart_rx_transaction.parity_en <= uart_rx_seq_item::PARITY_DISABLE;
+            end
             finish_item(uart_rx_transaction);
         end
     endtask: body

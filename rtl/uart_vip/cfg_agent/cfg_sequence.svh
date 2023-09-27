@@ -46,13 +46,18 @@ class cfg_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_sequence");
         super.new(name);
-        if(!uvm_config_db #(int)::get(null,"*","sequence_baud_rate",baud_rate)) begin
+        if(!uvm_config_db #(int)::get(null,"*","baud_rate",baud_rate)) begin
             $display("Cannot find baud_rate");
         end
         if(!uvm_config_db #(int)::get(null, "*","frequency",frequency)) begin
             $display("Cannot find frequency");
         end
-        clkdiv  = frequency/baud_rate;
+        if(baud_rate == 0) begin
+            `uvm_fatal("Zero divition erro","please give value to baud_rate")
+        end
+        else begin
+            clkdiv  = frequency/baud_rate;
+        end
         setup_value = {clkdiv[15:0],16'h0306};
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new

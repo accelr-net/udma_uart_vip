@@ -63,7 +63,7 @@ class uart_env extends uvm_env;
 
         //get environment configs
         if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
-            $display("cannot find environment configs ");
+            `uvm_fatal("[ENV]","cannot find environment configs ")
         end
 
         //set for agent configuration

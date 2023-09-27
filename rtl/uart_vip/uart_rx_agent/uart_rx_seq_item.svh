@@ -32,11 +32,13 @@
 //  11-Seq-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_seq_item #(parameter CHARACTOR_LENGTH = 8) extends uvm_sequence_item;
+class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
-
-    rand logic [CHARACTOR_LENGTH-1:0]    charactor;
-    rand logic                           parity;
+    typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
+    parity_type                                     parity_en;
+    // rand logic [CHARACTOR_LENGTH-1:0]               charactor;
+    bit                                             charactor[];
+    rand logic                                      parity;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------

@@ -36,9 +36,10 @@ class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
     int                     baud_rate    = 115200;
-    int                     char_length  = 8;
+    const int               char_length  = 8;
     int                     frequency    = 50000000;
-    int                     stop_bits    = 2;
+    int                     stop_bits    = 1;
+    bit                     parity_en    = 1;
 
     uart_env                env;
     env_config              env_config_obj;
@@ -73,9 +74,11 @@ class uart_test extends uvm_test;
 
         //set environment configuration into the config_db
         uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);
-        uvm_config_db #(int)::set(null,"*","sequence_baud_rate",baud_rate);
+        uvm_config_db #(int)::set(null,"*","baud_rate",baud_rate);
         uvm_config_db #(int)::set(null,"*","frequency",frequency);
         uvm_config_db #(int)::set(null,"*","char_length",char_length);
+        uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
+        uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
