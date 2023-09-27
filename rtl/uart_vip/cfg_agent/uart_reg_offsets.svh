@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_agent_pkg.sv
+// FILE         :   uart_reg_offsets.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is included all uvm svh files for cfg. 
+// DESCRIPTION  :   This file contain all offset address of uart.
 //
 // ************************************************************************************************
 //
@@ -29,18 +29,24 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  05-Sep-2023      Kasun        creation
+//  27-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package cfg_agent_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class uart_reg_offsets;
+    logic [4:0]        rx_saddr         = 5'h00;
+    logic [4:0]        rx_size_addr     = 5'h01;
+    logic [4:0]        rx_cfg_addr      = 5'h02;
+    logic [4:0]        rx_intcfg_addr   = 5'h03;
 
-    //includes uvm header goes here
-    `include "uart_reg_offsets.svh"
-    `include "cfg_seq_item.svh"
-    `include "cfg_sequence.svh"
-    `include "cfg_driver.svh"
-    `include "cfg_monitor.svh"
-    `include "cfg_agent.svh"
-endpackage: cfg_agent_pkg
+    logic [4:0]        tx_saddr         = 5'h04;
+    logic [4:0]        tx_size_addr     = 5'h05;
+    logic [4:0]        tx_cfg_addr      = 5'h06;
+    logic [4:0]        tx_intcfg_addr   = 5'h07;
+    
+    logic [4:0]        status_addr      = 5'h08;
+    logic [4:0]        setup_addr       = 5'h09;
+    logic [4:0]        error_addr       = 5'h10;
+    logic [4:0]        irq_en_addr      = 5'h11;
+    logic [4:0]        valid_addr       = 5'h12;
+    logic [4:0]        data_addr        = 5'h13;
+endclass: uart_reg_offsets

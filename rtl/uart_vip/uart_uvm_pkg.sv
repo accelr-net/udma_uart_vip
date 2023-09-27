@@ -37,6 +37,7 @@ package uart_uvm_pkg;
     `include "uvm_macros.svh"
 
     //includes uvm header goes here
+    `include "uart_reg_offsets.svh"
     `include "cfg_agent_config.svh"
     `include "cfg_seq_item.svh"
     `include "cfg_sequence.svh"

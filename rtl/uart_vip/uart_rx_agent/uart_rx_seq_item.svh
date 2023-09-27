@@ -47,4 +47,17 @@ class uart_rx_seq_item extends uvm_sequence_item;
         `uvm_info("[SEQ_ITEM]","constructor",UVM_LOW)
     endfunction: new
 
+    function set_data(
+        bit             charactor[],
+        parity_type     parity_en
+    );
+        //set data here
+        this.charactor   = charactor;
+        if(parity_en == PARITY_ENABLE) begin
+            this.parity = 1'b1;
+            for(int i = 0; i < $size(charactor); i++) begin
+                this.parity = this.parity^charactor[i];
+            end
+        end
+    endfunction: set_data
 endclass : uart_rx_seq_item

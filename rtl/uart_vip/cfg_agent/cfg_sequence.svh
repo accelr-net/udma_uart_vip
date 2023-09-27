@@ -34,6 +34,7 @@
 //**************************************************************************************************
 class cfg_sequence extends uvm_sequence; 
     `uvm_object_utils(cfg_sequence)
+    uart_reg_offsets    reg_offsets;
     cfg_seq_item        cfg_item;
     cfg_agent_config    config_obj;
     int                 frequency;
@@ -58,7 +59,6 @@ class cfg_sequence extends uvm_sequence;
         else begin
             clkdiv  = frequency/baud_rate;
         end
-        setup_value = {clkdiv[15:0],16'h0306};
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 
@@ -66,7 +66,8 @@ class cfg_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
-
+        reg_offsets = new();
+        setup_value = {clkdiv[15:0],16'h0306};
         $display("[cfg_sequence] - at body task");
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
@@ -89,7 +90,7 @@ class cfg_sequence extends uvm_sequence;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h09;
+        cfg_item.addr           <= reg_offsets.setup_addr;
         cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
