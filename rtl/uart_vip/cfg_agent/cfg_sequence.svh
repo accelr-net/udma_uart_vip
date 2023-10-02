@@ -72,19 +72,19 @@ class cfg_sequence extends uvm_sequence;
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h04;
+        cfg_item.addr           <= reg_offsets.tx_saddr;
         cfg_item.data           <= 32'h1c00934;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h05;
+        cfg_item.addr           <= reg_offsets.tx_size_addr;
         cfg_item.data           <= 32'h00000080;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h06;
+        cfg_item.addr           <= reg_offsets.tx_cfg_addr;
         cfg_item.data           <= 32'h00000010;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);

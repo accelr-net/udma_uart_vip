@@ -102,5 +102,4 @@ class uart_test extends uvm_test;
         rx_seq.start(env.uart_rx_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
-
 endclass: uart_test
