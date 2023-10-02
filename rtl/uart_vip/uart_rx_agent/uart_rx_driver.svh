@@ -36,6 +36,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     `uvm_component_utils(uart_rx_driver)
     parameter               char_length = 8;
     virtual uart_if         intf_uart_side;
+    int                     period;
 
     uart_rx_agent_config    rx_config;
 
@@ -58,6 +59,8 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
         if(!uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config)) begin
             `uvm_fatal("uart_rx_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
+        uvm_config_db #(int)::get(this,"","period",period);
+        $display("period %d",period);
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
 
@@ -94,18 +97,18 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         bit     parity;
-        #10;
+        #period;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
         for(integer i=0; i < $size(uart_rx_transaction.charactor); i++) begin
-            #10;
+            #period;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.charactor[i];
         end
         if(uart_rx_transaction.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
-            #10;
+            #period;
             intf_uart_side.uart_rx_i   = 1'b1;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
-            #10;
+            #period;
             intf_uart_side.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx

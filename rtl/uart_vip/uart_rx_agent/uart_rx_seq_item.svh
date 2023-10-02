@@ -37,7 +37,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
     parity_type                                     parity_en;
     // rand logic [CHARACTOR_LENGTH-1:0]               charactor;
-    bit                                             charactor[];
+    rand bit                                        charactor[];
     rand logic                                      parity;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -53,7 +53,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
     );
         //set data here
         this.charactor   = charactor;
-        if(parity_en == PARITY_ENABLE) begin
+        if(parity_en == PARITY_ENABLE) begin //ToDo: remove parity enable check calculate parity 
             this.parity = 1'b1;
             for(int i = 0; i < $size(charactor); i++) begin
                 this.parity = this.parity^charactor[i];
