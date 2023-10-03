@@ -15,8 +15,6 @@ module tb_top();
     localparam CLOCK_PERIOD   = 10;
     localparam L2_AWIDTH_NOAL = 19;
     localparam TRANS_SIZE     = 20;
-    localparam SIZE_18        =  18'b000000000000000000;
-    localparam SIZE_19        =  19'b0000000000000000000; 
 
     //for uart_sim
     localparam BAUD_RATE      = 115200;

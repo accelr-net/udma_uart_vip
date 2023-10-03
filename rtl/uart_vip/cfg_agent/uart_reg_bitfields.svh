@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_reg_offsets.svh
+// FILE         :   uart_reg_bitfields.svh
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This file contain all offset address of uart.
 //
@@ -32,21 +32,15 @@
 //  27-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_reg_offsets; // ToDo: const offsets 
-    const logic [4:0]        rx_saddr         = 5'h00;
-    const logic [4:0]        rx_size_addr     = 5'h01;
-    const logic [4:0]        rx_cfg_addr      = 5'h02;
-    const logic [4:0]        rx_intcfg_addr   = 5'h03;
-
-    const logic [4:0]        tx_saddr         = 5'h04;
-    const logic [4:0]        tx_size_addr     = 5'h05;
-    const logic [4:0]        tx_cfg_addr      = 5'h06;
-    const logic [4:0]        tx_intcfg_addr   = 5'h07;
-    
-    const logic [4:0]        status_addr      = 5'h08;
-    const logic [4:0]        setup_addr       = 5'h09;
-    const logic [4:0]        error_addr       = 5'h10;
-    const logic [4:0]        irq_en_addr      = 5'h11;
-    const logic [4:0]        valid_addr       = 5'h12;
-    const logic [4:0]        data_addr        = 5'h13;
-endclass: uart_reg_offsets
+typedef struct packed {
+    logic [15:0]    clkdiv;         //clock divider configuration baud_rate = soc_frequence/clkdiv
+    logic [5:0]     reserved_1;     
+    logic           rx_ena;         //RX configuration 1'b0 - disable | 1'b1 - enable
+    logic           tx_ena;         //TX configuration 1'b0 - disable | 1'b1 - enable
+    logic [1:0]     reserved_2;
+    logic           clean_fifo;     //for clean fifo set 1 then set 0 to realize a reset fifo, 1'b0 - Stop clean the RX_FIFO | 1'b1 - Clean the RX_FIFO
+    logic           polling_en;     //1'b0 - Do not using polling methods to read data | 1'b1 - Using polling method to read data
+    logic           stop_bits;      //Stop bits length, 1'b0 - 1 stop bit | 1'b1 - 2 stp bits
+    logic [1:0]     bit_length      //Charactor length, 2'b00 - 5 bits | 2'b01 - 6 bits | 2'b10 - 7 bits | 2'b11 - 8 bits 
+    logic           parity_en;
+} setup

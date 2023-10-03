@@ -852,3 +852,35 @@
 # End of Stack Trace
 
 
+# Current time Tue Oct  3 10:57:14 2023
+# Program = vsim
+# Id = "2023.2"
+# Version = "2023.04"
+# Date = "Apr 11 2023"
+# Platform = "linux_x86_64"
+# Signature = 016838926890ae993a152c369dc4c1be
+# 0    0x00000000005ac140: '<unknown (@0x5ac140)>'
+# 1    0x00007feff286d467: '/home/kasun-accelr/accelr-projects/pulp/pulpissimo/rtl/uart_vip/cfg_agent/cfg_sequence.svh:76'
+# 2    0x00007feff250d3ca: '/opt/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/seq/uvm_sequence_base.svh:314'
+# 3    0x00000000023e53b2: '<unknown (@0x23e53b2)>'
+# 4    0x00000000007094b4: '<unknown (@0x7094b4)>'
+# 5    0x00000000004df36c: '<unknown (@0x4df36c)>'
+# 6    0x000000000074da63: '<unknown (@0x74da63)>'
+# 7    0x0000000000ca58ad: '<unknown (@0xca58ad)>'
+# 8    0x0000000000caabd0: '<unknown (@0xcaabd0)>'
+# 9    0x0000000000cac54e: '<unknown (@0xcac54e)>'
+# 10   0x0000000000f9bd2d: '<unknown (@0xf9bd2d)>'
+# 11   0x000000000287a82d: '<unknown (@0x287a82d)>'
+# 12   0x000000000287ec86: '<unknown (@0x287ec86)>'
+# 13   0x0000000002880371: '<unknown (@0x2880371)>'
+# 14   0x00000000028806d6: '<unknown (@0x28806d6)>'
+# 15   0x000000000122ed99: '<unknown (@0x122ed99)>'
+# 16   0x00000000029205df: '<unknown (@0x29205df)>'
+# 17   0x0000000002974157: '<unknown (@0x2974157)>'
+# 18   0x0000000002937047: '<unknown (@0x2937047)>'
+# 19   0x0000000002937329: '<unknown (@0x2937329)>'
+# 20   0x00000000027084fd: '<unknown (@0x27084fd)>'
+# 21   0x0000000000c6dafc: '<unknown (@0xc6dafc)>'
+# End of Stack Trace
+
+

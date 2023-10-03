@@ -34,7 +34,6 @@
 //**************************************************************************************************
 class cfg_sequence extends uvm_sequence; 
     `uvm_object_utils(cfg_sequence)
-    uart_reg_offsets    reg_offsets;
     cfg_seq_item        cfg_item;
     cfg_agent_config    config_obj;
     int                 frequency;
@@ -56,9 +55,6 @@ class cfg_sequence extends uvm_sequence;
         if(baud_rate == 0) begin
             `uvm_fatal("Zero divition erro","please give value to baud_rate")
         end
-        else begin
-            clkdiv  = frequency/baud_rate; // move this to body()
-        end
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 
@@ -66,6 +62,8 @@ class cfg_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
+        uart_reg_offsets    reg_offsets;
+        clkdiv  = frequency/baud_rate; 
         reg_offsets = new();
         setup_value = {clkdiv[15:0],16'h0306};
         `uvm_info("[SEQUENCE]","body",UVM_LOW); 
