@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_agent.sv
+// FILE         :   uart_rx_agent.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm agent for cfg. 
+// DESCRIPTION  :   This is uvm agent for uart RX. 
 //
 // ************************************************************************************************
 //
@@ -29,44 +29,44 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  25-Aug-2023      Kasun        creation
+//  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
 
-class cfg_agent extends uvm_agent;
-    `uvm_component_utils(cfg_agent)
-    
-    //Agent will have driver, monitor component
-    cfg_driver      driver;
-    cfg_monitor     monitor;
-    uvm_sequencer #(cfg_seq_item) sequencer;
+class uart_rx_agent extends uvm_agent;
+    `uvm_component_utils(uart_rx_agent)
+
+    //Agent have driver, monitor and sequencer
+    uart_rx_driver                          driver;
+    uart_rx_monitor                         monitor; 
+    uvm_sequencer  #(uart_rx_seq_item)      sequencer;
     
     //virtual interface
-    virtual udma_if vif;
+    virtual uart_if                         intf_uart_side;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name = "cfg_agent",uvm_component parent);
-        super.new(name,parent);
-        `uvm_info("[UVM agent]","constructor", UVM_LOW)
+    function new(string name="uart_rx_agent",uvm_component parent);
+        super.new(name, parent);
+        `uvm_info("[UVM agent / uart_rx]","constructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        `uvm_info("[UVM agent]","build_phase", UVM_LOW)
-        driver  = cfg_driver::type_id::create("driver",this);
-        monitor = cfg_monitor::type_id::create("monitor",this);
-        sequencer = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
+        `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_LOW)
+        driver      = uart_rx_driver::type_id::create("driver", this);
+        monitor     = uart_rx_monitor::type_id::create("monitor",this);
+        sequencer   = uvm_sequencer #(uart_rx_seq_item)::type_id::create("sequencer",this);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // connect phase
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
-        `uvm_info("[UVM agent]","connect_phase", UVM_LOW)
+        `uvm_info("AGENT","connect_phase",UVM_LOW)
         driver.seq_item_port.connect(sequencer.seq_item_export);
     endfunction: connect_phase
 
@@ -74,6 +74,6 @@ class cfg_agent extends uvm_agent;
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
-        super.run_phase(phase);
-    endtask
-endclass : cfg_agent
+       super.run_phase(phase);
+    endtask: run_phase
+endclass : uart_rx_agent

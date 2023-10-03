@@ -6,6 +6,7 @@ xrun.log
 bender
 work/
 compile.tcl
+vivado_compile.tcl
 working_dir/
 vsim.wlf
 transcript

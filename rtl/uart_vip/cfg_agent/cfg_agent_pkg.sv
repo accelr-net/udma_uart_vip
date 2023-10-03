@@ -37,11 +37,10 @@ package cfg_agent_pkg;
     `include "uvm_macros.svh"
 
     //includes uvm header goes here
+    `include "uart_reg_offsets.svh"
     `include "cfg_seq_item.svh"
     `include "cfg_sequence.svh"
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
     `include "cfg_agent.svh"
-    `include "cfg_env.svh"
-    `include "cfg_test.svh"
 endpackage: cfg_agent_pkg

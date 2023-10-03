@@ -34,13 +34,24 @@
 //**************************************************************************************************
 class cfg_sequence extends uvm_sequence; 
     `uvm_object_utils(cfg_sequence)
-    cfg_seq_item    cfg_item;
+    cfg_agent_config    config_obj;
+    int                 frequency;
+    int                 baud_rate;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_sequence");
         super.new(name);
+        if(!uvm_config_db #(int)::get(null,"*","baud_rate",baud_rate)) begin
+            `uvm_fatal("Cannot find baud_rate","give sutable baud_rate");
+        end
+        if(!uvm_config_db #(int)::get(null, "*","frequency",frequency)) begin
+            `uvm_fatal("Cannot find frequency","set frequency to config_db");
+        end
+        if(baud_rate == 0) begin
+            `uvm_fatal("Zero divition erro","please give value to baud_rate")
+        end
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
     endfunction : new
 
@@ -48,30 +59,38 @@ class cfg_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
-        $display("[cfg_sequence] - at body task");
+        cfg_seq_item        cfg_item;
+        int                 clkdiv;
+        logic [31:0]        setup_value;
+        
+        uart_reg_offsets    reg_offsets;
+        clkdiv  = frequency/baud_rate; 
+        reg_offsets = new();
+        setup_value = {clkdiv[15:0],16'h0306};
+        `uvm_info("[SEQUENCE]","body",UVM_LOW); 
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h09;
-        cfg_item.data           <= 32'h01b10306;
-        cfg_item.rw             <= cfg_seq_item::WRITE;
-        finish_item(cfg_item);
-
-        start_item(cfg_item);
-        cfg_item.addr           <= 5'h04;
+        cfg_item.addr           <= reg_offsets.tx_saddr;
         cfg_item.data           <= 32'h1c00934;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h05;
+        cfg_item.addr           <= reg_offsets.tx_size_addr;
         cfg_item.data           <= 32'h00000080;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
 
         start_item(cfg_item);
-        cfg_item.addr           <= 5'h06;
+        cfg_item.addr           <= reg_offsets.tx_cfg_addr;
         cfg_item.data           <= 32'h00000010;
+        cfg_item.rw             <= cfg_seq_item::WRITE;
+        finish_item(cfg_item);
+
+        start_item(cfg_item);
+        cfg_item.addr           <= reg_offsets.setup_addr;
+        cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
     endtask: body

@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_env.sv
+// FILE         :   cfg_agent.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm environment for cfg. 
+// DESCRIPTION  :   This is uvm agent for cfg. 
 //
 // ************************************************************************************************
 //
@@ -32,25 +32,50 @@
 //  25-Aug-2023      Kasun        creation
 //
 //**************************************************************************************************
-class cfg_env extends uvm_env;
-    `uvm_component_utils(cfg_env);
 
-    cfg_agent           cfg_agnt;
+class cfg_agent extends uvm_agent;
+    `uvm_component_utils(cfg_agent)
+    
+    //Agent will have driver, monitor component
+    cfg_driver                      driver;
+    cfg_monitor                     monitor;
+    uvm_sequencer #(cfg_seq_item)   sequencer;
+    cfg_agent_config                cfg_config;
+    
+    //virtual interface
+    virtual udma_if vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="cfg_env", uvm_component parent);
+    function new(string name = "cfg_agent",uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[ENV]","constructor", UVM_MEDIUM)
-    endfunction:new
+        `uvm_info("[UVM agent]","constructor", UVM_LOW)
+    endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
-    //In Build_phase - construct agent and get virtual interface handle from test and pass it down to agent
     function void build_phase(uvm_phase phase);
-        `uvm_info("[ENV]","build_phase", UVM_MEDIUM)
-        cfg_agnt   = cfg_agent::type_id::create("cfg_agnt",this);
+        `uvm_info("[UVM agent]","build_phase", UVM_LOW)
+        driver      = cfg_driver::type_id::create("driver",this);
+        monitor     = cfg_monitor::type_id::create("monitor",this);
+        sequencer   = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
+
     endfunction: build_phase
-endclass: cfg_env
+
+//---------------------------------------------------------------------------------------------------------------------
+// connect phase
+//---------------------------------------------------------------------------------------------------------------------
+    function void connect_phase(uvm_phase phase);
+        `uvm_info("[UVM agent]","connect_phase", UVM_LOW)
+        driver.seq_item_port.connect(sequencer.seq_item_export);
+    endfunction: connect_phase
+
+//---------------------------------------------------------------------------------------------------------------------
+// Run phase
+//---------------------------------------------------------------------------------------------------------------------
+    task run_phase(uvm_phase phase);
+        super.run_phase(phase);
+    endtask
+endclass : cfg_agent

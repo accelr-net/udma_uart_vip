@@ -19,31 +19,41 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_test.sv
+// FILE         :   uart_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm test component for cfg. 
+// DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Description
+//  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  31-Aug-2023      Kasun        creation
+//  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class cfg_test extends uvm_test;
-    `uvm_component_utils(cfg_test);
+class uart_test extends uvm_test;
+    `uvm_component_utils(uart_test)
+    //primary configurations
+    int                     baud_rate    = 115200;
+    const int               char_length  = 8;
+    int                     frequency    = 50000000;
+    int                     stop_bits    = 1;
+    bit                     parity_en    = 1;
+    int                     period;
 
-    cfg_env env;
-    virtual udma_if vif;
+    uart_env                env;
+    env_config              env_config_obj;
+
+    virtual     uart_if     uart_vif;
+    virtual     udma_if     vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_test",uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[TEST]","constructor", UVM_LOW)
+        `uvm_info("[TEST]","top level tconstructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -53,22 +63,46 @@ class cfg_test extends uvm_test;
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
-        env = cfg_env::type_id::create("env",this);
-   endfunction: build_phase
+        //get values from top
+        uvm_config_db #(int)::get(this,"","period",period);
+        env_config_obj  = env_config::type_id::create("env_config_obj",this);
+        env             = uart_env::type_id::create("env",this);
+
+        //assign values to objects 
+        env_config_obj.baud_rate    = baud_rate;
+        env_config_obj.frequency    = frequency;
+        env_config_obj.char_length  = char_length;
+        env_config_obj.stop_bits    = stop_bits;
+        env_config_obj.period       = period;
+
+        //set environment configuration into the config_db
+        uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);
+        uvm_config_db #(int)::set(null,"*","baud_rate",baud_rate);
+        uvm_config_db #(int)::set(null,"*","frequency",frequency);
+        uvm_config_db #(int)::set(null,"*","char_length",char_length);
+        uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
+        uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
+    endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------   
     //Run phase create an cfg_sequence
     task run_phase(uvm_phase phase);
-        cfg_sequence    cfg_seq;
+        // `uvm_info("[TEST]","run_phase",UVM_LOW)
+        cfg_sequence        cfg_seq;
+        uart_rx_sequence    rx_seq;
         phase.raise_objection(this, "Starting uvm sequence...");
         repeat(5) begin
             cfg_seq = cfg_sequence::type_id::create("cfg_seq");
             cfg_seq.start(env.cfg_agnt.sequencer);
             #10;
         end
-        #1000000;
+        phase.drop_objection(this);
+
+        phase.raise_objection(this,"rx_data");
+        rx_seq = uart_rx_sequence::type_id::create("uart_rx_seq");
+        rx_seq.start(env.uart_rx_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
-endclass: cfg_test
+endclass: uart_test
