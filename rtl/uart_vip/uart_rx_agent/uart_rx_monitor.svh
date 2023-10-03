@@ -35,9 +35,8 @@
 class uart_rx_monitor extends uvm_monitor;
     `uvm_component_utils(uart_rx_monitor)
 
-    virtual uart_if     intf_uart_side;
-    int                 period;
-
+    virtual uart_if                             intf_uart_side;
+    uart_rx_agent_config                        rx_config;
     uvm_analysis_port #(uart_rx_seq_item)       uart_rx_analysis_port;
 
     function new(string name="uart_rx_monitor", uvm_component parent);
@@ -52,7 +51,7 @@ class uart_rx_monitor extends uvm_monitor;
         if(!uvm_config_db #(virtual uart_if)::get(this, "*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
-        uvm_config_db #(int)::get(this,"*","period",period);
+        uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
@@ -61,9 +60,15 @@ class uart_rx_monitor extends uvm_monitor;
 
         forever begin
             uart_rx_seq_item   uart_rx_transaction;
-            #period;
+            bit                parity;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
+            #rx_config.period;
+            for(int i=0; i < rx_config.char_length; i++) begin
+                uart_rx_transaction.charactor[i] = intf_uart_side.uart_rx_i;
+                #rx_config.period;
+            end
+            $display("uart_rx_transaction.charactor %p ",uart_rx_transaction.charactor);
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase

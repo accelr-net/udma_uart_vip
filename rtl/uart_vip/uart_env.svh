@@ -74,6 +74,7 @@ class uart_env extends uvm_env;
         uart_rx_config.parity_en    = env_configs.parity_bit_enable;
         uart_rx_config.char_length  = env_configs.char_length;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
+        uart_rx_config.period       = env_configs.period;
 
         //set configuration into the databse 
         uvm_config_db #(cfg_agent_config)::set(this,"cfg_agent.*","cfg_config",cfg_config);

@@ -39,6 +39,7 @@ class env_config extends uvm_object;
     int     char_length         = 8;
     bit     parity_bit_enable   = 1;
     int     stop_bits           = 1;
+    int     period              = 10;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

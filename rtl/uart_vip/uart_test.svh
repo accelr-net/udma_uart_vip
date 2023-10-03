@@ -40,6 +40,7 @@ class uart_test extends uvm_test;
     int                     frequency    = 50000000;
     int                     stop_bits    = 1;
     bit                     parity_en    = 1;
+    int                     period;
 
     uart_env                env;
     env_config              env_config_obj;
@@ -63,6 +64,7 @@ class uart_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         //get values from top
+        uvm_config_db #(int)::get(this,"","period",period);
         env_config_obj  = env_config::type_id::create("env_config_obj",this);
         env             = uart_env::type_id::create("env",this);
 
@@ -71,6 +73,7 @@ class uart_test extends uvm_test;
         env_config_obj.frequency    = frequency;
         env_config_obj.char_length  = char_length;
         env_config_obj.stop_bits    = stop_bits;
+        env_config_obj.period       = period;
 
         //set environment configuration into the config_db
         uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);

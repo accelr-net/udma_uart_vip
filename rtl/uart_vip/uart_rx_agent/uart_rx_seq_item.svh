@@ -54,13 +54,13 @@ class uart_rx_seq_item extends uvm_sequence_item;
         bit             charactor[]
     );
         this.charactor   = charactor;
-        calculate_parity(charactor);
+        calculate_parity();
     endfunction: set_data
 
     //calculate parity
-    function calculate_parity(bit charactor[]);
+    function calculate_parity();
         this.parity = 1'b1;
-        for(int i = 0; i < $size(charactor); i++) begin
+        for(int i = 0; i < $size(this.charactor); i++) begin
             this.parity = this.parity^charactor[i];
         end
     endfunction: calculate_parity
@@ -71,7 +71,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
     endfunction
 
     function void post_randomize();
-        calculate_parity(charactor);
+        calculate_parity();
         $display("charactor %p",charactor);
     endfunction
 endclass : uart_rx_seq_item

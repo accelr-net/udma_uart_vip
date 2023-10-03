@@ -34,12 +34,9 @@
 //**************************************************************************************************
 class cfg_sequence extends uvm_sequence; 
     `uvm_object_utils(cfg_sequence)
-    cfg_seq_item        cfg_item;
     cfg_agent_config    config_obj;
     int                 frequency;
     int                 baud_rate;
-    int                 clkdiv;
-    logic [31:0]        setup_value;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -62,6 +59,10 @@ class cfg_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
+        cfg_seq_item        cfg_item;
+        int                 clkdiv;
+        logic [31:0]        setup_value;
+        
         uart_reg_offsets    reg_offsets;
         clkdiv  = frequency/baud_rate; 
         reg_offsets = new();

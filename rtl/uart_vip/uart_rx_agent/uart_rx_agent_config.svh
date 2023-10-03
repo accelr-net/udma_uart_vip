@@ -40,6 +40,7 @@ class uart_rx_agent_config extends uvm_object;
     int stop_bits   = 1;
     bit parity_en   = 1;
     int char_length = 8;
+    int period      = 10;
 
     function new(string name="uart_rx_agent_config");
         super.new(name);
