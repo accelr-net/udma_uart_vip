@@ -67,12 +67,9 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     function void pre_randomize();
         charactor = new [charactor_length];
-        $display("This is pre_randomize %p",charactor);
     endfunction
 
     function void post_randomize();
         calculate_parity(charactor);
-        $display("parity value: %d",parity);
-       $display("This is post_randomize %p",charactor);
     endfunction
 endclass : uart_rx_seq_item
