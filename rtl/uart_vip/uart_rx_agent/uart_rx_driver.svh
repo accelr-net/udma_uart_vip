@@ -60,7 +60,6 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             `uvm_fatal("uart_rx_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
         uvm_config_db #(int)::get(this,"","period",period);
-        $display("period %d",period);
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
 
@@ -88,7 +87,6 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             uart_rx_seq_item   uart_rx_transaction;
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
-            $display("calling do_uart_rx");
             do_uart_rx(uart_rx_transaction);
 
             seq_item_port.item_done();

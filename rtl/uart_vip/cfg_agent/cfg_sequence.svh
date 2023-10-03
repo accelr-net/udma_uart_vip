@@ -48,10 +48,10 @@ class cfg_sequence extends uvm_sequence;
     function new(string name = "cfg_sequence");
         super.new(name);
         if(!uvm_config_db #(int)::get(null,"*","baud_rate",baud_rate)) begin
-            $display("Cannot find baud_rate");//ToDo: add uvm_fatal
+            `uvm_fatal("Cannot find baud_rate","give sutable baud_rate");
         end
         if(!uvm_config_db #(int)::get(null, "*","frequency",frequency)) begin
-            $display("Cannot find frequency");//ToDO: add uvm_fatal
+            `uvm_fatal("Cannot find frequency","set frequency to config_db");
         end
         if(baud_rate == 0) begin
             `uvm_fatal("Zero divition erro","please give value to baud_rate")
@@ -68,7 +68,7 @@ class cfg_sequence extends uvm_sequence;
     task body();
         reg_offsets = new();
         setup_value = {clkdiv[15:0],16'h0306};
-        $display("[cfg_sequence] - at body task"); //remove all $display()
+        `uvm_info("[SEQUENCE]","body",UVM_LOW); 
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
         start_item(cfg_item);

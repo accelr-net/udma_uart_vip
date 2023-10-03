@@ -36,9 +36,11 @@ class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
     parity_type                                     parity_en;
-    // rand logic [CHARACTOR_LENGTH-1:0]               charactor;
+    int                                             charactor_length;                                
     rand bit                                        charactor[];
     rand logic                                      parity;
+
+    // constraint c_charactor {charactor.size() > 5; charactor.size < 9;}ma
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -47,17 +49,30 @@ class uart_rx_seq_item extends uvm_sequence_item;
         `uvm_info("[SEQ_ITEM]","constructor",UVM_LOW)
     endfunction: new
 
+    //set data values
     function set_data(
-        bit             charactor[],
-        parity_type     parity_en
+        bit             charactor[]
     );
-        //set data here
         this.charactor   = charactor;
-        if(parity_en == PARITY_ENABLE) begin //ToDo: remove parity enable check calculate parity 
-            this.parity = 1'b1;
-            for(int i = 0; i < $size(charactor); i++) begin
-                this.parity = this.parity^charactor[i];
-            end
-        end
+        calculate_parity(charactor);
     endfunction: set_data
+
+    //calculate parity
+    function calculate_parity(bit charactor[]);
+        this.parity = 1'b1;
+        for(int i = 0; i < $size(charactor); i++) begin
+            this.parity = this.parity^charactor[i];
+        end
+    endfunction: calculate_parity
+
+    function void pre_randomize();
+        charactor = new [charactor_length];
+        $display("This is pre_randomize %p",charactor);
+    endfunction
+
+    function void post_randomize();
+        calculate_parity(charactor);
+        $display("parity value: %d",parity);
+       $display("This is post_randomize %p",charactor);
+    endfunction
 endclass : uart_rx_seq_item
