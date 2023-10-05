@@ -63,12 +63,28 @@ class uart_rx_monitor extends uvm_monitor;
             bit                parity;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
-            #rx_config.period;
+            uart_rx_transaction.character_length = rx_config.char_length;
+            uart_rx_transaction.initialize_character();
+
+            @(negedge intf_uart_side.uart_rx_i);
+            #(rx_config.period/2);
+            #rx_config.period; // wait for start_bit
+            //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                uart_rx_transaction.charactor[i] = intf_uart_side.uart_rx_i;
+                uart_rx_transaction.character[i] = intf_uart_side.uart_rx_i;
                 #rx_config.period;
             end
-            $display("uart_rx_transaction.charactor %p ",uart_rx_transaction.charactor);
+            //get parity
+            if(rx_config.parity_en == 1) begin
+                uart_rx_transaction.parity   = intf_uart_side.uart_rx_i;
+                #rx_config.period; 
+            end
+            //delay for 2 stopbits 
+            if(rx_config.stop_bits == 2) begin
+                #rx_config.period;
+            end
+            #(rx_config.period/2); // wait for stop
+            $display("uart_rx_transaction %p",uart_rx_transaction); 
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase

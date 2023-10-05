@@ -74,6 +74,7 @@ class uart_test extends uvm_test;
         env_config_obj.char_length  = char_length;
         env_config_obj.stop_bits    = stop_bits;
         env_config_obj.period       = period;
+        env_config_obj.parity_en    = parity_en;
 
         //set environment configuration into the config_db
         uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);

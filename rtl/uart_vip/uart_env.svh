@@ -71,7 +71,7 @@ class uart_env extends uvm_env;
         cfg_config.frequency        = env_configs.frequency;
 
         uart_rx_config.baud_rate    = env_configs.baud_rate;
-        uart_rx_config.parity_en    = env_configs.parity_bit_enable;
+        uart_rx_config.parity_en    = env_configs.parity_en;
         uart_rx_config.char_length  = env_configs.char_length;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
         uart_rx_config.period       = env_configs.period;

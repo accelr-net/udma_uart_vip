@@ -41,6 +41,6 @@ typedef struct packed {
     logic           clean_fifo;     //for clean fifo set 1 then set 0 to realize a reset fifo, 1'b0 - Stop clean the RX_FIFO | 1'b1 - Clean the RX_FIFO
     logic           polling_en;     //1'b0 - Do not using polling methods to read data | 1'b1 - Using polling method to read data
     logic           stop_bits;      //Stop bits length, 1'b0 - 1 stop bit | 1'b1 - 2 stp bits
-    logic [1:0]     bit_length      //Charactor length, 2'b00 - 5 bits | 2'b01 - 6 bits | 2'b10 - 7 bits | 2'b11 - 8 bits 
+    logic [1:0]     bit_length      //Character length, 2'b00 - 5 bits | 2'b01 - 6 bits | 2'b10 - 7 bits | 2'b11 - 8 bits 
     logic           parity_en;      //Parity enable, 1'b0
 } uart_setup_reg_t;
