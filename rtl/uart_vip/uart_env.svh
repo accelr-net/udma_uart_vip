@@ -39,6 +39,7 @@ class uart_env extends uvm_env;
     env_config                                      env_configs;
     uart_rx_agent_config                            uart_rx_config;
     cfg_agent_config                                cfg_config;
+    uart_subscriber                                 sub;
 
 
     uvm_analysis_port #(uart_rx_seq_item)           uart_rx_env_analysis_port;
@@ -59,6 +60,7 @@ class uart_env extends uvm_env;
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+        sub                 = uart_subscriber::type_id::create("sub",this);
 
         //create configuration objects for agents
         uart_rx_config      = uart_rx_agent_config::type_id::create("uart_rx_config",this);
@@ -84,6 +86,7 @@ class uart_env extends uvm_env;
 
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
+        uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.subscriber_export);
         uart_rx_env_analysis_port = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
     endfunction: connect_phase
 
