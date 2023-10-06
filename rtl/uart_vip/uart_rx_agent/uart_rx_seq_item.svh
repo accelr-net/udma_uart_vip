@@ -36,11 +36,11 @@ class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
     parity_type                                     parity_en;
-    int                                             charactor_length;                                
-    rand bit                                        charactor[];
+    int                                             character_length;                                
+    rand bit                                        character[];
     rand logic                                      parity;
 
-    // constraint c_charactor {charactor.size() > 5; charactor.size < 9;}ma
+    // constraint c_character {character.size() > 5; character.size < 9;}ma
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,27 +51,29 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     //set data values
     function set_data(
-        bit             charactor[]
+        bit             character[]
     );
-        this.charactor   = charactor;
+        this.character   = character;
         calculate_parity();
     endfunction: set_data
 
     //calculate parity
     function calculate_parity();
         this.parity = 1'b1;
-        for(int i = 0; i < $size(this.charactor); i++) begin
-            this.parity = this.parity^charactor[i];
+        for(int i = 0; i < $size(this.character); i++) begin
+            this.parity = this.parity^character[i];
         end
     endfunction: calculate_parity
 
     function void pre_randomize();
-        charactor = new [charactor_length];
-        $display("charactor %p",charactor);
+        character = new [character_length];
     endfunction
 
     function void post_randomize();
         calculate_parity();
-        $display("charactor %p",charactor);
     endfunction
+
+    function void initialize_character();
+        character = new [character_length];
+    endfunction: initialize_character
 endclass : uart_rx_seq_item

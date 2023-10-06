@@ -93,16 +93,15 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         bit     parity;
-        $display("period %d",rx_config.period);
         #rx_config.period;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
-        for(integer i=0; i < $size(uart_rx_transaction.charactor); i++) begin
+        for(integer i=0; i < $size(uart_rx_transaction.character); i++) begin
             #rx_config.period;
-            intf_uart_side.uart_rx_i   = uart_rx_transaction.charactor[i];
+            intf_uart_side.uart_rx_i   = uart_rx_transaction.character[i];
         end
-        if(uart_rx_transaction.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
+        if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
             #rx_config.period;
-            intf_uart_side.uart_rx_i   = 1'b1;
+            intf_uart_side.uart_rx_i   = uart_rx_transaction.parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
             #rx_config.period;

@@ -34,12 +34,16 @@
 //**************************************************************************************************
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
-    cfg_agent               cfg_agnt;
-    uart_rx_agent           uart_rx_agnt;
-    env_config              env_configs;
-    uart_rx_agent_config    uart_rx_config;
-    cfg_agent_config        cfg_config;
+    cfg_agent                                       cfg_agnt;
+    uart_rx_agent                                   uart_rx_agnt;
+    env_config                                      env_configs;
+    uart_rx_agent_config                            uart_rx_config;
+    cfg_agent_config                                cfg_config;
+    uart_subscriber                                 sub;
 
+
+    uvm_analysis_port #(uart_rx_seq_item)           uart_rx_env_analysis_port;
+    
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -56,6 +60,7 @@ class uart_env extends uvm_env;
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+        sub                 = uart_subscriber::type_id::create("sub",this);
 
         //create configuration objects for agents
         uart_rx_config      = uart_rx_agent_config::type_id::create("uart_rx_config",this);
@@ -71,15 +76,19 @@ class uart_env extends uvm_env;
         cfg_config.frequency        = env_configs.frequency;
 
         uart_rx_config.baud_rate    = env_configs.baud_rate;
-        uart_rx_config.parity_en    = env_configs.parity_bit_enable;
+        uart_rx_config.parity_en    = env_configs.parity_en;
         uart_rx_config.char_length  = env_configs.char_length;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
         uart_rx_config.period       = env_configs.period;
 
-        //set configuration into the databse 
-        uvm_config_db #(cfg_agent_config)::set(this,"cfg_agent.*","cfg_config",cfg_config);
         uvm_config_db #(uart_rx_agent_config)::set(this,"uart_rx_agnt.*","uart_config",uart_rx_config);
     endfunction: build_phase
+
+    function void connect_phase(uvm_phase phase);
+        super.connect_phase(phase);
+        uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.subscriber_export);
+        uart_rx_env_analysis_port = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
+    endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase

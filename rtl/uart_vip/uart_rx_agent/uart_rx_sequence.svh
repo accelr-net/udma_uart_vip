@@ -54,7 +54,7 @@ class uart_rx_sequence extends uvm_sequence;
             uart_rx_seq_item          uart_rx_transaction;
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
-            uart_rx_transaction.charactor_length = char_length;
+            uart_rx_transaction.character_length = char_length;
             uart_rx_transaction.randomize();
             finish_item(uart_rx_transaction);
         end
