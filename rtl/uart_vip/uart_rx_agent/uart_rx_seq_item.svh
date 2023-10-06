@@ -37,10 +37,9 @@ class uart_rx_seq_item extends uvm_sequence_item;
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
     parity_type                                     parity_en;
     int                                             character_length;                                
-    rand bit                                        character[];
+    rand bit    [7:0]                               character;
     rand logic                                      parity;
 
-    // constraint c_character {character.size() > 5; character.size < 9;}ma
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,7 +50,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     //set data values
     function set_data(
-        bit             character[]
+        bit     [7:0]      character
     );
         this.character   = character;
         calculate_parity();
@@ -60,20 +59,12 @@ class uart_rx_seq_item extends uvm_sequence_item;
     //calculate parity
     function calculate_parity();
         this.parity = 1'b1;
-        for(int i = 0; i < $size(this.character); i++) begin
+        for(int i = 0; i < character_length; i++) begin
             this.parity = this.parity^character[i];
         end
     endfunction: calculate_parity
 
-    function void pre_randomize();
-        character = new [character_length];
-    endfunction
-
     function void post_randomize();
         calculate_parity();
     endfunction
-
-    function void initialize_character();
-        character = new [character_length];
-    endfunction: initialize_character
 endclass : uart_rx_seq_item
