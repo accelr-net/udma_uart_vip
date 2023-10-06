@@ -37,18 +37,15 @@ class uart_rx_agent extends uvm_agent;
     `uvm_component_utils(uart_rx_agent)
 
     //Agent have driver, monitor and sequencer
-    uart_rx_driver                          driver;
-    uart_rx_monitor                         monitor; 
-    uvm_sequencer  #(uart_rx_seq_item)      sequencer;
-    int                                     period;
-    uart_rx_seq_item                        transactions[$];
+    uart_rx_driver                                      driver;
+    uart_rx_monitor                                     monitor; 
+    uvm_sequencer  #(uart_rx_seq_item)                  sequencer;
+    int                                                 period;
 
-    //imp port
-    // uvm_analysis_imp #(uart_rx_seq_item,uart_rx_agent) uart_analysis_export;
     uvm_analysis_port #(uart_rx_seq_item)               uart_rx_agent_analysis_port;
     
     //virtual interface
-    virtual uart_if                         intf_uart_side;
+    virtual uart_if                                     intf_uart_side;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -63,12 +60,12 @@ class uart_rx_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_LOW)
-        driver      = uart_rx_driver::type_id::create("driver", this);
-        monitor     = uart_rx_monitor::type_id::create("monitor",this);
-        sequencer   = uvm_sequencer #(uart_rx_seq_item)::type_id::create("sequencer",this);
-
-        uvm_config_db #(int)::get(this,"","period",period);
+        driver                      = uart_rx_driver::type_id::create("driver", this);
+        monitor                     = uart_rx_monitor::type_id::create("monitor",this);
+        sequencer                   = uvm_sequencer #(uart_rx_seq_item)::type_id::create("sequencer",this);
         uart_rx_agent_analysis_port = new("uart_rx_agent_analysis_port",this);
+        
+        uvm_config_db #(int)::get(this,"","period",period);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -85,9 +82,5 @@ class uart_rx_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        #(period/2);
-        $display("uart_rx_agent_analysis_port %p ",uart_rx_agent_analysis_port);
     endtask: run_phase
-
-    
 endclass : uart_rx_agent

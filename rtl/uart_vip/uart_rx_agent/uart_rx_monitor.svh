@@ -84,9 +84,7 @@ class uart_rx_monitor extends uvm_monitor;
                 #rx_config.period;
             end
             #(rx_config.period/2); // wait for stop
-            $display("uart_rx_transaction %p",uart_rx_transaction); 
             uart_rx_analysis_port.write(uart_rx_transaction);
-            $display("uart_rx_analysis_port %p",uart_rx_analysis_port);
         end
     endtask: run_phase
 endclass: uart_rx_monitor

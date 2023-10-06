@@ -71,7 +71,6 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     function void post_randomize();
         calculate_parity();
-        $display("character %p",character);
     endfunction
 
     function void initialize_character();

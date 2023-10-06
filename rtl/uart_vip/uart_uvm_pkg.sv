@@ -51,7 +51,6 @@ package uart_uvm_pkg;
     `include "uart_rx_driver.svh"
     `include "uart_rx_monitor.svh"
     `include "uart_rx_agent.svh"
-    `include "uart_subscriber.svh" //remove this 
     
     `include "env_config.svh"
     `include "uart_env.svh"

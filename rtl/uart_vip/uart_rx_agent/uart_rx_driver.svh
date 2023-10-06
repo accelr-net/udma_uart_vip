@@ -93,10 +93,8 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         bit     parity;
-        $display("uart transaction at driver %p",uart_rx_transaction);
         intf_uart_side.uart_rx_i = 1'b0; //start bit
         #rx_config.period;
-        $display("sending character %p",uart_rx_transaction.character);
         for(integer i=0; i < $size(uart_rx_transaction.character); i++) begin
             intf_uart_side.uart_rx_i   = uart_rx_transaction.character[i];
             #rx_config.period;
@@ -104,12 +102,10 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
         if(rx_config.parity_en == 1'b1) begin
             intf_uart_side.uart_rx_i   = uart_rx_transaction.parity;
             #rx_config.period;
-            $display("parity eabled");
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
             intf_uart_side.uart_rx_i = 1'b1; //stop bit
             #rx_config.period;
-            $display("executed stop bit");
         end
     endtask: do_uart_rx
 endclass: uart_rx_driver
