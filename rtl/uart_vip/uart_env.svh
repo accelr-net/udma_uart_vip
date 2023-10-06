@@ -34,16 +34,16 @@
 //**************************************************************************************************
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
-    cfg_agent               cfg_agnt;
-    uart_rx_agent           uart_rx_agnt;
-    env_config              env_configs;
-    uart_rx_agent_config    uart_rx_config;
-    cfg_agent_config        cfg_config;
+    cfg_agent                                       cfg_agnt;
+    uart_rx_agent                                   uart_rx_agnt;
+    env_config                                      env_configs;
+    uart_rx_agent_config                            uart_rx_config;
+    cfg_agent_config                                cfg_config;
 
-    uvm_analysis_imp #(uart_rx_seq_item,uart_env) uart_rx_env_export;
-    uvm_analysis_port #(uart_rx_seq_item)         uart_rx_env_analysis_port;
+    uart_subscriber                             sub;     //remove this 
+
+    uvm_analysis_port #(uart_rx_seq_item)           uart_rx_env_analysis_port;
     
-    uart_rx_seq_item                              transactions[$];
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,8 +51,6 @@ class uart_env extends uvm_env;
         super.new(name,parent);
         `uvm_info("[ENV]","constructor",UVM_LOW)
     endfunction: new
-
-
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
@@ -62,12 +60,12 @@ class uart_env extends uvm_env;
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_rx_agent::type_id::create("uart_rx_agnt",this);
+        sub = uart_subscriber::type_id::create("sub",this); // remove this
 
         //create configuration objects for agents
         uart_rx_config      = uart_rx_agent_config::type_id::create("uart_rx_config",this);
         cfg_config          = cfg_agent_config::type_id::create("cfg_config",this);
 
-        uart_rx_env_export  = new("uart_rx_env_export",this);
         //get environment configs
         if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
             `uvm_fatal("[ENV]","cannot find environment configs ")
@@ -83,28 +81,20 @@ class uart_env extends uvm_env;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
         uart_rx_config.period       = env_configs.period;
 
-        //set configuration into the databse 
-        uvm_config_db #(cfg_agent_config)::set(this,"cfg_agent.*","cfg_config",cfg_config);
         uvm_config_db #(uart_rx_agent_config)::set(this,"uart_rx_agnt.*","uart_config",uart_rx_config);
     endfunction: build_phase
 
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        // uart_rx_agnt.monitor.uart_rx_analysis_port.connect(uart_rx_agnt.uart_analysis_export);
-        uart_rx_agnt.uart_rx_agent_analysis_port.connect(this.uart_rx_env_export);
+        uart_rx_env_analysis_port = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
+
+        uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.subscriber_export); // remove this
     endfunction: connect_phase
 
-    function void write(uart_rx_seq_item item);
-        transactions.push_back(item);
-    endfunction: write
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         `uvm_info("[ENV]","run_phase",UVM_LOW)
-        #(env_configs.period/2);
-        if(transactions.size() != 0) begin
-            uart_rx_env_analysis_port.write(transactions.pop_front());
-        end
     endtask: run_phase
 endclass : uart_env

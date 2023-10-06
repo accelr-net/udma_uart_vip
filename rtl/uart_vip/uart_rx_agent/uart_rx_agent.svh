@@ -45,7 +45,6 @@ class uart_rx_agent extends uvm_agent;
 
     //imp port
     // uvm_analysis_imp #(uart_rx_seq_item,uart_rx_agent) uart_analysis_export;
-    uvm_analysis_imp #(uart_rx_seq_item,uart_rx_agent)  uart_analysis_export;
     uvm_analysis_port #(uart_rx_seq_item)               uart_rx_agent_analysis_port;
     
     //virtual interface
@@ -69,7 +68,6 @@ class uart_rx_agent extends uvm_agent;
         sequencer   = uvm_sequencer #(uart_rx_seq_item)::type_id::create("sequencer",this);
 
         uvm_config_db #(int)::get(this,"","period",period);
-        uart_analysis_export  = new("uart_analysis_export",this);
         uart_rx_agent_analysis_port = new("uart_rx_agent_analysis_port",this);
     endfunction: build_phase
 
@@ -79,24 +77,16 @@ class uart_rx_agent extends uvm_agent;
     function void connect_phase(uvm_phase phase);
         `uvm_info("AGENT","connect_phase",UVM_LOW)
         driver.seq_item_port.connect(sequencer.seq_item_export);
-        monitor.uart_rx_analysis_port.connect(this.uart_analysis_export);
+        uart_rx_agent_analysis_port = monitor.uart_rx_analysis_port;
     endfunction: connect_phase
 
-    function void write(uart_rx_seq_item item);
-        transactions.push_back(item);
-    endfunction
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        //    $display("export value : %p",uart_analysis_export);
-        forever begin
-            #(period/2);
-            if(transactions.size() != 0) begin
-                uart_rx_agent_analysis_port.write(transactions.pop_front());
-            end
-        end
+        #(period/2);
+        $display("uart_rx_agent_analysis_port %p ",uart_rx_agent_analysis_port);
     endtask: run_phase
 
     
