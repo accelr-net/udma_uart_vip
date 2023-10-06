@@ -67,4 +67,8 @@ class uart_rx_seq_item extends uvm_sequence_item;
     function void post_randomize();
         calculate_parity();
     endfunction
+
+    function void initialize_character();
+        character = new [character_length];
+    endfunction: initialize_character
 endclass : uart_rx_seq_item

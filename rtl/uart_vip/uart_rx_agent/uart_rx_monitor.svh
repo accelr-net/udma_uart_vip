@@ -75,7 +75,7 @@ class uart_rx_monitor extends uvm_monitor;
                 #rx_config.period;
             end
             //get parity
-            if(rx_config.parity_en == 1) begin
+            if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
                 uart_rx_transaction.parity   = intf_uart_side.uart_rx_i;
                 #rx_config.period; 
             end
