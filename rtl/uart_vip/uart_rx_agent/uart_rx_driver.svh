@@ -99,7 +99,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             #rx_config.period;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.character[i];
         end
-        if(rx_config.parity_en == 1'b1) begin
+        if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
             #rx_config.period;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.parity;
         end
