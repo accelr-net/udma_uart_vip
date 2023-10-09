@@ -93,10 +93,11 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
         bit         parity;
         bit [7:0]   character;
-        uart_rx_transaction.get_data(character,parity);
+        uart_rx_transaction.get_data(character);
+        uart_rx_transaction.get_parity(parity);
         #rx_config.period;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
-        for(int i=0; i < uart_rx_transaction.character_length; i++) begin
+        for(int i=0; i < rx_config.char_length; i++) begin
             #rx_config.period;
             intf_uart_side.uart_rx_i   = character[i];
         end

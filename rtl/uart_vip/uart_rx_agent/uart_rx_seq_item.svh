@@ -36,10 +36,10 @@ class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
     parity_type                                           parity_en;
-    int                                                   character_length;                                
-    local rand bit    [7:0]                                     character;
-    local rand bit                                              parity;
-
+    local int                                             character_length;                                
+    local bit         [7:0]                               character_mask;
+    local rand bit    [7:0]                               character;
+    local rand bit                                        parity;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,20 +51,41 @@ class uart_rx_seq_item extends uvm_sequence_item;
     //set data values
     function set_data(
         bit     [7:0]      character,
+        bit                parity_en,
         bit                parity
     );
         this.character   = character;
         this.parity      = parity;
-        calculate_parity();
+        this.parity_en   = parity_en;
     endfunction: set_data
 
+    //get data value
     function get_data(
-        output bit [7:0] character_out,
-        output bit       parity_out
-        );
-        character_out = this.character;
-        parity_out    = this.parity;
+        output bit [7:0] character_out
+    );
+        character_out = this.character_mask & this.character;
     endfunction: get_data
+
+    //get parity value
+    function get_parity(
+        output bit       parity_out
+    );
+        parity_out    = this.parity;
+    endfunction: get_parity
+
+    //set character length
+    function void set_character_length(
+        int     character_length
+    );
+        this.character_length = character_length;
+        this.character_mask = (1 << this.character_length) - 1;
+        $display("character mask = %b",this.character_mask);
+    endfunction: set_character_length
+
+    //get character length
+    function int get_character_length();
+        return this.character_length;
+    endfunction: get_character_length
 
     //calculate parity
     function calculate_parity();
@@ -79,14 +100,16 @@ class uart_rx_seq_item extends uvm_sequence_item;
     endfunction
 
     function void do_print(uvm_printer printer);
-        printer.m_string = convert2string();
+        // printer.m_string = convert2string();
+        $display(convert2string());
     endfunction: do_print
 
     function string convert2string();
         string s;
         s = super.convert2string();
-        $sformat(s,"Character : %b \n", character);
-        $sformat(s,"%sparity    : %b \n",s, parity);
+        $sformat(s,"%s Character : %b \n",s,(this.character_mask & this.character));
+        $sformat(s,"%s parity    : %b \n",s, parity);
+        $sformat(s,"%s parity_en : %p \n",s, parity_en);
         return s;
     endfunction: convert2string
 endclass : uart_rx_seq_item

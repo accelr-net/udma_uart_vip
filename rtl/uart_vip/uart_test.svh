@@ -36,10 +36,10 @@ class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
     int                     baud_rate    = 115200;
-    const int               char_length  = 8;
+    const int               char_length  = 5;
     int                     frequency    = 50000000;
     int                     stop_bits    = 1;
-    bit                     parity_en    = 1;
+    bit                     parity_en    = uart_rx_seq_item::PARITY_ENABLE;
     int                     period;
 
     uart_env                env;
@@ -63,6 +63,8 @@ class uart_test extends uvm_test;
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
+
+        $display("parity_en type: %b",parity_en);
         //get values from top
         uvm_config_db #(int)::get(this,"","period",period);
         env_config_obj  = env_config::type_id::create("env_config_obj",this);
