@@ -37,8 +37,8 @@ class uart_rx_seq_item extends uvm_sequence_item;
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
     parity_type                                           parity_en;
     int                                                   character_length;                                
-    rand bit    [7:0]                                     character;
-    rand logic                                            parity;
+    local rand bit    [7:0]                                     character;
+    local rand bit                                              parity;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -50,14 +50,20 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     //set data values
     function set_data(
-        bit     [7:0]      character
+        bit     [7:0]      character,
+        bit                parity
     );
         this.character   = character;
+        this.parity      = parity;
         calculate_parity();
     endfunction: set_data
 
-    function get_data(output bit [7:0] char_portion);
-        char_portion = character;
+    function get_data(
+        output bit [7:0] character_out,
+        output bit       parity_out
+        );
+        character_out = this.character;
+        parity_out    = this.parity;
     endfunction: get_data
 
     //calculate parity
