@@ -37,7 +37,7 @@ class uart_rx_agent_config extends uvm_object;
     int baud_rate   = 115200;
     int frequency   = 50000000;
     int stop_bits   = 1;
-    bit parity_en   = 1;
+    uart_rx_seq_item::parity_type parity_en   = uart_rx_seq_item::PARITY_ENABLE;
     int char_length = 8;
     int period      = 10;
 

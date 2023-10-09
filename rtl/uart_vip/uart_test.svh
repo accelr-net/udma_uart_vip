@@ -35,18 +35,18 @@
 class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
-    int                     baud_rate    = 115200;
-    const int               char_length  = 5;
-    int                     frequency    = 50000000;
-    int                     stop_bits    = 1;
-    bit                     parity_en    = uart_rx_seq_item::PARITY_ENABLE;
-    int                     period;
+    int                                 baud_rate    = 115200;
+    const int                           char_length  = 5;
+    int                                 frequency    = 50000000;
+    int                                 stop_bits    = 1;
+    uart_rx_seq_item::parity_type       parity_en    = uart_rx_seq_item::PARITY_ENABLE;
+    int                                 period;
 
-    uart_env                env;
-    env_config              env_config_obj;
+    uart_env                            env;
+    env_config                          env_config_obj;
 
-    virtual     uart_if     uart_vif;
-    virtual     udma_if     vif;
+    virtual     uart_if                 uart_vif;
+    virtual     udma_if                 vif;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
