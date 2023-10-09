@@ -56,6 +56,7 @@ class uart_rx_sequence extends uvm_sequence;
             start_item(uart_rx_transaction);
             uart_rx_transaction.character_length = char_length;
             uart_rx_transaction.randomize();
+            uart_rx_transaction.convert2string();
             finish_item(uart_rx_transaction);
         end
     endtask: body

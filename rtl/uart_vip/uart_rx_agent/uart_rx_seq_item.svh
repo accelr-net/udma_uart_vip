@@ -34,11 +34,11 @@
 //**************************************************************************************************
 class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
-    typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
-    parity_type                                     parity_en;
-    int                                             character_length;                                
-    rand bit    [7:0]                               character;
-    rand logic                                      parity;
+    typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
+    parity_type                                           parity_en;
+    int                                                   character_length;                                
+    rand bit    [7:0]                                     character;
+    rand logic                                            parity;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -56,6 +56,10 @@ class uart_rx_seq_item extends uvm_sequence_item;
         calculate_parity();
     endfunction: set_data
 
+    function get_data(output bit [7:0] char_portion);
+        char_portion = character;
+    endfunction: get_data
+
     //calculate parity
     function calculate_parity();
         this.parity = 1'b1;
@@ -68,7 +72,9 @@ class uart_rx_seq_item extends uvm_sequence_item;
         calculate_parity();
     endfunction
 
-    function void initialize_character();
-        character = new [character_length];
-    endfunction: initialize_character
+    function string convert2string();
+        string s = "nothring";
+        `uvm_info("SEQ_ITEM_char",$sformatf("charactor %b",character), UVM_LOW);
+        return s;
+    endfunction: convert2string
 endclass : uart_rx_seq_item

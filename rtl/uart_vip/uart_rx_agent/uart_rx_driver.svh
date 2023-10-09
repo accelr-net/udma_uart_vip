@@ -86,7 +86,6 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
             do_uart_rx(uart_rx_transaction);
-
             seq_item_port.item_done();
         end
     endtask: run_phase
@@ -95,17 +94,17 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
         bit     parity;
         #rx_config.period;
         intf_uart_side.uart_rx_i = 1'b0; //start bit
-        for(integer i=0; i < $size(uart_rx_transaction.character); i++) begin
+        for(int i=0; i < uart_rx_transaction.character_length; i++) begin
             #rx_config.period;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.character[i];
         end
-        if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
+        if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
             #rx_config.period;
             intf_uart_side.uart_rx_i   = uart_rx_transaction.parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
-            intf_uart_side.uart_rx_i = 1'b1; //stop bit
             #rx_config.period;
+            intf_uart_side.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx
 endclass: uart_rx_driver

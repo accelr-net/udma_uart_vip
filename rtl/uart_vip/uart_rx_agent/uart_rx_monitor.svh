@@ -64,7 +64,6 @@ class uart_rx_monitor extends uvm_monitor;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.character_length = rx_config.char_length;
-            uart_rx_transaction.initialize_character();
 
             @(negedge intf_uart_side.uart_rx_i);
             #(rx_config.period/2);
@@ -75,7 +74,7 @@ class uart_rx_monitor extends uvm_monitor;
                 #rx_config.period;
             end
             //get parity
-            if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
+            if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
                 uart_rx_transaction.parity   = intf_uart_side.uart_rx_i;
                 #rx_config.period; 
             end
