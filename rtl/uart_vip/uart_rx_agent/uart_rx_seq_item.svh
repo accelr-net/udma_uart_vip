@@ -72,9 +72,15 @@ class uart_rx_seq_item extends uvm_sequence_item;
         calculate_parity();
     endfunction
 
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction: do_print
+
     function string convert2string();
-        string s = "nothring";
-        `uvm_info("SEQ_ITEM_char",$sformatf("charactor %b",character), UVM_LOW);
+        string s;
+        s = super.convert2string();
+        $sformat(s,"Character : %b \n", character);
+        $sformat(s,"%sparity    : %b \n",s, parity);
         return s;
     endfunction: convert2string
 endclass : uart_rx_seq_item
