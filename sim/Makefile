@@ -27,23 +27,12 @@ VOPT_FLAGS      ?= +acc
 VLIB            ?= vlib
 VMAP            ?= vmap
 
-SVLIB	    =  ../rtl/tb/remote_bitbang/librbs
-
 # top-level (tesbench)
 SIM_TOP     = tb_top 
 
 ## Compile RTL with Questasim
 all: lib build opt
-	vsim vopt_tb 
-
-# build the bitbang library, needed for simulating a jtag bridge to OpenOCD
-.PHONY: build-deps
-build-deps:
-	$(MAKE) -C ../rtl/tb/remote_bitbang all
-
-.PHONY: clean-deps
-clean-deps:
-	$(MAKE) -C ../rtl/tb/remote_bitbang clean
+	vsim vopt_tb
 
 ## vsim targets
 .PHONY: sim
@@ -52,7 +41,7 @@ sim:
 	$(VSIM) -64 -gui vopt_tb \
 		$(VSIM_SUPPRESS) \
 		+UVM_NO_RELNOTES -stats -t ps \
-		-sv_lib $(SVLIB) $(VSIM_FLAGS) \
+	        $(VSIM_FLAGS) \
 		-do "set StdArithNoWarnings 1; set NumericStdNoWarnings 1"
 .PHONY: simc
 ## Simulate RTL with Questasim
@@ -60,7 +49,7 @@ simc:
 	$(VSIM) -64 -c vopt_tb \
 		$(VSIM_SUPPRESS) \
 		+UVM_NO_RELNOTES -stats -t ps \
-		-sv_lib $(SVLIB) $(VSIM_FLAGS) \
+		$(VSIM_FLAGS) \
 		-do "set StdArithNoWarnings 1; set NumericStdNoWarnings 1" \
 		-do "run -all" \
 		-do "quit -code [examine -radix decimal sim:/tb_pulp/exit_status]"
@@ -70,7 +59,7 @@ opt:
 	$(VOPT) $(VOPT_FLAGS) -o vopt_tb $(SIM_TOP) -work work
 
 .PHONY: opt
-build: build-deps
+build:
 	$(VSIM) -c -do 'source compile.tcl; quit'
 
 .PHONY: lib
@@ -79,7 +68,7 @@ lib:
 
 .PHONY: clean
 ## Remove all compiled RTL
-clean: clean-deps
+clean:
 	$(RM) -r work 
 	$(RM) modelsim.ini
 
