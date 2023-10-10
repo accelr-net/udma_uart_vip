@@ -40,6 +40,7 @@ class uart_rx_agent_config extends uvm_object;
     uart_rx_seq_item::parity_type   parity_en   = uart_rx_seq_item::PARITY_ENABLE;
     int                             char_length = 8;
     int                             period      = 10;
+    bit                             is_rx_agent = 1'b1;
 
     function new(string name="uart_rx_agent_config");
         super.new(name);
