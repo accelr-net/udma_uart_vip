@@ -34,13 +34,12 @@
 //**************************************************************************************************
 class uart_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_rx_seq_item)
-    typedef enum {PARITY_ENABLE,PARITY_DISABLE}     parity_type;
-    parity_type                                     parity_en;
-    int                                             character_length;                                
-    rand bit                                        character[];
-    rand logic                                      parity;
-
-    // constraint c_character {character.size() > 5; character.size < 9;}ma
+    typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
+    parity_type                                           parity_en;
+    local int                                             character_length;                                
+    local bit         [7:0]                               character_mask;
+    local rand bit    [7:0]                               character;
+    local rand bit                                        parity;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -51,29 +50,69 @@ class uart_rx_seq_item extends uvm_sequence_item;
 
     //set data values
     function set_data(
-        bit             character[]
+        bit     [7:0]      character,
+        bit                parity_en,
+        bit                parity
     );
         this.character   = character;
-        calculate_parity();
+        this.parity      = parity;
+        this.parity_en   = parity_en;
     endfunction: set_data
+
+    //get data value
+    function get_data(
+        output bit [7:0] character_out
+    );
+        character_out = this.character_mask & this.character;
+    endfunction: get_data
+
+    //get parity value
+    function get_parity(
+        output bit       parity_out
+    );
+        parity_out    = this.parity;
+    endfunction: get_parity
+
+    //set character length
+    function void set_character_length(
+        int     character_length
+    );
+        this.character_length = character_length;
+        if (character_length >= 5 && character_length <= 8) begin
+            this.character_mask = (1 << this.character_length) - 1;
+        end else begin
+            `uvm_fatal("SEQ_ITEM", "please enter valid character length between 5 and 8");
+        end
+    endfunction: set_character_length
+
+    //get character length
+    function int get_character_length();
+        return this.character_length;
+    endfunction: get_character_length
 
     //calculate parity
     function calculate_parity();
         this.parity = 1'b1;
-        for(int i = 0; i < $size(this.character); i++) begin
+        for(int i = 0; i < this.character_length; i++) begin
             this.parity = this.parity^character[i];
         end
     endfunction: calculate_parity
-
-    function void pre_randomize();
-        character = new [character_length];
-    endfunction
 
     function void post_randomize();
         calculate_parity();
     endfunction
 
-    function void initialize_character();
-        character = new [character_length];
-    endfunction: initialize_character
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction: do_print
+
+    function string convert2string();
+        string s;
+        s = super.convert2string();
+        $sformat(s,"%s character        : %b \n" ,s,(this.character_mask & this.character));
+        $sformat(s,"%s character_length : %0d \n",s, this.character_length);
+        $sformat(s,"%s parity           : %b \n" ,s, this.parity);
+        $sformat(s,"%s parity_en        : %p \n" ,s, this.parity_en);
+        return s;
+    endfunction: convert2string
 endclass : uart_rx_seq_item

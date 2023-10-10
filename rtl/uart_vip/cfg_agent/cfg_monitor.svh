@@ -76,7 +76,6 @@ class cfg_monitor extends uvm_monitor;
             if(vif.cfg_valid_i == 1'b1) begin
                 cfg_transaction.addr    = vif.cfg_addr_i;
                 cfg_transaction.data    = vif.cfg_data_i;
-                $display("monitor cfg_trasaction : %p",cfg_transaction);
                 cfg_analysis_port.write(cfg_transaction);
             end
         end

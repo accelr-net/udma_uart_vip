@@ -9,6 +9,6 @@ class uart_subscriber extends uvm_component;
     endfunction: new 
 
     function void write(uart_rx_seq_item item);
-        $display("uart_subscriber item :  %p",item);
+        `uvm_info("UART_SUBSCRIBER",$sformatf("uart_subscriber item :  %p",item),UVM_LOW);
     endfunction
 endclass: uart_subscriber

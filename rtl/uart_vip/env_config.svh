@@ -34,12 +34,12 @@
 //**************************************************************************************************
 class env_config extends uvm_object;
     `uvm_object_utils(env_config)
-    int     baud_rate           = 115200;
-    int     frequency           = 50000000;
-    int     char_length         = 8;
-    bit     parity_en           = uart_rx_seq_item::PARITY_EN;
-    int     stop_bits           = 1;
-    int     period              = 10;
+    int                                 baud_rate           = 115200;
+    int                                 frequency           = 50000000;
+    int                                 char_length         = 8;
+    uart_rx_seq_item::parity_type       parity_en           = uart_rx_seq_item::PARITY_ENABLE;
+    int                                 stop_bits           = 1;
+    int                                 period              = 10;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

@@ -61,24 +61,29 @@ class uart_rx_monitor extends uvm_monitor;
         forever begin
             uart_rx_seq_item   uart_rx_transaction;
             bit                parity;
+            bit                parity_en;
+            bit [7:0]          character;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
-            uart_rx_transaction.character_length = rx_config.char_length;
-            uart_rx_transaction.initialize_character();
-
+            uart_rx_transaction.set_character_length(rx_config.char_length);
             @(negedge intf_uart_side.uart_rx_i);
             #(rx_config.period/2);
             #rx_config.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                uart_rx_transaction.character[i] = intf_uart_side.uart_rx_i;
+                character[i] = intf_uart_side.uart_rx_i;
                 #rx_config.period;
             end
             //get parity
-            if(rx_config.parity_en == uart_rx_seq_item::PARITY_EN) begin
-                uart_rx_transaction.parity   = intf_uart_side.uart_rx_i;
+            if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
+                parity_en = uart_rx_seq_item::PARITY_ENABLE;
+                parity   = intf_uart_side.uart_rx_i;
                 #rx_config.period; 
+            end else begin
+                parity_en = uart_rx_seq_item::PARITY_DISABLE;
             end
+            //set character and parity
+            uart_rx_transaction.set_data(character,parity_en,parity);
             //delay for 2 stopbits 
             if(rx_config.stop_bits == 2) begin
                 #rx_config.period;
