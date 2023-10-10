@@ -63,8 +63,7 @@ class uart_test extends uvm_test;
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
-
-        $display("parity_en type: %b",parity_en);
+        
         //get values from top
         uvm_config_db #(int)::get(this,"","period",period);
         env_config_obj  = env_config::type_id::create("env_config_obj",this);

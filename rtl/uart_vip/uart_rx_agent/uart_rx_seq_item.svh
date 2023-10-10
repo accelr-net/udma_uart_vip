@@ -78,8 +78,11 @@ class uart_rx_seq_item extends uvm_sequence_item;
         int     character_length
     );
         this.character_length = character_length;
-        this.character_mask = (1 << this.character_length) - 1;
-        $display("character mask = %b",this.character_mask);
+        if (character_length >= 5 && character_length <= 8) begin
+            this.character_mask = (1 << this.character_length) - 1;
+        end else begin
+            `uvm_fatal("SEQ_ITEM", "please enter valid character length between 5 and 8");
+        end
     endfunction: set_character_length
 
     //get character length
@@ -100,16 +103,16 @@ class uart_rx_seq_item extends uvm_sequence_item;
     endfunction
 
     function void do_print(uvm_printer printer);
-        // printer.m_string = convert2string();
-        $display(convert2string());
+        printer.m_string = convert2string();
     endfunction: do_print
 
     function string convert2string();
         string s;
         s = super.convert2string();
-        $sformat(s,"%s Character : %b \n",s,(this.character_mask & this.character));
-        $sformat(s,"%s parity    : %b \n",s, parity);
-        $sformat(s,"%s parity_en : %p \n",s, parity_en);
+        $sformat(s,"%s Character        : %b \n" ,s,(this.character_mask & this.character));
+        $sformat(s,"%s parity           : %b \n" ,s, this.parity);
+        $sformat(s,"%s parity_en        : %p \n" ,s, this.parity_en);
+        $sformat(s,"%s Character_length : %0d \n",s, this.character_length);
         return s;
     endfunction: convert2string
 endclass : uart_rx_seq_item
