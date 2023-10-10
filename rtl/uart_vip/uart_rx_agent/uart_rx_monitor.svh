@@ -66,7 +66,6 @@ class uart_rx_monitor extends uvm_monitor;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
-            $display("parity_en at uart_rx_monitor %p",rx_config.parity_en);
             @(negedge intf_uart_side.uart_rx_i);
             #(rx_config.period/2);
             #rx_config.period; // wait for start_bit

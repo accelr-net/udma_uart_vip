@@ -93,7 +93,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
     //calculate parity
     function calculate_parity();
         this.parity = 1'b1;
-        for(int i = 0; i < character_length; i++) begin
+        for(int i = 0; i < this.character_length; i++) begin
             this.parity = this.parity^character[i];
         end
     endfunction: calculate_parity
@@ -109,10 +109,10 @@ class uart_rx_seq_item extends uvm_sequence_item;
     function string convert2string();
         string s;
         s = super.convert2string();
-        $sformat(s,"%s Character        : %b \n" ,s,(this.character_mask & this.character));
+        $sformat(s,"%s character        : %b \n" ,s,(this.character_mask & this.character));
+        $sformat(s,"%s character_length : %0d \n",s, this.character_length);
         $sformat(s,"%s parity           : %b \n" ,s, this.parity);
         $sformat(s,"%s parity_en        : %p \n" ,s, this.parity_en);
-        $sformat(s,"%s Character_length : %0d \n",s, this.character_length);
         return s;
     endfunction: convert2string
 endclass : uart_rx_seq_item
