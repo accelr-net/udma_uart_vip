@@ -66,18 +66,22 @@ class uart_rx_monitor extends uvm_monitor;
             //create a transaction object 
             uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
-            @(negedge intf_uart_side.uart_rx_i);
+            if(rx_config.is_rx_agent) begin
+                @(negedge intf_uart_side.uart_rx_i);
+            end else begin
+                @(negedge intf_uart_side.uart_tx_o);
+            end
             #(rx_config.period/2);
             #rx_config.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                character[i] = intf_uart_side.uart_rx_i;
+                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
                 #rx_config.period;
             end
             //get parity
             if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_rx_seq_item::PARITY_ENABLE;
-                parity   = intf_uart_side.uart_rx_i;
+                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
                 #rx_config.period; 
             end else begin
                 parity_en = uart_rx_seq_item::PARITY_DISABLE;
