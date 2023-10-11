@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_agent_pkg.sv
+// FILE         :   env_pkg.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
@@ -29,19 +29,34 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  11-Sep-2023      Kasun        creation
+//  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package uart_rx_agent_pkg;
+package env_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
-    //all uvm uart_rx header files
-    `include "uart_rx_seq_item.svh"
-    `include "uart_rx_agent_config.svh"
-    `include "uart_rx_sequence.svh"
-    `include "uart_rx_driver.svh"
-    `include "uart_rx_monitor.svh"
-    `include "uart_rx_agent.svh"
-    `include "uart_subscriber.svh"
-endpackage: uart_rx_agent_pkg
+    import uart_rx_agent_pkg::*;
+    import cfg_agent_pkg::*;
+
+    //includes uvm header goes here
+    // `include "uart_reg_offsets.svh"
+    // `include "cfg_agent_config.svh"
+    // `include "cfg_seq_item.svh"
+    // `include "cfg_sequence.svh"
+    // `include "cfg_driver.svh"
+    // `include "cfg_monitor.svh"
+    // `include "cfg_agent.svh"
+
+    // `include "uart_rx_seq_item.svh"
+    // `include "uart_rx_agent_config.svh"
+    // `include "uart_rx_sequence.svh"
+    // `include "uart_rx_driver.svh"
+    // `include "uart_rx_monitor.svh"
+    // `include "uart_rx_agent.svh"
+    // `include "uart_subscriber.svh"
+    
+    `include "env_config.svh"
+    `include "uart_env.svh"
+    // `include "uart_test.svh"
+endpackage: env_pkg
