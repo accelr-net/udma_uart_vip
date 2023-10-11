@@ -35,16 +35,16 @@
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
     cfg_agent                                       cfg_agnt;
-    uart_agent                                   uart_rx_agnt;
-    uart_agent                                   uart_tx_agnt;
+    uart_agent                                      uart_rx_agnt;
+    uart_agent                                      uart_tx_agnt;
     env_config                                      env_configs;
-    uart_agent_config                            uart_rx_config;
-    uart_agent_config                            uart_tx_config;
+    uart_agent_config                               uart_rx_config;
+    uart_agent_config                               uart_tx_config;
     cfg_agent_config                                cfg_config;
     uart_subscriber                                 sub;
 
 
-    uvm_analysis_port #(uart_seq_item)           uart_rx_env_analysis_port;
+    uvm_analysis_port #(uart_seq_item)              uart_rx_env_analysis_port;
     
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

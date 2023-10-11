@@ -33,12 +33,12 @@
 //
 //**************************************************************************************************
 package test_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+    import      uvm_pkg::*;
+    `include    "uvm_macros.svh"
 
-    import uart_agent_pkg::*;
-    import cfg_agent_pkg::*;
-    import env_pkg::*;
+    import      uart_agent_pkg::*;
+    import      cfg_agent_pkg::*;
+    import      env_pkg::*;
 
-    `include "uart_test.svh"
+    `include    "uart_test.svh"
 endpackage: test_pkg

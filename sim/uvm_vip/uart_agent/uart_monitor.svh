@@ -35,7 +35,7 @@
 class uart_monitor extends uvm_monitor;
     `uvm_component_utils(uart_monitor)
 
-    virtual uart_if                             intf_uart_side;
+    virtual uart_if                          intf_uart_side;
     uart_agent_config                        rx_config;
     uvm_analysis_port #(uart_seq_item)       uart_rx_analysis_port;
 

@@ -37,7 +37,7 @@ class env_config extends uvm_object;
     int                                 baud_rate           = 115200;
     int                                 frequency           = 50000000;
     int                                 char_length         = 8;
-    uart_seq_item::parity_type       parity_en           = uart_seq_item::PARITY_ENABLE;
+    uart_seq_item::parity_type          parity_en           = uart_seq_item::PARITY_ENABLE;
     int                                 stop_bits           = 1;
     int                                 period              = 10;
 

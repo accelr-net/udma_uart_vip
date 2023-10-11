@@ -37,7 +37,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
     parameter               char_length = 8;
     virtual uart_if         intf_uart_side;
 
-    uart_agent_config    rx_config;
+    uart_agent_config       rx_config;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

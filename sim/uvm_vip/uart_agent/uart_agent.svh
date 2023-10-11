@@ -46,7 +46,7 @@ class uart_agent extends uvm_agent;
     uvm_analysis_port #(uart_seq_item)               uart_rx_agent_analysis_port;
     
     //virtual interface
-    virtual uart_if                                     intf_uart_side;
+    virtual uart_if                                  intf_uart_side;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

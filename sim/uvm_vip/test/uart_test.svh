@@ -39,7 +39,7 @@ class uart_test extends uvm_test;
     const int                           char_length  = 5;
     int                                 frequency    = 50000000;
     int                                 stop_bits    = 1;
-    uart_seq_item::parity_type       parity_en    = uart_seq_item::PARITY_ENABLE;
+    uart_seq_item::parity_type          parity_en    = uart_seq_item::PARITY_ENABLE;
     int                                 period;
 
     uart_env                            env;
