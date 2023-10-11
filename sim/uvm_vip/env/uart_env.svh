@@ -44,7 +44,7 @@ class uart_env extends uvm_env;
     uart_subscriber                                 sub;
 
 
-    uvm_analysis_port #(uart_seq_item)              uart_rx_env_analysis_port;
+    uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
     
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -100,7 +100,7 @@ class uart_env extends uvm_env;
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
         uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.subscriber_export);
-        uart_rx_env_analysis_port = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
+        uart_rx_aport = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------
