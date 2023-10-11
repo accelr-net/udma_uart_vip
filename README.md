@@ -1,1 +1,0 @@
-# PULP UART verification environment

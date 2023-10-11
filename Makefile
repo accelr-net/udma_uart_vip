@@ -85,24 +85,13 @@ clean:
 
 .PHONY: scripts
 ## Generate scripts for all tools
-scripts: scripts-bender-vsim scripts-bender-fpga
-
-scripts-bender-fpga: | Bender.lock
-	mkdir -p fpga/pulpissimo/tcl/generated
-	./bender script vivado -t fpga -t xilinx > $(BENDER_FPGA_SCRIPTS_DIR)/compile.tcl
+scripts: scripts-bender-vsim
 
 scripts-bender-vsim: | Bender.lock
 	echo 'set ROOT [file normalize [file dirname [info script]]/..]' > $(BENDER_SIM_BUILD_DIR)/compile.tcl
 	./bender script vsim \
 		--vlog-arg="$(VLOG_ARGS)" --vcom-arg="" \
 		-t rtl -t test \
-		| grep -v "set ROOT" >> $(BENDER_SIM_BUILD_DIR)/compile.tcl
-
-scripts-bender-vsim-vips: | Bender.lock
-	echo 'set ROOT [file normalize [file dirname [info script]]/..]' > $(BENDER_SIM_BUILD_DIR)/compile.tcl
-	./bender script vsim \
-		--vlog-arg="$(VLOG_ARGS)" --vcom-arg="" \
-		-t rtl -t test -t rt_dpi -t i2c_vip -t flash_vip -t i2s_vip -t use_vips \
 		| grep -v "set ROOT" >> $(BENDER_SIM_BUILD_DIR)/compile.tcl
 
 $(BENDER_SIM_BUILD_DIR)/compile.tcl: Bender.lock

@@ -35,14 +35,20 @@ sources:
 # TB sources
 - target: any(test,simulation)
   include_dirs:
-  - rtl/uart_vip/cfg_agent
-  - rtl/uart_vip/uart_rx_agent
+  - sim/uvm_vip/uart_agent
+  - sim/uvm_vip/udma_cfg_agent
+  - sim/uvm_vip/env
+  - sim/uvm_vip/test
+
   files:
   # - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
-  # - rtl/uart_vip/uart_rx_agent/uart_rx_agent_pkg.sv
-  - rtl/uart_vip/uart_uvm_pkg.sv
-  - rtl/uart_vip/if/uart_if.sv
-  - rtl/uart_vip/if/udma_if.sv
+  # - rtl/uart_vip/uart_agent/uart_agent_pkg.sv
+  - sim/uvm_vip/udma_cfg_agent/cfg_agent_pkg.sv
+  - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
+  - sim/uvm_vip/if/uart_if.sv
+  - sim/uvm_vip/if/udma_if.sv
+  - sim/uvm_vip/env/env_pkg.sv
+  - sim/uvm_vip/test/test_pkg.sv
   - rtl/tb/udma_sim.sv
   - rtl/tb/tb_top.sv
 

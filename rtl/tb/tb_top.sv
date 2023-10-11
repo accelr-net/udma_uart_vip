@@ -8,8 +8,11 @@ import uvm_pkg::*;
 
 // cfg_agent_pkg is a UVM agent
 // import cfg_agent_pkg::*;
-// import uart_rx_agent_pkg::*;
-import uart_uvm_pkg::*;
+// import uart_agent_pkg::*;
+import cfg_agent_pkg::*;
+import uart_agent_pkg::*;
+import env_pkg::*;
+import test_pkg::*;
 
 module tb_top();
     localparam HALF_CLOCK_PERIOD   = 10;
