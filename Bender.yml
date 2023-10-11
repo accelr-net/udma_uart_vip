@@ -42,9 +42,9 @@ sources:
 
   files:
   # - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
-  # - rtl/uart_vip/uart_rx_agent/uart_rx_agent_pkg.sv
+  # - rtl/uart_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/udma_cfg_agent/cfg_agent_pkg.sv
-  - sim/uvm_vip/uart_agent/uart_rx_agent_pkg.sv
+  - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/if/uart_if.sv
   - sim/uvm_vip/if/udma_if.sv
   - sim/uvm_vip/env/env_pkg.sv

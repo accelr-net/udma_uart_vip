@@ -35,16 +35,16 @@
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
     cfg_agent                                       cfg_agnt;
-    uart_rx_agent                                   uart_rx_agnt;
-    uart_rx_agent                                   uart_tx_agnt;
+    uart_agent                                   uart_rx_agnt;
+    uart_agent                                   uart_tx_agnt;
     env_config                                      env_configs;
-    uart_rx_agent_config                            uart_rx_config;
-    uart_rx_agent_config                            uart_tx_config;
+    uart_agent_config                            uart_rx_config;
+    uart_agent_config                            uart_tx_config;
     cfg_agent_config                                cfg_config;
     uart_subscriber                                 sub;
 
 
-    uvm_analysis_port #(uart_rx_seq_item)           uart_rx_env_analysis_port;
+    uvm_analysis_port #(uart_seq_item)           uart_rx_env_analysis_port;
     
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -61,13 +61,13 @@ class uart_env extends uvm_env;
         super.build_phase(phase);
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
-        uart_rx_agnt        = uart_rx_agent::type_id::create("uart_rx_agnt",this);
-        uart_tx_agnt        = uart_rx_agent::type_id::create("uart_tx_agnt",this);
+        uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);
+        uart_tx_agnt        = uart_agent::type_id::create("uart_tx_agnt",this);
         sub                 = uart_subscriber::type_id::create("sub",this);
 
         //create configuration objects for agents
-        uart_rx_config      = uart_rx_agent_config::type_id::create("uart_rx_config",this);
-        uart_tx_config      = uart_rx_agent_config::type_id::create("uart_tx_config",this);
+        uart_rx_config      = uart_agent_config::type_id::create("uart_rx_config",this);
+        uart_tx_config      = uart_agent_config::type_id::create("uart_tx_config",this);
         cfg_config          = cfg_agent_config::type_id::create("cfg_config",this);
 
 
@@ -93,8 +93,8 @@ class uart_env extends uvm_env;
         uart_tx_config.period       = env_configs.period;
         uart_tx_config.is_rx_agent  = 1'b0;
 
-        uvm_config_db #(uart_rx_agent_config)::set(this,"uart_rx_agnt*","uart_config",uart_rx_config);
-        uvm_config_db #(uart_rx_agent_config)::set(this,"uart_tx_agnt*","uart_config",uart_tx_config);
+        uvm_config_db #(uart_agent_config)::set(this,"uart_rx_agnt*","uart_config",uart_rx_config);
+        uvm_config_db #(uart_agent_config)::set(this,"uart_tx_agnt*","uart_config",uart_tx_config);
     endfunction: build_phase
 
     function void connect_phase(uvm_phase phase);

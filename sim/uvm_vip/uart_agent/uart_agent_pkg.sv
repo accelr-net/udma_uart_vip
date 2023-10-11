@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_agent_pkg.sv
+// FILE         :   uart_agent_pkg.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
@@ -32,16 +32,16 @@
 //  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package uart_rx_agent_pkg;
+package uart_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
     //all uvm uart_rx header files
-    `include "uart_rx_seq_item.svh"
-    `include "uart_rx_agent_config.svh"
-    `include "uart_rx_sequence.svh"
-    `include "uart_rx_driver.svh"
-    `include "uart_rx_monitor.svh"
-    `include "uart_rx_agent.svh"
+    `include "uart_seq_item.svh"
+    `include "uart_agent_config.svh"
+    `include "uart_sequence.svh"
+    `include "uart_driver.svh"
+    `include "uart_monitor.svh"
+    `include "uart_agent.svh"
     `include "uart_subscriber.svh"
-endpackage: uart_rx_agent_pkg
+endpackage: uart_agent_pkg

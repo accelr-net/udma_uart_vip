@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_sequence.sv
+// FILE         :   uart_sequence.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is uvm sequence object for cfg. 
 //
@@ -32,14 +32,14 @@
 //  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_sequence extends uvm_sequence;
-    `uvm_object_utils(uart_rx_sequence)
+class uart_sequence extends uvm_sequence;
+    `uvm_object_utils(uart_sequence)
     int char_length = 8;
     bit parity_en   = 1;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_rx_sequence");
+    function new(string name="uart_sequence");
         super.new(name);
         `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
         uvm_config_db #(int)::get(null,"*","char_length",char_length);
@@ -51,8 +51,8 @@ class uart_rx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         repeat(5) begin
-            uart_rx_seq_item          uart_rx_transaction;
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
+            uart_seq_item          uart_rx_transaction;
+            uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
             uart_rx_transaction.set_character_length(char_length);
             uart_rx_transaction.randomize();
@@ -60,4 +60,4 @@ class uart_rx_sequence extends uvm_sequence;
             finish_item(uart_rx_transaction);
         end
     endtask: body
-endclass: uart_rx_sequence
+endclass: uart_sequence

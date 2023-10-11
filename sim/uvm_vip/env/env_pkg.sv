@@ -36,7 +36,7 @@ package env_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
-    import uart_rx_agent_pkg::*;
+    import uart_agent_pkg::*;
     import cfg_agent_pkg::*;
     
     `include "env_config.svh"

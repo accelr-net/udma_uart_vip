@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_monitor.sv
+// FILE         :   uart_monitor.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is uvm monitor for uart RX. 
 //
@@ -32,14 +32,14 @@
 //  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_monitor extends uvm_monitor;
-    `uvm_component_utils(uart_rx_monitor)
+class uart_monitor extends uvm_monitor;
+    `uvm_component_utils(uart_monitor)
 
     virtual uart_if                             intf_uart_side;
-    uart_rx_agent_config                        rx_config;
-    uvm_analysis_port #(uart_rx_seq_item)       uart_rx_analysis_port;
+    uart_agent_config                        rx_config;
+    uvm_analysis_port #(uart_seq_item)       uart_rx_analysis_port;
 
-    function new(string name="uart_rx_monitor", uvm_component parent);
+    function new(string name="uart_monitor", uvm_component parent);
         super.new(name,parent);
         `uvm_info("[monitor]", "constructor", UVM_LOW)
 
@@ -51,7 +51,7 @@ class uart_rx_monitor extends uvm_monitor;
         if(!uvm_config_db #(virtual uart_if)::get(this, "*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
-        uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config);
+        uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
@@ -59,12 +59,12 @@ class uart_rx_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_LOW)
 
         forever begin
-            uart_rx_seq_item   uart_rx_transaction;
+            uart_seq_item   uart_rx_transaction;
             bit                parity;
             bit                parity_en;
             bit [7:0]          character;
             //create a transaction object 
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction",this);
+            uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
             if(rx_config.is_rx_agent) begin
                 @(negedge intf_uart_side.uart_rx_i);
@@ -79,12 +79,12 @@ class uart_rx_monitor extends uvm_monitor;
                 #rx_config.period;
             end
             //get parity
-            if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
-                parity_en = uart_rx_seq_item::PARITY_ENABLE;
+            if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
+                parity_en = uart_seq_item::PARITY_ENABLE;
                 parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
                 #rx_config.period; 
             end else begin
-                parity_en = uart_rx_seq_item::PARITY_DISABLE;
+                parity_en = uart_seq_item::PARITY_DISABLE;
             end
             //set character and parity
             uart_rx_transaction.set_data(character,parity_en,parity);
@@ -96,4 +96,4 @@ class uart_rx_monitor extends uvm_monitor;
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase
-endclass: uart_rx_monitor
+endclass: uart_monitor

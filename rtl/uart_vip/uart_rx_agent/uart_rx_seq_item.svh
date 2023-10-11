@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_seq_item.sv
+// FILE         :   uart_seq_item.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is uvm sequence item for uart RX. 
 //
@@ -32,8 +32,8 @@
 //  11-Seq-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_seq_item extends uvm_sequence_item;
-    `uvm_object_utils(uart_rx_seq_item)
+class uart_seq_item extends uvm_sequence_item;
+    `uvm_object_utils(uart_seq_item)
     typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
     parity_type                                           parity_en;
     local int                                             character_length;                                
@@ -43,7 +43,7 @@ class uart_rx_seq_item extends uvm_sequence_item;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_rx_seq_item");
+    function new(string name="uart_seq_item");
         super.new(name);
         `uvm_info("[SEQ_ITEM]","constructor",UVM_LOW)
     endfunction: new
@@ -115,4 +115,4 @@ class uart_rx_seq_item extends uvm_sequence_item;
         $sformat(s,"%s parity_en        : %p \n" ,s, this.parity_en);
         return s;
     endfunction: convert2string
-endclass : uart_rx_seq_item
+endclass : uart_seq_item

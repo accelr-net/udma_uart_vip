@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_rx_driver.sv
+// FILE         :   uart_driver.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is uvm driver for uart RX. 
 //
@@ -32,17 +32,17 @@
 //  11-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
-    `uvm_component_utils(uart_rx_driver)
+class uart_driver extends uvm_driver #(uart_seq_item);
+    `uvm_component_utils(uart_driver)
     parameter               char_length = 8;
     virtual uart_if         intf_uart_side;
 
-    uart_rx_agent_config    rx_config;
+    uart_agent_config    rx_config;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_rx_driver", uvm_component parent);
+    function new(string name="uart_driver", uvm_component parent);
         super.new(name,parent);
     endfunction: new
 
@@ -52,11 +52,11 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         if(!uvm_config_db #(virtual uart_if)::get(this,"*","intf_uart_side",intf_uart_side)) begin
-            `uvm_fatal("uart_rx_driver/build_phase","No virtual interface is found");
+            `uvm_fatal("uart_driver/build_phase","No virtual interface is found");
         end
 
-        if(!uvm_config_db #(uart_rx_agent_config)::get(this,"","uart_config",rx_config)) begin
-            `uvm_fatal("uart_rx_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
+        if(!uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
         `uvm_info("[DRIVER]","build_phase",UVM_LOW);
     endfunction: build_phase
@@ -82,15 +82,15 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
         `uvm_info("[DRIVER]","run_phase",UVM_LOW)
 
         forever begin
-            uart_rx_seq_item   uart_rx_transaction;
-            uart_rx_transaction = uart_rx_seq_item::type_id::create("uart_rx_transaction");
+            uart_seq_item   uart_rx_transaction;
+            uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
             do_uart_rx(uart_rx_transaction);
             seq_item_port.item_done();
         end
     endtask: run_phase
     
-    task do_uart_rx(uart_rx_seq_item    uart_rx_transaction);
+    task do_uart_rx(uart_seq_item    uart_rx_transaction);
         bit         parity;
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
@@ -101,7 +101,7 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             #rx_config.period;
             intf_uart_side.uart_rx_i   = character[i];
         end
-        if(rx_config.parity_en == uart_rx_seq_item::PARITY_ENABLE) begin
+        if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
             #rx_config.period;
             intf_uart_side.uart_rx_i   = parity;
         end
@@ -110,5 +110,5 @@ class uart_rx_driver extends uvm_driver #(uart_rx_seq_item);
             intf_uart_side.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx
-endclass: uart_rx_driver
+endclass: uart_driver
 
