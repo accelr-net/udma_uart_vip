@@ -32,7 +32,7 @@ SIM_TOP     = tb_top
 
 ## Compile RTL with Questasim
 all: lib build opt
-	vsim vopt_tb
+	vsim -c vopt_tb
 
 ## vsim targets
 .PHONY: sim

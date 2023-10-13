@@ -13,8 +13,12 @@ import cfg_agent_pkg::*;
 import uart_agent_pkg::*;
 import env_pkg::*;
 import test_pkg::*;
+import uvm_colors::*;
 
 module tb_top();
+    typedef enum int { red=0, green=1, blue=4, yellow, white=6, black=9 } Colors;
+    Colors color;
+
     localparam HALF_CLOCK_PERIOD   = 10;
     localparam CLOCK_PERIOD        = HALF_CLOCK_PERIOD*2;
     localparam L2_AWIDTH_NOAL = 19;
