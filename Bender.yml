@@ -43,6 +43,7 @@ sources:
   files:
   # - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
   # - rtl/uart_vip/uart_agent/uart_agent_pkg.sv
+  - sim/uvm_colors.sv
   - sim/uvm_vip/udma_cfg_agent/cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/if/uart_if.sv
