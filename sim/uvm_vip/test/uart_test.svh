@@ -36,10 +36,10 @@ class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
     int                                 baud_rate    = 115200;
-    const int                           char_length  = 5;
+    const int                           char_length  = 8;
     int                                 frequency    = 50000000;
     int                                 stop_bits    = 1;
-    uart_seq_item::parity_type          parity_en    = uart_seq_item::PARITY_ENABLE;
+    uart_seq_item::parity_type          parity_en    = uart_seq_item::PARITY_DISABLE;
     int                                 period;
 
     uart_env                            env;
@@ -84,6 +84,9 @@ class uart_test extends uvm_test;
         uvm_config_db #(int)::set(null,"*","char_length",char_length);
         uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
+
+        //set configuration for cfg_sequence
+        
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -93,13 +96,11 @@ class uart_test extends uvm_test;
     task run_phase(uvm_phase phase);
         // `uvm_info("[TEST]","run_phase",UVM_LOW)
         cfg_sequence        cfg_seq;
-        uart_sequence    rx_seq;
+        uart_sequence       rx_seq;
         phase.raise_objection(this, "Starting uvm sequence...");
-        repeat(5) begin
-            cfg_seq = cfg_sequence::type_id::create("cfg_seq");
-            cfg_seq.start(env.cfg_agnt.sequencer);
-            #10;
-        end
+        cfg_seq = cfg_sequence::type_id::create("cfg_seq");
+        cfg_seq.start(env.cfg_agnt.sequencer);
+        #10;
         phase.drop_objection(this);
 
         phase.raise_objection(this,"rx_data");

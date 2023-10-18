@@ -50,18 +50,17 @@ class cfg_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name = "cfg_agent",uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[UVM agent]","constructor", UVM_LOW)
+        `uvm_info("[UVM agent]","constructor", UVM_HIGH)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        `uvm_info("[UVM agent]","build_phase", UVM_LOW)
+        `uvm_info("[UVM agent]","build_phase", UVM_HIGH)
         driver      = cfg_driver::type_id::create("driver",this);
         monitor     = cfg_monitor::type_id::create("monitor",this);
         sequencer   = uvm_sequencer #(cfg_seq_item)::type_id::create("sequencer",this);
-
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

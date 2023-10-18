@@ -91,7 +91,10 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         @(posedge vif.sys_clk_i);
         vif.cfg_addr_i      <= transaction.addr;
         vif.cfg_data_i      <= transaction.data;
-        vif.cfg_rwn_i       <= 1'b1;
+        vif.cfg_rwn_i       <= 1'b0;
         vif.cfg_valid_i     <= 1'b1;
+        @(posedge vif.sys_clk_i);
+        vif.cfg_rwn_i       <= 1'b1;
+        vif.cfg_valid_i     <= 1'b0;
     endtask: do_config 
 endclass: cfg_driver

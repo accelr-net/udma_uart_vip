@@ -53,14 +53,14 @@ class uart_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_agent",uvm_component parent);
         super.new(name, parent);
-        `uvm_info("[UVM agent / uart_rx]","constructor", UVM_LOW)
+        `uvm_info("[UVM agent / uart_rx]","constructor", UVM_HIGH)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_LOW)
+        `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_HIGH)
         if(!uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config)) begin
             `uvm_fatal("uart_agent/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
@@ -76,7 +76,7 @@ class uart_agent extends uvm_agent;
 // connect phase
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
-        `uvm_info("AGENT","connect_phase",UVM_LOW)
+        `uvm_info("AGENT","connect_phase",UVM_HIGH)
         if(rx_config.is_rx_agent) begin
             driver.seq_item_port.connect(sequencer.seq_item_export);
         end

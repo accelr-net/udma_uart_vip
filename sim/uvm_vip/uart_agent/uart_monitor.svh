@@ -41,13 +41,13 @@ class uart_monitor extends uvm_monitor;
 
     function new(string name="uart_monitor", uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[monitor]", "constructor", UVM_LOW)
+        `uvm_info("[monitor]", "constructor", UVM_HIGH)
 
         uart_rx_analysis_port   = new("uart_rx_analysis_port",this);
     endfunction: new
 
     function void build_phase(uvm_phase phase);
-        `uvm_info("MONITOR","build_phase", UVM_LOW)
+        `uvm_info("MONITOR","build_phase", UVM_HIGH)
         if(!uvm_config_db #(virtual uart_if)::get(this, "*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
@@ -56,7 +56,7 @@ class uart_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        `uvm_info("[MONITOR]","run_phase",UVM_LOW)
+        `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
 
         forever begin
             uart_seq_item   uart_rx_transaction;

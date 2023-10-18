@@ -182,4 +182,19 @@ module tb_top();
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
         uvm_config_db #(int)::set(null,"*","period",CLOCK_PERIOD);
     end
+
+    initial begin
+        vif.udma_top_if.rstn_i              <= 1'b0;
+        vif.udma_top_if.data_rx_ready_i     <= 1'b1;
+        intf_uart_side.uart_rx_i            <= 1'b1;
+        vif.udma_top_if.cfg_data_i          <= 1'b0;
+        vif.udma_top_if.cfg_addr_i          <= 1'b0;
+        vif.udma_top_if.cfg_valid_i         <= 1'b0;
+        vif.udma_top_if.cfg_rwn_i           <= 1'b0;
+        vif.udma_top_if.cfg_rx_en_i         <= 1'b0; //make it high
+        vif.udma_top_if.cfg_rx_pending_i    <= 1'b0;
+
+        #(CLOCK_PERIOD);
+        vif.udma_top_if.rstn_i              <= 1'b1;
+    end
 endmodule: tb_top

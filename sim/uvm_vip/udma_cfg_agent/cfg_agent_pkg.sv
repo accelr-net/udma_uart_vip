@@ -38,6 +38,7 @@ package cfg_agent_pkg;
 
     //includes uvm header goes here
     `include "uart_reg_offsets.svh"
+    `include "uart_reg_bitfields.svh"
     `include "cfg_agent_config.svh"
     `include "cfg_seq_item.svh"
     `include "cfg_sequence.svh"

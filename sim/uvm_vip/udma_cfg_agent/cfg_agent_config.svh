@@ -42,7 +42,7 @@ class cfg_agent_config extends uvm_object;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="cfg_agent_config");
         super.new(name);
-        `uvm_info("[cfg_agent_config]","constructor",UVM_LOW)
+        `uvm_info("[cfg_agent_config]","constructor",UVM_HIGH)
     endfunction: new
 
 endclass : cfg_agent_config

@@ -36,6 +36,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
     `uvm_component_utils(uart_driver)
     parameter               char_length = 8;
     virtual uart_if         intf_uart_side;
+    int                     period;
 
     uart_agent_config       rx_config;
 
@@ -58,7 +59,8 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         if(!uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config)) begin
             `uvm_fatal("uart_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
-        `uvm_info("[DRIVER]","build_phase",UVM_LOW);
+        `uvm_info("[DRIVER]","build_phase",UVM_HIGH);
+        calculate_period(rx_config.baud_rate); // calculate period there
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -66,20 +68,27 @@ class uart_driver extends uvm_driver #(uart_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        `uvm_info("[DRIVER]","connect_phase",UVM_LOW);
+        `uvm_info("[DRIVER]","connect_phase",UVM_HIGH);
     endfunction: connect_phase
 
     task configure_phase(uvm_phase phase);
         super.configure_phase(phase);
-        `uvm_info("[DRIVER]", "configure_phase", UVM_LOW)
+        `uvm_info("[DRIVER]", "configure_phase", UVM_HIGH)
     endtask : configure_phase
 
+    function calculate_period(int baud_rate);
+        if(baud_rate != 0) begin
+            this.period = 10**9/baud_rate;
+        end else begin
+            `uvm_fatal("uart_driver/calculate_period","Please set baud_rate with non zero value");
+        end
+    endfunction: calculate_period;
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        `uvm_info("[DRIVER]","run_phase",UVM_LOW)
+        `uvm_info("[DRIVER]","run_phase",UVM_HIGH)
 
         forever begin
             uart_seq_item   uart_rx_transaction;
@@ -95,18 +104,18 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
-        #rx_config.period;
+        #(this.period);
         intf_uart_side.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin
-            #rx_config.period;
+            #(this.period);
             intf_uart_side.uart_rx_i   = character[i];
         end
         if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
-            #rx_config.period;
+            #(this.period);
             intf_uart_side.uart_rx_i   = parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
-            #rx_config.period;
+            #(this.period);
             intf_uart_side.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx

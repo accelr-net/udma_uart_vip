@@ -41,7 +41,7 @@ class uart_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_sequence");
         super.new(name);
-        `uvm_info("[SEQUENCE]","constructor", UVM_LOW)
+        `uvm_info("[SEQUENCE]","constructor", UVM_HIGH)
         uvm_config_db #(int)::get(null,"*","char_length",char_length);
         uvm_config_db #(bit)::get(null,"*","parity_en",parity_en);
     endfunction: new

@@ -34,7 +34,7 @@
 //**************************************************************************************************
 class uart_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_seq_item)
-    typedef enum {PARITY_ENABLE,PARITY_DISABLE}           parity_type;
+    typedef enum {PARITY_DISABLE,PARITY_ENABLE}           parity_type;
     parity_type                                           parity_en;
     local int                                             character_length;                                
     local bit         [7:0]                               character_mask;
@@ -45,7 +45,7 @@ class uart_seq_item extends uvm_sequence_item;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_seq_item");
         super.new(name);
-        `uvm_info("[SEQ_ITEM]","constructor",UVM_LOW)
+        `uvm_info("[SEQ_ITEM]","constructor",UVM_HIGH)
     endfunction: new
 
     //set data values
