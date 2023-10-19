@@ -71,19 +71,23 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
         `uvm_info("[DRIVER]","run_phase", UVM_LOW)
+        @(negedge vif.rstn_i);
         forever begin
+            // @(posedge vif.sys_clk_i);
             cfg_seq_item cfg_transaction;
 
+            @(posedge vif.sys_clk_i);
             //First get an item from sequencer
-            // seq_item_port.get_next_item(cfg_transaction);
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");
-            seq_item_port.get_next_item(cfg_transaction);
-            
-            `uvm_info("[DRIVER]","Transaction is sent", UVM_LOW)
-            if(cfg_transaction.rw.name() == "WRITE") begin
-                do_config(cfg_transaction);
+            seq_item_port.try_next_item(cfg_transaction);
+            if(cfg_transaction) begin
+                cfg_transaction.print();
+                `uvm_info("[DRIVER]","Transaction is sent", UVM_LOW)
+                if(cfg_transaction.rw.name() == "WRITE") begin
+                    do_config(cfg_transaction);
+                end
+                seq_item_port.item_done();
             end
-            seq_item_port.item_done();
         end
     endtask : run_phase
 

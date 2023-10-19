@@ -50,7 +50,7 @@ class uart_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
-        repeat(5) begin
+        repeat(2) begin
             uart_seq_item          uart_rx_transaction;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);

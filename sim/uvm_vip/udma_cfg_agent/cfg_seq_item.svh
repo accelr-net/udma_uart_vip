@@ -46,4 +46,17 @@ class cfg_seq_item extends uvm_sequence_item;
         `uvm_info("[SQU_ITEM]","constructor", UVM_HIGH)
     endfunction: new
     
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction: do_print
+
+    function string convert2string();
+        string s;
+        s = super.convert2string();
+        $sformat(s,"%s data        : %b \n",s,this.data);
+        $sformat(s,"%s addr : %0d \n",s, this.addr);
+        $sformat(s,"%s rw        : %p \n" ,s, this.rw);
+        return s;
+    endfunction: convert2string
+    
 endclass : cfg_seq_item

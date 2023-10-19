@@ -126,16 +126,13 @@ class cfg_sequence extends uvm_sequence;
         `uvm_info("[SEQUENCE]","body",UVM_LOW); 
         cfg_item = cfg_seq_item::type_id::create("cfg_item");
 
-        start_item(cfg_item);
-        cfg_item.addr           <= reg_offsets.tx_saddr;
-        cfg_item.data           <= 32'h1c00934;
-        cfg_item.rw             <= cfg_seq_item::WRITE;
-        finish_item(cfg_item);
-        
+        //This is for uart setup register value
         start_item(cfg_item);
         cfg_item.addr           <= reg_offsets.setup_addr;
         cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
+        
+        //ToDo: add other register values later with other agents 
     endtask: body
 endclass: cfg_sequence
