@@ -43,4 +43,9 @@ class udma_rx_seq_item extends uvm_sequence_item;
         super.new();
         `uvm_info("[SEQ_ITEM]","constructor",UVM_HIGH)
     endfunction: new
+
+    function string convert2string();
+        return $psprintf("data = $b",data);
+    endfunction: convert2string
+
 endclass : udma_rx_seq_item
