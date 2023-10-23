@@ -38,7 +38,7 @@ class udma_rx_agent extends uvm_agent;
     //declare driver, monitor and sequencer
     udma_rx_driver                          driver;
     udma_rx_monitor                         monitor;
-    uvm_sequncer #(udma_rx_seq_item)        sequencer;
+    uvm_sequencer #(udma_rx_seq_item)       sequencer;
 
     uvm_analysis_port  #(udma_rx_seq_item)  udma_rx_aport;
 
@@ -54,7 +54,7 @@ class udma_rx_agent extends uvm_agent;
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
-        super.build_phase(phase)
+        super.build_phase(phase);
         `uvm_info("[UVM agent / uart_rx]", "build_phase", UVM_HIGH)
         
         driver                      = udma_rx_driver::type_id::create("udma_rx_driver", this);

@@ -37,6 +37,7 @@ class uart_env extends uvm_env;
     cfg_agent                                       cfg_agnt;
     uart_agent                                      uart_rx_agnt;
     uart_agent                                      uart_tx_agnt;
+    udma_rx_agent                                   udma_rx_agnt;
     env_config                                      env_configs;
     uart_agent_config                               uart_rx_config;
     uart_agent_config                               uart_tx_config;
@@ -63,6 +64,7 @@ class uart_env extends uvm_env;
         cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);
         uart_tx_agnt        = uart_agent::type_id::create("uart_tx_agnt",this);
+        udma_rx_agnt        = udma_rx_agent::type_id::create("udma_rx_agnt",this);
         sub                 = uart_subscriber::type_id::create("sub",this);
 
         //create configuration objects for agents

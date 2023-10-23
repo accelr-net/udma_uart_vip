@@ -93,6 +93,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         forever begin
             uart_seq_item   uart_rx_transaction;
             
+            $display("--------------------uart driver------------------");
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(uart_rx_transaction);
             do_uart_rx(uart_rx_transaction);

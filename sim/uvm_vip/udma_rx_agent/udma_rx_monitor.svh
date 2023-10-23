@@ -46,7 +46,7 @@ class udma_rx_monitor extends uvm_monitor;
     endfunction: new
 
     function void build_phase(uvm_phase phase);
-        super.build_phase(phase)
+        super.build_phase(phase);
         `uvm_info("MONITOR","build_phase",UVM_HIGH)
         if(!uvm_config_db #(virtual udma_if)::get(this,"","vif",vif)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
@@ -58,13 +58,15 @@ class udma_rx_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
         forever begin
             udma_rx_seq_item        udma_rx_transaction;
+            $display("--------------udma_rx monitor------------");
             udma_rx_transaction  =  udma_rx_seq_item::type_id::create("udma_rx_transaction",this);
             @(posedge vif.sys_clk_i);
             if(vif.data_rx_valid_o) begin
                 udma_rx_transaction.data = vif.data_rx_o;
+                $display("vif.data_rx_o %p",vif.data_rx_o);
+                udma_aport.write(udma_rx_transaction);
             end
-            udma_aport.write(udma_rx_transaction);
-            $display("udma_rx_transaction : %p",udma_rx_transaction);
+            $display("udma_rx_transaction : %p",udma_rx_transaction.data);
         end
     endtask: run_phase
 

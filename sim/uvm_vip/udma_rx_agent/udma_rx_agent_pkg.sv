@@ -32,7 +32,7 @@
 //  20-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package udma_rx_pkg;
+package udma_rx_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
@@ -41,5 +41,5 @@ package udma_rx_pkg;
     `include "udma_rx_sequence.svh"
     `include "udma_rx_driver.svh"
     `include "udma_rx_monitor.svh"
-    `include "udma_rx_agent"
-endpackage : udma_rx_pkg
+    `include "udma_rx_agent.svh"
+endpackage : udma_rx_agent_pkg 

@@ -97,6 +97,7 @@ class uart_test extends uvm_test;
         // `uvm_info("[TEST]","run_phase",UVM_LOW)
         cfg_sequence        cfg_seq;
         uart_sequence       rx_seq;
+        udma_rx_sequence    udma_rx_seq; 
         phase.raise_objection(this, "Starting uvm sequence...");
         cfg_seq = cfg_sequence::type_id::create("cfg_seq");
         cfg_seq.start(env.cfg_agnt.sequencer);
@@ -106,6 +107,11 @@ class uart_test extends uvm_test;
         phase.raise_objection(this,"rx_data");
         rx_seq = uart_sequence::type_id::create("uart_rx_seq");
         rx_seq.start(env.uart_rx_agnt.sequencer);
+        phase.drop_objection(this);
+
+        phase.raise_objection(this,"rx_data");
+        udma_rx_seq = udma_rx_sequence::type_id::create("udma_rx_seq");
+        udma_rx_seq.start(env.udma_rx_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
 endclass: uart_test
