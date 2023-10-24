@@ -58,15 +58,14 @@ class udma_rx_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
         forever begin
             udma_rx_seq_item        udma_rx_transaction;
-            $display("--------------udma_rx monitor------------");
             udma_rx_transaction  =  udma_rx_seq_item::type_id::create("udma_rx_transaction",this);
             @(posedge vif.sys_clk_i);
-            if(vif.data_rx_valid_o) begin
-                udma_rx_transaction.data = vif.data_rx_o;
-                $display("vif.data_rx_o %p",vif.data_rx_o);
+            if(vif.data_rx_valid_o && vif.data_rx_ready_i) begin
+                logic [31:0]    dt;
+                udma_rx_transaction.set_data(vif.data_rx_o);
+                udma_rx_transaction.print();
                 udma_aport.write(udma_rx_transaction);
             end
-            $display("udma_rx_transaction : %p",udma_rx_transaction.data);
         end
     endtask: run_phase
 

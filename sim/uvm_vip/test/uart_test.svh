@@ -106,12 +106,12 @@ class uart_test extends uvm_test;
 
         phase.raise_objection(this,"rx_data");
         rx_seq = uart_sequence::type_id::create("uart_rx_seq");
-        rx_seq.start(env.uart_rx_agnt.sequencer);
+        udma_rx_seq = udma_rx_sequence::type_id::create("udma_rx_seq");
+        fork
+            rx_seq.start(env.uart_rx_agnt.sequencer);
+            udma_rx_seq.start(env.udma_rx_agnt.sequencer);
+        join
         phase.drop_objection(this);
 
-        phase.raise_objection(this,"rx_data");
-        udma_rx_seq = udma_rx_sequence::type_id::create("udma_rx_seq");
-        udma_rx_seq.start(env.udma_rx_agnt.sequencer);
-        phase.drop_objection(this);
     endtask: run_phase
 endclass: uart_test

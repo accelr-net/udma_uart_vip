@@ -35,12 +35,24 @@
 class udma_rx_driver extends uvm_driver #(udma_rx_seq_item);
     `uvm_component_utils(udma_rx_driver)
 
+    virtual udma_if     vif;
+
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="udma_rx_driver", uvm_component parent);
         super.new(name,parent);
     endfunction: new
+
+//---------------------------------------------------------------------------------------------------------------------
+// Build phase
+//---------------------------------------------------------------------------------------------------------------------
+    function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
+            `uvm_fatal("udma_rx_driver","No virtual interface found!");
+        end
+    endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
@@ -51,16 +63,24 @@ class udma_rx_driver extends uvm_driver #(udma_rx_seq_item);
 
         forever begin
             udma_rx_seq_item   udma_rx_transaction;
-            
             udma_rx_transaction = udma_rx_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(udma_rx_transaction);
+            $display("%s udma_rx_transaction %p %s",YELLOW,udma_rx_transaction,WHITE);
             do_udma_rx(udma_rx_transaction);
+            // `uvm_info($sformatf("%s udma_rx_driver %s",RED,WHITE),"no transaction",UVM_LOW)
             seq_item_port.item_done();
         end
     endtask: run_phase
 
-    task do_udma_rx(udma_rx_seq_item transaction);
-
+    task do_udma_rx(udma_rx_seq_item txn);
+        #(10);
+        if(txn.ready == 1) begin
+            vif.data_rx_ready_i     <= 1'b1;
+            $display("one");
+        end else begin
+            vif.data_rx_ready_i     <= 1'b0;
+            $display("zero");
+        end
     endtask: do_udma_rx
 
 endclass: udma_rx_driver

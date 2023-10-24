@@ -36,6 +36,8 @@ package udma_rx_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
+    import uvm_colors::*;
+
     //all uvm uart_rx header files
     `include "udma_rx_seq_item.svh"
     `include "udma_rx_sequence.svh"

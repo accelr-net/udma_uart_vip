@@ -34,8 +34,8 @@
 //**************************************************************************************************
 class udma_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(udma_rx_seq_item)
-    rand    bit                     ready;
-    logic [31:0]            data;
+    rand     logic                   ready;
+    local    logic [31:0]            data;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -44,8 +44,29 @@ class udma_rx_seq_item extends uvm_sequence_item;
         `uvm_info("[SEQ_ITEM]","constructor",UVM_HIGH)
     endfunction: new
 
+    //set data_value
+    function set_data(
+        input  logic [31:0]  data
+    );
+        this.data = data;
+    endfunction
+
+    //get data value
+    function get_data(
+        output  logic [31:0]       data_out 
+    );
+        data_out = this.data;
+    endfunction: get_data
+
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction: do_print
+
     function string convert2string();
-        return $psprintf("data = $b",data);
+        string s;
+        s = super.convert2string();
+        $sformat(s,"%s %s data = %b %s",s,BLUE,this.data,WHITE);
+        return s;
     endfunction: convert2string
 
 endclass : udma_rx_seq_item
