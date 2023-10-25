@@ -55,11 +55,11 @@ class uart_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase(uvm_phase phase);
+        uart_seq_item   uart_rx_transaction;
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
 
         forever begin
-            uart_seq_item   uart_rx_transaction;
             bit                parity;
             bit                parity_en;
             bit [7:0]          character;

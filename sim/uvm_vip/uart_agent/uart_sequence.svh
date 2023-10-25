@@ -50,13 +50,12 @@ class uart_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
+        uart_seq_item          uart_rx_transaction;
         repeat(100) begin
-            uart_seq_item          uart_rx_transaction;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
             uart_rx_transaction.set_character_length(char_length);
             uart_rx_transaction.randomize();
-            uart_rx_transaction.print();
             finish_item(uart_rx_transaction);
         end
     endtask: body

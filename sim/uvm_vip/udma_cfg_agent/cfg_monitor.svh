@@ -63,11 +63,10 @@ class cfg_monitor extends uvm_monitor;
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     virtual task run_phase(uvm_phase phase);
+        cfg_seq_item cfg_transaction;
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase", UVM_HIGH)
         forever begin
-            cfg_seq_item cfg_transaction;
-
             @(posedge vif.sys_clk_i);
             //create a transaction object
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction",this);

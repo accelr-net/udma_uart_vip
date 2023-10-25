@@ -69,13 +69,11 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
+        cfg_seq_item    cfg_transaction;
         super.run_phase(phase);
         `uvm_info("[DRIVER]","run_phase", UVM_LOW)
         @(negedge vif.rstn_i);
         forever begin
-            // @(posedge vif.sys_clk_i);
-            cfg_seq_item cfg_transaction;
-
             @(posedge vif.sys_clk_i);
             //First get an item from sequencer
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");

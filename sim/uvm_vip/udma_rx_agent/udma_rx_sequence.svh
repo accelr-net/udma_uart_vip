@@ -48,12 +48,11 @@ class udma_rx_sequence extends uvm_sequence;
 // Body
 //---------------------------------------------------------------------------------------------------------------------
     task body();
+        udma_rx_seq_item       udma_rx_transaction;
         forever begin
-            udma_rx_seq_item       udma_rx_transaction;
             udma_rx_transaction         = udma_rx_seq_item::type_id::create("udma_rx_transaction");
             start_item(udma_rx_transaction);
             udma_rx_transaction.randomize();
-            udma_rx_transaction.print();
             finish_item(udma_rx_transaction);
         end
     endtask: body
