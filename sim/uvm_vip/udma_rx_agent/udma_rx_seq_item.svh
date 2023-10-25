@@ -34,8 +34,13 @@
 //**************************************************************************************************
 class udma_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(udma_rx_seq_item)
-    rand     logic                   ready;
+    rand     int                     ready_toggle_time;
     local    logic [31:0]            data;
+
+    constraint time_range { 
+        ready_toggle_time < 100;
+        ready_toggle_time > 1;
+    }
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------

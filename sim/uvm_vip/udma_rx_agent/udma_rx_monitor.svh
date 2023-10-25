@@ -37,6 +37,7 @@ class udma_rx_monitor extends uvm_monitor;
     `uvm_component_utils(udma_rx_monitor)
 
     virtual udma_if         vif;
+    int transaction_count = 0;
 
     uvm_analysis_port #(udma_rx_seq_item)   udma_aport;
 
@@ -55,7 +56,7 @@ class udma_rx_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
+        // `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
         forever begin
             udma_rx_seq_item        udma_rx_transaction;
             udma_rx_transaction  =  udma_rx_seq_item::type_id::create("udma_rx_transaction",this);
@@ -64,6 +65,8 @@ class udma_rx_monitor extends uvm_monitor;
                 logic [31:0]    dt;
                 udma_rx_transaction.set_data(vif.data_rx_o);
                 udma_rx_transaction.print();
+                transaction_count += 1;
+                $display("%s transaction_count %d %s",RED,transaction_count,WHITE);
                 udma_aport.write(udma_rx_transaction);
             end
         end

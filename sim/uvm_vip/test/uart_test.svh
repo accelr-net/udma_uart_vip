@@ -110,7 +110,9 @@ class uart_test extends uvm_test;
         fork
             rx_seq.start(env.uart_rx_agnt.sequencer);
             udma_rx_seq.start(env.udma_rx_agnt.sequencer);
-        join
+        join_any
+
+        #10000ns;
         phase.drop_objection(this);
 
     endtask: run_phase
