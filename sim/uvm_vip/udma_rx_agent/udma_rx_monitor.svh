@@ -62,7 +62,6 @@ class udma_rx_monitor extends uvm_monitor;
             udma_rx_transaction  =  udma_rx_seq_item::type_id::create("udma_rx_transaction",this);
             @(posedge vif.sys_clk_i);
             if(vif.data_rx_valid_o && vif.data_rx_ready_i) begin
-                logic [31:0]    dt;
                 udma_rx_transaction.set_data(vif.data_rx_o);
                 transaction_count += 1;
                 $display("%s transaction_count %d %s",RED,transaction_count,WHITE);

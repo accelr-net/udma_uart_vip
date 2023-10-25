@@ -58,21 +58,21 @@ class udma_rx_driver extends uvm_driver #(udma_rx_seq_item);
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
     task run_phase(uvm_phase phase);
-        bit                 start_state = 1'b1;
+        bit                 data_ready = 1'b1;
         udma_rx_seq_item    udma_rx_transaction;
         super.run_phase(phase);
         `uvm_info("[DRIVER]","run_phase",UVM_HIGH);
         forever begin
             udma_rx_transaction = udma_rx_seq_item::type_id::create("uart_rx_transaction");
             seq_item_port.get_next_item(udma_rx_transaction);
-            do_udma_rx(udma_rx_transaction,start_state);
-            start_state = ~start_state;
+            do_udma_rx(udma_rx_transaction,data_ready);
+            data_ready = ~data_ready;
             seq_item_port.item_done();
         end
     endtask: run_phase
 
-    task do_udma_rx(udma_rx_seq_item txn,bit start_state);
-        vif.data_rx_ready_i   = start_state;
+    task do_udma_rx(udma_rx_seq_item txn,bit data_ready);
+        vif.data_rx_ready_i   = data_ready;
         #(txn.ready_toggle_time);
     endtask: do_udma_rx
 

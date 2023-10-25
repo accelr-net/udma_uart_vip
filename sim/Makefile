@@ -32,7 +32,7 @@ SIM_TOP     = tb_top
 
 ## Compile RTL with Questasim
 all: lib build opt
-	vsim -do run.tcl
+	vsim -c -do run.tcl
 ## vsim targets
 .PHONY: sim
 ## Simulate RTL with Questasim (GUI)
