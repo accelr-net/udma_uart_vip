@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   env_pkg.sv
+// FILE         :   analysis_components_pkg.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is contain all uvm environment files 
 //
@@ -29,18 +29,16 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  11-oct-2023      Kasun        creation
+//  26-oct-2023      Kasun        creation
 //
 //**************************************************************************************************
-package env_pkg;
+package analysis_components_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
+    import uvm_colors::*;
     import uart_agent_pkg::*;
-    import cfg_agent_pkg::*;
     import udma_rx_agent_pkg::*;
-    import analysis_components_pkg::*;
-    
-    `include "env_config.svh"
-    `include "uart_env.svh"
-endpackage: env_pkg
+
+    `include "uart_udma_predictor.svh"
+endpackage: analysis_components_pkg;

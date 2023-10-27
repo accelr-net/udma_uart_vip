@@ -37,6 +37,8 @@ sources:
   include_dirs:
   - sim/uvm_vip/uart_agent
   - sim/uvm_vip/udma_cfg_agent
+  - sim/uvm_vip/udma_rx_agent
+  - sim/uvm_vip/analysis_component
   - sim/uvm_vip/env
   - sim/uvm_vip/test
 
@@ -49,6 +51,7 @@ sources:
   - sim/uvm_vip/udma_rx_agent/udma_rx_agent_pkg.sv
   - sim/uvm_vip/if/uart_if.sv
   - sim/uvm_vip/if/udma_if.sv
+  - sim/uvm_vip/analysis_component/analysis_components_pkg.sv
   - sim/uvm_vip/env/env_pkg.sv
   - sim/uvm_vip/test/test_pkg.sv
   - sim/top/udma_sim.sv

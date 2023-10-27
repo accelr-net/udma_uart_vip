@@ -43,6 +43,7 @@ class uart_env extends uvm_env;
     uart_agent_config                               uart_tx_config;
     cfg_agent_config                                cfg_config;
     uart_subscriber                                 sub;
+    uart_udma_predictor                             predictor;
 
 
     uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
@@ -65,7 +66,8 @@ class uart_env extends uvm_env;
         uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);
         uart_tx_agnt        = uart_agent::type_id::create("uart_tx_agnt",this);
         udma_rx_agnt        = udma_rx_agent::type_id::create("udma_rx_agnt",this);
-        sub                 = uart_subscriber::type_id::create("sub",this);
+        // sub                 = uart_subscriber::type_id::create("sub",this);
+        predictor           = uart_udma_predictor::type_id::create("predictor",this);
 
         //create configuration objects for agents
         uart_rx_config      = uart_agent_config::type_id::create("uart_rx_config",this);
@@ -87,6 +89,7 @@ class uart_env extends uvm_env;
         uart_rx_config.char_length  = env_configs.char_length;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
         uart_rx_config.period       = env_configs.period;
+        uart_rx_config.is_rx_agent  = 1'b1;
 
         uart_tx_config.baud_rate    = env_configs.baud_rate;
         uart_tx_config.parity_en    = env_configs.parity_en;
@@ -101,7 +104,8 @@ class uart_env extends uvm_env;
 
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.subscriber_export);
+        // uart_rx_agnt.uart_rx_agent_analysis_port.connect(sub.analysis_export);
+        uart_rx_agnt.uart_rx_agent_analysis_port.connect(predictor.analysis_export);
         uart_rx_aport = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
     endfunction: connect_phase
 

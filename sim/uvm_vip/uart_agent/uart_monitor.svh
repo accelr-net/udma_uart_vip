@@ -52,6 +52,7 @@ class uart_monitor extends uvm_monitor;
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
         uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
+        $display("%s is_rx_agent %b %s",BLUE,rx_config.is_rx_agent,WHITE);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
