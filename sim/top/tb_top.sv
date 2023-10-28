@@ -197,4 +197,11 @@ module tb_top();
         #(CLOCK_PERIOD);
         vif.udma_top_if.rstn_i              <= 1'b1;
     end
+
+    // initial begin
+    //     forever begin
+    //         $display("%s uart_rx_i %b %s ",PURPLE,intf_uart_side.uart_rx_i,WHITE);
+    //         #(HALF_CLOCK_PERIOD);
+    //     end
+    // end
 endmodule: tb_top

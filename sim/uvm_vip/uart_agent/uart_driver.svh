@@ -89,6 +89,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
     task run_phase(uvm_phase phase);
         // `uvm_info("[DRIVER]","run_phase",UVM_HIGH)
         uart_seq_item   uart_rx_transaction;
+        $display("%s %0t driver this.period %d %s",GREEN,$time, this.period, WHITE);
         super.run_phase(phase);
         forever begin
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
@@ -102,6 +103,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         bit         parity;
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
+        $display("%s %0t uart_driver character %b %s",YELLOW,$time, character, WHITE);
         uart_rx_transaction.get_parity(parity);
         #(this.period);
         intf_uart_side.uart_rx_i = 1'b0; //start bit

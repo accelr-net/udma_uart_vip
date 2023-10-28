@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_sequence.sv
+// FILE         :   udma_rx_drv_seq_item.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence object for cfg. 
+// DESCRIPTION  :   This is for configuration for uart_agent. 
 //
 // ************************************************************************************************
 //
@@ -29,34 +29,34 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  11-Sep-2023      Kasun        creation
+//  20-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_sequence extends uvm_sequence;
-    `uvm_object_utils(uart_sequence)
-    int char_length = 8;
-    bit parity_en   = 1;
+class udma_rx_drv_seq_item extends uvm_sequence_item;
+    `uvm_object_utils(udma_rx_drv_seq_item)
+    rand     int                     ready_toggle_time;
+
+    constraint time_range { 
+        ready_toggle_time < 100;
+        ready_toggle_time > 1;
+    }
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_sequence");
-        super.new(name);
-        `uvm_info("[SEQUENCE]","constructor", UVM_HIGH)
-        uvm_config_db #(int)::get(null,"*","char_length",char_length);
-        uvm_config_db #(bit)::get(null,"*","parity_en",parity_en);
+    function new(string name="udma_rx_drv_seq_item");
+        super.new();
+        `uvm_info("[SEQ_ITEM]","constructor",UVM_HIGH)
     endfunction: new
 
-//---------------------------------------------------------------------------------------------------------------------
-// Body
-//---------------------------------------------------------------------------------------------------------------------
-    task body();
-        uart_seq_item          uart_rx_transaction;
-        repeat(5) begin
-            uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
-            start_item(uart_rx_transaction);
-            uart_rx_transaction.set_character_length(char_length);
-            uart_rx_transaction.randomize();
-            finish_item(uart_rx_transaction);
-        end
-    endtask: body
-endclass: uart_sequence
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction: do_print
+
+    function string convert2string();
+        string s;
+        s = super.convert2string();
+        $sformat(s,"%s %s data = %b %s",s,BLUE,this.ready_toggle_time,WHITE);
+        return s;
+    endfunction: convert2string
+
+endclass : udma_rx_seq_item

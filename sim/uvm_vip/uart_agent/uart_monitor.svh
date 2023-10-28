@@ -37,6 +37,7 @@ class uart_monitor extends uvm_monitor;
 
     virtual uart_if                          intf_uart_side;
     uart_agent_config                        rx_config;
+    int                                      period;
     uvm_analysis_port #(uart_seq_item)       uart_rx_analysis_port;
 
     function new(string name="uart_monitor", uvm_component parent);
@@ -53,10 +54,20 @@ class uart_monitor extends uvm_monitor;
         end
         uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
         $display("%s is_rx_agent %b %s",BLUE,rx_config.is_rx_agent,WHITE);
+        calculate_period(rx_config.baud_rate);
     endfunction
+
+    function calculate_period(int baud_rate);
+        if(baud_rate != 0) begin
+            this.period = 10**9/baud_rate;
+        end else begin
+            `uvm_fatal("uart_driver/calculate_period","Please set baud_rate with non zero value");
+        end
+    endfunction: calculate_period;
 
     virtual task run_phase(uvm_phase phase);
         uart_seq_item   uart_rx_transaction;
+        $display("%s %0t monitor this.period %d %s",GREEN,$time, this.period, WHITE);
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
 
@@ -72,18 +83,23 @@ class uart_monitor extends uvm_monitor;
             end else begin
                 @(negedge intf_uart_side.uart_tx_o);
             end
-            #(rx_config.period/2);
-            #rx_config.period; // wait for start_bit
+            #(this.period/2);
+            #this.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
                 character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
-                #rx_config.period;
+                $display("%s %0t character %b %s",PURPLE,$time, intf_uart_side.uart_rx_i, WHITE);
+                if(i != rx_config.char_length - 1) begin
+                    #this.period;
+                end
             end
+
+            $display("%s %0t character %b %s",BLUE,$time, character, WHITE);
             //get parity
             if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_seq_item::PARITY_ENABLE;
                 parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
-                #rx_config.period; 
+                #this.period; 
             end else begin
                 parity_en = uart_seq_item::PARITY_DISABLE;
             end
@@ -91,9 +107,9 @@ class uart_monitor extends uvm_monitor;
             uart_rx_transaction.set_data(character,parity_en,parity);
             //delay for 2 stopbits 
             if(rx_config.stop_bits == 2) begin
-                #rx_config.period;
+                #this.period;
             end
-            #(rx_config.period/2); // wait for stop
+            #(this.period/2); // wait for stop
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase

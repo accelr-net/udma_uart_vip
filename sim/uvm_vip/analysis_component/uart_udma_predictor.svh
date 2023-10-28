@@ -37,10 +37,11 @@
 class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
     `uvm_component_utils(uart_udma_predictor)
 
-    // uvm_analysis_port   #(udma_rx_seq_item)     expected_udma_aport;
+    uvm_analysis_port   #(udma_rx_seq_item)     expected_udma_aport;
 
     function new(string name="uart_udma_predictor",uvm_component parent);
         super.new(name,parent);
+        expected_udma_aport = new("expected_udma_aport",this);
     endfunction: new
 
     // function build_phase(uvm_phase phase);
@@ -54,12 +55,12 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
         expected_udma_item      = udma_rx_seq_item::type_id::create("expected_udma_txn",this);
         //make expected_udma_txn here
         t.get_data(character);
-        expected_udma_item.set_data(7'h5);
+        expected_udma_item.set_data(character);
 
         $display("%s expected_udma_item : %p %s",GREEN,expected_udma_item,WHITE);
 
         //write expected_udma_txn into analysis port
-        // expected_udma_aport.write(expected_udma_item);
+        expected_udma_aport.write(expected_udma_item);
     endfunction: write
             
 
