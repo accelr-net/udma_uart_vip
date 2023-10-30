@@ -70,7 +70,7 @@ class udma_rx_seq_item extends uvm_sequence_item;
     function string convert2string();
         string s;
         s = super.convert2string();
-        $sformat(s,"%s %s data = %b %s",s,BLUE,this.data,WHITE);
+        $sformat(s,"%s %s data = %0d %s",s,BLUE,this.data,WHITE);
         return s;
     endfunction: convert2string
 
