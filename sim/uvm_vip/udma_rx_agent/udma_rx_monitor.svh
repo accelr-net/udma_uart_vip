@@ -36,9 +36,7 @@
 class udma_rx_monitor extends uvm_monitor;
     `uvm_component_utils(udma_rx_monitor)
 
-    virtual udma_if         vif;
-    int transaction_count = 0;
-
+    virtual udma_if                         vif;
     uvm_analysis_port #(udma_rx_seq_item)   udma_aport;
 
     function new(string name="udma_rx_monitor",uvm_component parent);
@@ -63,8 +61,6 @@ class udma_rx_monitor extends uvm_monitor;
             @(posedge vif.sys_clk_i);
             if(vif.data_rx_valid_o && vif.data_rx_ready_i) begin
                 udma_rx_transaction.set_data(vif.data_rx_o);
-                transaction_count += 1;
-                $display("%s transaction_count %d %s",RED,transaction_count,WHITE);
                 udma_aport.write(udma_rx_transaction);
             end
         end

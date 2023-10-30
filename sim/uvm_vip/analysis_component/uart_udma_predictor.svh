@@ -44,11 +44,6 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
         expected_udma_aport = new("expected_udma_aport",this);
     endfunction: new
 
-    // function build_phase(uvm_phase phase);
-    //     super.build_phase(phase);
-    //     expected_udma_aport = new("expected_udma_aport",this);
-    // endfunction: build_phase
-
     virtual function void write(uart_seq_item t);
         udma_rx_seq_item                            expected_udma_item;
         bit     [7:0]                               character;
@@ -57,11 +52,8 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
         t.get_data(character);
         expected_udma_item.set_data(character);
 
-        $display("%s expected_udma_item : %p %s",GREEN,expected_udma_item,WHITE);
-
         //write expected_udma_txn into analysis port
         expected_udma_aport.write(expected_udma_item);
     endfunction: write
-            
 
 endclass: uart_udma_predictor

@@ -74,4 +74,14 @@ class udma_rx_seq_item extends uvm_sequence_item;
         return s;
     endfunction: convert2string
 
+    function bit do_compare(uvm_object rhs, uvm_comparer comparer);
+        udma_rx_seq_item    tr;
+        bit eq  =  1'b1;
+        if(!$cast(tr,rhs)) begin
+            `uvm_fatal("FTR","Illegal do_compare cast")
+        end
+        eq &= comparer.compare_field("data",this.data, tr.data, $bits(data));
+        return eq;
+    endfunction: do_compare
+
 endclass : udma_rx_seq_item

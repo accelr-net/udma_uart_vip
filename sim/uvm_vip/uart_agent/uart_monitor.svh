@@ -53,7 +53,6 @@ class uart_monitor extends uvm_monitor;
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
         uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
-        $display("%s is_rx_agent %b %s",BLUE,rx_config.is_rx_agent,WHITE);
         calculate_period(rx_config.baud_rate);
     endfunction
 
@@ -67,7 +66,6 @@ class uart_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         uart_seq_item   uart_rx_transaction;
-        $display("%s %0t monitor this.period %d %s",GREEN,$time, this.period, WHITE);
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
 
@@ -88,13 +86,11 @@ class uart_monitor extends uvm_monitor;
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
                 character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
-                $display("%s %0t character %b %s",PURPLE,$time, intf_uart_side.uart_rx_i, WHITE);
                 if(i != rx_config.char_length - 1) begin
                     #this.period;
                 end
             end
 
-            $display("%s %0t character %b %s",BLUE,$time, character, WHITE);
             //get parity
             if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_seq_item::PARITY_ENABLE;
