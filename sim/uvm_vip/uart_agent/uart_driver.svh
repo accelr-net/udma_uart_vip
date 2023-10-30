@@ -104,18 +104,18 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
         #(this.period);
-        intf_uart_side.uart_rx_i = 1'b0; //start bit
+        intf_uart_side.uart_rx_if.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin
             #(this.period);
-            intf_uart_side.uart_rx_i   = character[i];
+            intf_uart_side.uart_rx_if.uart_rx_i   = character[i];
         end
         if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
             #(this.period);
-            intf_uart_side.uart_rx_i   = parity;
+            intf_uart_side.uart_rx_if.uart_rx_i   = parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
             #(this.period);
-            intf_uart_side.uart_rx_i = 1'b1; //stop bit
+            intf_uart_side.uart_rx_if.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx
 endclass: uart_driver

@@ -98,8 +98,8 @@ module tb_top();
         .periph_clk_i           (vif.udma_top_if.periph_clk_i            ),
         .rstn_i                 (vif.udma_top_if.rstn_i                  ),
 
-        .uart_rx_i              (intf_uart_side.uart_dut_if.uart_rx_i               ),
-        .uart_tx_o              (intf_uart_side.uart_dut_if.uart_tx_o               ),
+        .uart_rx_i              (intf_uart_side.uart_rx_if.uart_rx_i     ),
+        .uart_tx_o              (intf_uart_side.uart_tx_if.uart_tx_o     ),
 
         .rx_char_event_o        (vif.udma_top_if.rx_char_event_o         ),
         .err_event_o            (vif.udma_top_if.err_event_o             ),
@@ -186,7 +186,7 @@ module tb_top();
     initial begin
         vif.udma_top_if.rstn_i              <= 1'b0;
         // vif.udma_top_if.data_rx_ready_i     <= 1'b1;
-        intf_uart_side.uart_rx_i            <= 1'b1;
+        intf_uart_side.uart_rx_if.uart_rx_i <= 1'b1;
         vif.udma_top_if.cfg_data_i          <= 1'b0;
         vif.udma_top_if.cfg_addr_i          <= 1'b0;
         vif.udma_top_if.cfg_valid_i         <= 1'b0;

@@ -77,15 +77,15 @@ class uart_monitor extends uvm_monitor;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
             if(rx_config.is_rx_agent) begin
-                @(negedge intf_uart_side.uart_rx_i);
+                @(negedge intf_uart_side.uart_rx_if.uart_rx_i);
             end else begin
-                @(negedge intf_uart_side.uart_tx_o);
+                @(negedge intf_uart_side.uart_tx_if.uart_tx_o);
             end
             #(this.period/2);
             #this.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
+                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_if.uart_rx_i:  intf_uart_side.uart_tx_if.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
                     #this.period;
                 end
@@ -94,7 +94,7 @@ class uart_monitor extends uvm_monitor;
             //get parity
             if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_seq_item::PARITY_ENABLE;
-                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
+                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_if.uart_rx_i:intf_uart_side.uart_tx_if.uart_tx_o;
                 #this.period; 
             end else begin
                 parity_en = uart_seq_item::PARITY_DISABLE;

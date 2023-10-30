@@ -97,12 +97,12 @@ interface uart_if;
     );
 
     //drive tx pin into dut from outside
-    modport uart_tx_driver_if(
+    modport uart_tx_if(
         input           uart_tx_o
     );
 
     //passive driver connect to rx from outside
-    modport uart_rx_driver_if(
+    modport uart_rx_if(
         output          uart_rx_i
     );
 endinterface: uart_if
