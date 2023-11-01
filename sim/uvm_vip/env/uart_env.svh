@@ -46,7 +46,6 @@ class uart_env extends uvm_env;
     uart_udma_predictor                             predictor;
     uart_udma_checker                               uartudma_checker;
 
-
     uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
     
 //---------------------------------------------------------------------------------------------------------------------

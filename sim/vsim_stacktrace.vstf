@@ -32,3 +32,65 @@
 # End of Stack Trace
 
 
+# Current time Mon Oct 30 16:25:41 2023
+# Program = vsim
+# Id = "2023.2"
+# Version = "2023.04"
+# Date = "Apr 11 2023"
+# Platform = "linux_x86_64"
+# Signature = 016838926890ae993a152c369dc4c1be
+# 0    0x00007feff298dc67: '/home/kasun-accelr/accelr-projects/pulp/pulpissimo/sim/uvm_vip/uart_agent/uart_monitor.svh:84'
+# 1    0x00007feff259c237: '/opt/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_common_phases.svh:245'
+# 2    0x00007feff258a047: '/opt/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_task_phase.svh:150'
+# 3    0x00000000023e53b2: '<unknown (@0x23e53b2)>'
+# 4    0x00000000004df304: '<unknown (@0x4df304)>'
+# 5    0x000000000074da63: '<unknown (@0x74da63)>'
+# 6    0x0000000000ca58ad: '<unknown (@0xca58ad)>'
+# 7    0x0000000000caabd0: '<unknown (@0xcaabd0)>'
+# 8    0x0000000000cac54e: '<unknown (@0xcac54e)>'
+# 9    0x0000000000f9bd2d: '<unknown (@0xf9bd2d)>'
+# 10   0x000000000287a82d: '<unknown (@0x287a82d)>'
+# 11   0x000000000287ec86: '<unknown (@0x287ec86)>'
+# 12   0x0000000002880371: '<unknown (@0x2880371)>'
+# 13   0x00000000028806d6: '<unknown (@0x28806d6)>'
+# 14   0x000000000122ed99: '<unknown (@0x122ed99)>'
+# 15   0x00000000029205df: '<unknown (@0x29205df)>'
+# 16   0x0000000002974157: '<unknown (@0x2974157)>'
+# 17   0x0000000002937047: '<unknown (@0x2937047)>'
+# 18   0x0000000002937329: '<unknown (@0x2937329)>'
+# 19   0x00000000027084fd: '<unknown (@0x27084fd)>'
+# 20   0x0000000000c6dafc: '<unknown (@0xc6dafc)>'
+# End of Stack Trace
+
+
+# Current time Mon Oct 30 16:26:24 2023
+# Program = vsim
+# Id = "2023.2"
+# Version = "2023.04"
+# Date = "Apr 11 2023"
+# Platform = "linux_x86_64"
+# Signature = 016838926890ae993a152c369dc4c1be
+# 0    0x00007feff298dc67: '/home/kasun-accelr/accelr-projects/pulp/pulpissimo/sim/uvm_vip/uart_agent/uart_monitor.svh:84'
+# 1    0x00007feff259c237: '/opt/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_common_phases.svh:245'
+# 2    0x00007feff258a047: '/opt/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_task_phase.svh:150'
+# 3    0x00000000023e53b2: '<unknown (@0x23e53b2)>'
+# 4    0x00000000004df304: '<unknown (@0x4df304)>'
+# 5    0x000000000074da63: '<unknown (@0x74da63)>'
+# 6    0x0000000000ca58ad: '<unknown (@0xca58ad)>'
+# 7    0x0000000000caabd0: '<unknown (@0xcaabd0)>'
+# 8    0x0000000000cac54e: '<unknown (@0xcac54e)>'
+# 9    0x0000000000f9bd2d: '<unknown (@0xf9bd2d)>'
+# 10   0x000000000287a82d: '<unknown (@0x287a82d)>'
+# 11   0x000000000287ec86: '<unknown (@0x287ec86)>'
+# 12   0x0000000002880371: '<unknown (@0x2880371)>'
+# 13   0x00000000028806d6: '<unknown (@0x28806d6)>'
+# 14   0x000000000122ed99: '<unknown (@0x122ed99)>'
+# 15   0x00000000029205df: '<unknown (@0x29205df)>'
+# 16   0x0000000002974157: '<unknown (@0x2974157)>'
+# 17   0x0000000002937047: '<unknown (@0x2937047)>'
+# 18   0x0000000002937329: '<unknown (@0x2937329)>'
+# 19   0x00000000027084fd: '<unknown (@0x27084fd)>'
+# 20   0x0000000000c6dafc: '<unknown (@0xc6dafc)>'
+# End of Stack Trace
+
+
