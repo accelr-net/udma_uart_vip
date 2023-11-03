@@ -50,7 +50,7 @@ class udma_rx_seq_item extends uvm_sequence_item;
     endfunction: new
 
     //set data_value
-    function set_data(
+    function void set_data(
         input  logic [31:0]  data
     );
         this.data = data;
@@ -63,7 +63,7 @@ class udma_rx_seq_item extends uvm_sequence_item;
         this.ready_toggle_time = ready_toggle_time;
     endfunction
     //get data value
-    function get_data(
+    function void get_data(
         output  logic [31:0]       data_out 
     );
         data_out = this.data;

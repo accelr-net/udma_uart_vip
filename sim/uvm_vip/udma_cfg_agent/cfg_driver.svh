@@ -35,7 +35,7 @@
 class cfg_driver extends uvm_driver #(cfg_seq_item);
     `uvm_component_utils(cfg_driver)
     virtual udma_if     vif;
-    cfg_agent_config    config_obj;
+    // cfg_agent_config    config_obj;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
@@ -54,7 +54,9 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
             `uvm_fatal("cfg_driver/build_phase","No virtual interface specified for this driver instance");
         end
         `uvm_info("[DRIVER]","build_phase", UVM_LOW)
-        uvm_config_db #(cfg_agent_config)::get(this,"","cfg_config",config_obj);
+        // if(!uvm_config_db #(cfg_agent_config)::get(this,"","cfg_config",config_obj)) begin
+        //     `uvm_fatal("[DRIVER]","Cannot find cfg_config");
+        // end
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

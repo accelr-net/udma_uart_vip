@@ -50,15 +50,17 @@ class uart_monitor extends uvm_monitor;
 
     function void build_phase(uvm_phase phase);
         `uvm_info("MONITOR","build_phase", UVM_HIGH)
-        if(!uvm_config_db #(virtual uart_if)::get(this, "*","intf_uart_side",intf_uart_side)) begin
+        if(!uvm_config_db #(virtual uart_if)::get(this, "","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
 
-        uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
+        if(!uvm_config_db #(uart_agent_config)::get(this,"*","uart_config",rx_config)) begin
+            `uvm_fatal("[MONITOR]","Cannot find uart_config. Please give configs from tb_top");
+        end
         calculate_period(rx_config.baud_rate);
     endfunction
 
-    function calculate_period(int baud_rate);
+    function void calculate_period(int baud_rate);
         if(baud_rate != 0) begin
             this.period = 10**9/baud_rate;
         end else begin
@@ -79,15 +81,15 @@ class uart_monitor extends uvm_monitor;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
             if(rx_config.is_rx_agent) begin
-                @(negedge intf_uart_side.uart_rx_if.uart_rx_i);
+                @(negedge intf_uart_side.uart_rx_i);
             end else begin
-                @(negedge intf_uart_side.uart_tx_if.uart_tx_o);
+                @(negedge intf_uart_side.uart_tx_o);
             end
             #(this.period/2);
             #this.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_if.uart_rx_i:  intf_uart_side.uart_tx_if.uart_tx_o;
+                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
                     #this.period;
                 end
@@ -96,7 +98,7 @@ class uart_monitor extends uvm_monitor;
             //get parity
             if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_seq_item::PARITY_ENABLE;
-                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_if.uart_rx_i:intf_uart_side.uart_tx_if.uart_tx_o;
+                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
                 #this.period; 
             end else begin
                 parity_en = uart_seq_item::PARITY_DISABLE;

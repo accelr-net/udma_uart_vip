@@ -65,7 +65,9 @@ class uart_test extends uvm_test;
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         
         //get values from top
-        uvm_config_db #(int)::get(this,"","period",period);
+        if(!uvm_config_db #(int)::get(this,"","period",period)) begin
+            `uvm_fatal("[TEST]","Cannot find period value!");
+        end
         env_config_obj  = env_config::type_id::create("env_config_obj",this);
         env             = uart_env::type_id::create("env",this);
 

@@ -42,8 +42,12 @@ class uart_sequence extends uvm_sequence;
     function new(string name="uart_sequence");
         super.new(name);
         `uvm_info("[SEQUENCE]","constructor", UVM_HIGH)
-        uvm_config_db #(int)::get(null,"*","char_length",char_length);
-        uvm_config_db #(bit)::get(null,"*","parity_en",parity_en);
+        if(!uvm_config_db #(int)::get(null,"*","char_length",char_length)) begin
+            `uvm_fatal("[SEQUENCE]","cannot find char_length");
+        end
+        if(!uvm_config_db #(bit)::get(null,"*","parity_en",parity_en)) begin
+            `uvm_fatal("[SEQUENCE]","Cannot find parity_en");
+        end
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------

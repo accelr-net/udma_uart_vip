@@ -49,7 +49,7 @@ class uart_seq_item extends uvm_sequence_item;
     endfunction: new
 
     //set data values
-    function set_data(
+    function void set_data(
         bit     [7:0]      character,
         parity_type        parity_en,
         bit                parity
@@ -60,14 +60,14 @@ class uart_seq_item extends uvm_sequence_item;
     endfunction: set_data
 
     //get data value
-    function get_data(
+    function void get_data(
         output bit [7:0] character_out
     );
         character_out = this.character_mask & this.character;
     endfunction: get_data
 
     //get parity value
-    function get_parity(
+    function void get_parity(
         output bit       parity_out
     );
         parity_out    = this.parity;
@@ -91,7 +91,7 @@ class uart_seq_item extends uvm_sequence_item;
     endfunction: get_character_length
 
     //calculate parity
-    function calculate_parity();
+    function void calculate_parity();
         this.parity = 1'b1;
         for(int i = 0; i < this.character_length; i++) begin
             this.parity = this.parity^character[i];
