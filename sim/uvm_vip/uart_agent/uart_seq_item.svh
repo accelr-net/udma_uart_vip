@@ -51,7 +51,7 @@ class uart_seq_item extends uvm_sequence_item;
     //set data values
     function set_data(
         bit     [7:0]      character,
-        bit                parity_en,
+        parity_type        parity_en,
         bit                parity
     );
         this.character   = character;

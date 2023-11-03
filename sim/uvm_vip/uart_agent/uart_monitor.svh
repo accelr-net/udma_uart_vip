@@ -36,7 +36,7 @@ class uart_monitor extends uvm_monitor;
     `uvm_component_utils(uart_monitor)
 
     virtual uart_if                          intf_uart_side;
-    virtual uart_if.uart_rx_if               rx_if;
+    
     uart_agent_config                        rx_config;
     int                                      period;
     uvm_analysis_port #(uart_seq_item)       uart_rx_analysis_port;
@@ -53,9 +53,7 @@ class uart_monitor extends uvm_monitor;
         if(!uvm_config_db #(virtual uart_if)::get(this, "*","intf_uart_side",intf_uart_side)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
-        if(!uvm_config_db #(virtual uart_if.uart_rx_if)::get(this, "*","rx_if",rx_if)) begin
-            `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
-        end
+
         uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config);
         calculate_period(rx_config.baud_rate);
     endfunction
@@ -74,14 +72,14 @@ class uart_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
 
         forever begin
-            bit                parity;
-            bit                parity_en;
-            bit [7:0]          character;
+            bit                              parity;
+            uart_seq_item::parity_type       parity_en;
+            bit [7:0]                        character;
             //create a transaction object 
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
             if(rx_config.is_rx_agent) begin
-                @(negedge rx_if.uart_rx_i);
+                @(negedge intf_uart_side.uart_rx_if.uart_rx_i);
             end else begin
                 @(negedge intf_uart_side.uart_tx_if.uart_tx_o);
             end

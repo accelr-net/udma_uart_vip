@@ -52,7 +52,8 @@ class udma_rx_sequence extends uvm_sequence;
         forever begin
             udma_rx_transaction         = udma_rx_seq_item::type_id::create("udma_rx_transaction");
             start_item(udma_rx_transaction);
-            udma_rx_transaction.randomize();
+            // udma_rx_transaction.randomize();
+            udma_rx_transaction.set_ready_time(50);
             finish_item(udma_rx_transaction);
         end
     endtask: body

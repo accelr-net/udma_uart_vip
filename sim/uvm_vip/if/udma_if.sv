@@ -46,7 +46,7 @@
 //                                                 |                 |
 //                                                 |                 |<----cfg_data_i            <--------+
 //                                                 |                 |<----cfg_addr_i                     |
-//                                                 |                 |<----cfg_valid_i                    |  uart_cfg
+//                                                 |                 |<----cfg_valid_i                    |  udma_cfg
 //                                                 |                 |<----cfg_rwn_i                      | 
 //                                                 |                 |---->cfg_ready_o                    |
 //                                                 |                 |---->cfg_data_o            <--------+  
@@ -312,12 +312,12 @@ interface udma_if #(
     //     output                  data_rx_ready_i
     // );
 
-    modport event(
+    modport event_port(
         output                   rx_char_event_o,
-        output                   err_event_o,
+        output                   err_event_o
     );
 
-    modport uart_cfg(
+    modport udma_cfg(
         input                    sys_clk_i,
         input                    periph_clk_i,
         input                    rstn_i,
@@ -328,52 +328,52 @@ interface udma_if #(
         input                    cfg_rwn_i,
 
         output                   cfg_ready_o,
-        output                   cfg_data_o,
+        output                   cfg_data_o
     );
 
     modport udma_rx_cfg(
-        input                    cfg_rx_startaddr_o,
-        input                    cfg_rx_size_o,
-        input                    cfg_rx_datasize_o,
-        input                    cfg_rx_continuous_o,
-        input                    cfg_rx_en_o,
-        input                    cfg_rx_clr_o,
+        output                   cfg_rx_startaddr_o,
+        output                   cfg_rx_size_o,
+        output                   cfg_rx_datasize_o,
+        output                   cfg_rx_continuous_o,
+        output                   cfg_rx_en_o,
+        output                   cfg_rx_clr_o,
 
-        output                   cfg_rx_en_i,
-        output                   cfg_rx_pending_i,
-        output                   cfg_rx_curr_addr_i,
-        output                   cfg_rx_bytes_left_i,
+        input                    cfg_rx_en_i,
+        input                    cfg_rx_pending_i,
+        input                    cfg_rx_curr_addr_i,
+        input                    cfg_rx_bytes_left_i
     );
 
     modport udma_rx(
-        input                   data_rx_datasize_o,
-        input                   data_rx_o,
-        input                   data_rx_valid_o,
-        output                  data_rx_ready_i
+        output                   data_rx_datasize_o,
+        output                   data_rx_o,
+        output                   data_rx_valid_o,
+        input                    data_rx_ready_i
     );
 
     modport udma_tx_cfg(
-        input                    cfg_tx_startaddr_o,
-        input                    cfg_tx_size_o,
-        input                    cfg_tx_datasize_o,
-        input                    cfg_tx_continuous_o,
-        input                    cfg_tx_en_o,
-        input                    cfg_tx_clr_o,
+        output                   cfg_tx_startaddr_o,
+        output                   cfg_tx_size_o,
+        output                   cfg_tx_datasize_o,
+        output                   cfg_tx_continuous_o,
+        output                   cfg_tx_en_o,
+        output                   cfg_tx_clr_o,
 
-        output                   cfg_tx_en_i,
-        output                   cfg_tx_pending_i,
-        output                   cfg_tx_curr_addr_i,
-        output                   cfg_tx_bytes_left_i
+        input                    cfg_tx_en_i,
+        input                    cfg_tx_pending_i,
+        input                    cfg_tx_curr_addr_i,
+        input                    cfg_tx_bytes_left_i
     );
 
     modport udma_tx(
-        input                   sys_clk_i,
+        input                    sys_clk_i,
 
-        input                   data_tx_req_o,
-        output                  data_tx_gnt_i,
-        input                   data_tx_datasize_o,
-        output                  data_tx_i,
-        output                  data_tx_valid_i,
-        input                   data_tx_ready_o
+        output                   data_tx_req_o,
+        input                    data_tx_gnt_i,
+        output                   data_tx_datasize_o,
+        input                    data_tx_i,
+        input                    data_tx_valid_i,
+        output                   data_tx_ready_o
     );
 endinterface: udma_if
