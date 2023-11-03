@@ -67,14 +67,14 @@ class cfg_monitor extends uvm_monitor;
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase", UVM_HIGH)
         forever begin
-            @(posedge vif.sys_clk_i);
+            @(this.vif.cfg_cbm);
             //create a transaction object
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction",this);
             `uvm_info("[MONITOR]","after create transaction",UVM_HIGH)
             // check this is a valid signal
-            if(vif.cfg_valid_i == 1'b1) begin
-                cfg_transaction.addr    = vif.cfg_addr_i;
-                cfg_transaction.data    = vif.cfg_data_i;
+            if(this.vif.cfg_cbm.cfg_valid_i == 1'b1) begin
+                cfg_transaction.addr    = this.vif.cfg_cbm.cfg_addr_i;
+                cfg_transaction.data    = this.vif.cfg_cbm.cfg_data_i;
                 a_port.write(cfg_transaction);
             end
         end

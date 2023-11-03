@@ -86,7 +86,10 @@ module tb_top();
         .L2_WIDTH_NOAL(L2_AWIDTH_NOAL),
         .TRANS_SIZE(TRANS_SIZE),
         .DATA_SIZE(32)
-    ) vif();
+    ) vif(
+        .sys_clk_i(sys_clk_i),
+        .rstn_i(rstn_i)
+    );
 
     uart_if  intf_uart_side();
 
@@ -94,9 +97,9 @@ module tb_top();
         .L2_AWIDTH_NOAL (L2_AWIDTH_NOAL),
         .TRANS_SIZE     (TRANS_SIZE)
     ) uart (
-        .sys_clk_i              (vif.sys_clk_i           ),
+        .sys_clk_i              (sys_clk_i               ),
         .periph_clk_i           (vif.periph_clk_i        ),
-        .rstn_i                 (vif.rstn_i              ),
+        .rstn_i                 (rstn_i                  ),
 
         .uart_rx_i              (intf_uart_side.uart_rx_i),
         .uart_tx_o              (intf_uart_side.uart_tx_o),
@@ -150,11 +153,11 @@ module tb_top();
         #HALF_CLOCK_PERIOD vif.periph_clk_i <= ~vif.periph_clk_i; 
     end
     always begin
-        #HALF_CLOCK_PERIOD vif.sys_clk_i    <= ~vif.sys_clk_i;
+        #HALF_CLOCK_PERIOD sys_clk_i    <= ~sys_clk_i;
     end      
 
     initial begin
-        vif.sys_clk_i <= 1'b1;
+        sys_clk_i <= 1'b1;
         vif.periph_clk_i <= 1'b1;
         $display("[manual_data_send] - before run uart test v.3");
         run_test("uart_test");      
@@ -170,7 +173,7 @@ module tb_top();
     end
 
     initial begin
-        vif.rstn_i                  <= 1'b0;
+        rstn_i                  <= 1'b0;
         // vif.udma_top_if.data_rx_ready_i     <= 1'b1;
         intf_uart_side.uart_rx_i    <= 1'b1;
         vif.cfg_data_i              <= 1'b0;
@@ -181,6 +184,6 @@ module tb_top();
         vif.cfg_rx_pending_i        <= 1'b0;
 
         #(CLOCK_PERIOD);
-        vif.rstn_i                  <= 1'b1;
+        rstn_i                  <= 1'b1;
     end
 endmodule: tb_top

@@ -72,9 +72,9 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
         cfg_seq_item    cfg_transaction;
         super.run_phase(phase);
         `uvm_info("[DRIVER]","run_phase", UVM_LOW)
-        @(negedge vif.rstn_i);
+        @(posedge vif.cfg_cbd.rstn_i);
         forever begin
-            @(posedge vif.sys_clk_i);
+            @(this.vif.cfg_cbd);
             //First get an item from sequencer
             cfg_transaction = cfg_seq_item::type_id::create("cfg_transaction");
             seq_item_port.try_next_item(cfg_transaction);
@@ -90,13 +90,13 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
     endtask : run_phase
 
     task do_config(cfg_seq_item transaction);
-        @(posedge vif.sys_clk_i);
-        vif.cfg_addr_i      <= transaction.addr;
-        vif.cfg_data_i      <= transaction.data;
-        vif.cfg_rwn_i       <= 1'b0;
-        vif.cfg_valid_i     <= 1'b1;
-        @(posedge vif.sys_clk_i);
-        vif.cfg_rwn_i       <= 1'b1;
-        vif.cfg_valid_i     <= 1'b0;
+        @(this.vif.cfg_cbd);
+        this.vif.cfg_cbd.cfg_addr_i      <= transaction.addr;
+        this.vif.cfg_cbd.cfg_data_i      <= transaction.data;
+        this.vif.cfg_cbd.cfg_rwn_i       <= 1'b0;
+        this.vif.cfg_cbd.cfg_valid_i     <= 1'b1;
+        @(vif.cfg_cbd);
+        this.vif.cfg_cbd.cfg_rwn_i       <= 1'b1;
+        this.vif.cfg_cbd.cfg_valid_i     <= 1'b0;
     endtask: do_config 
 endclass: cfg_driver

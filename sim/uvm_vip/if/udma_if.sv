@@ -94,11 +94,12 @@ interface udma_if #(
     parameter                    TRANS_SIZE    = 20,
 
     parameter                    DATA_SIZE     = 32
+)(
+    input                        sys_clk_i,
+    input                        rstn_i
 );
     //udma_uart_top
-    logic                        sys_clk_i;
     logic                        periph_clk_i;
-    logic                        rstn_i;
 
     logic                        rx_char_event_o;
     logic                        err_event_o;
@@ -312,68 +313,129 @@ interface udma_if #(
     //     output                  data_rx_ready_i
     // );
 
-    modport event_port(
-        output                   rx_char_event_o,
-        output                   err_event_o
-    );
+    clocking event_cbd @(posedge sys_clk_i);
+        input                   rx_char_event_o;
+        input                   err_event_o;
+    endclocking
 
-    modport udma_cfg(
-        input                    sys_clk_i,
-        input                    periph_clk_i,
-        input                    rstn_i,
+    clocking cfg_cbd @(posedge sys_clk_i);
+        output                  periph_clk_i;
+        input                  rstn_i;
 
-        input                    cfg_data_i,
-        input                    cfg_addr_i,
-        input                    cfg_valid_i,
-        input                    cfg_rwn_i,
+        output                  cfg_data_i;
+        output                  cfg_addr_i;
+        output                  cfg_valid_i;
+        output                  cfg_rwn_i;
 
-        output                   cfg_ready_o,
-        output                   cfg_data_o
-    );
+        input                   cfg_ready_o;
+        input                   cfg_data_o;
+    endclocking
 
-    modport udma_rx_cfg(
-        output                   cfg_rx_startaddr_o,
-        output                   cfg_rx_size_o,
-        output                   cfg_rx_datasize_o,
-        output                   cfg_rx_continuous_o,
-        output                   cfg_rx_en_o,
-        output                   cfg_rx_clr_o,
+    clocking rx_cfg_cbd @(posedge sys_clk_i);
+        input                   cfg_rx_startaddr_o;
+        input                   cfg_rx_size_o;
+        input                   cfg_rx_datasize_o;
+        input                   cfg_rx_continuous_o;
+        input                   cfg_rx_en_o;
+        input                   cfg_rx_clr_o;
 
-        input                    cfg_rx_en_i,
-        input                    cfg_rx_pending_i,
-        input                    cfg_rx_curr_addr_i,
-        input                    cfg_rx_bytes_left_i
-    );
+        output                  cfg_rx_en_i;
+        output                  cfg_rx_pending_i;
+        output                  cfg_rx_curr_addr_i;
+        output                  cfg_rx_bytes_left_i;
+    endclocking
 
-    modport udma_rx(
-        output                   data_rx_datasize_o,
-        output                   data_rx_o,
-        output                   data_rx_valid_o,
-        input                    data_rx_ready_i
-    );
+    clocking rx_data_cbd @(posedge sys_clk_i);
+        input                   data_rx_datasize_o;
+        input                   data_rx_o;
+        input                   data_rx_valid_o;
+        output                  data_rx_ready_i;
+    endclocking
 
-    modport udma_tx_cfg(
-        output                   cfg_tx_startaddr_o,
-        output                   cfg_tx_size_o,
-        output                   cfg_tx_datasize_o,
-        output                   cfg_tx_continuous_o,
-        output                   cfg_tx_en_o,
-        output                   cfg_tx_clr_o,
+    clocking tx_cfg_cbd @(posedge sys_clk_i);
+        input                   cfg_tx_startaddr_o;
+        input                   cfg_tx_size_o;
+        input                   cfg_tx_datasize_o;
+        input                   cfg_tx_continuous_o;
+        input                   cfg_tx_en_o;
+        input                   cfg_tx_clr_o;
 
-        input                    cfg_tx_en_i,
-        input                    cfg_tx_pending_i,
-        input                    cfg_tx_curr_addr_i,
-        input                    cfg_tx_bytes_left_i
-    );
+        output                  cfg_tx_en_i;
+        output                  cfg_tx_pending_i;
+        output                  cfg_tx_curr_addr_i;
+        output                  cfg_tx_bytes_left_i;
+    endclocking
 
-    modport udma_tx(
-        input                    sys_clk_i,
+    clocking tx_data_cbd @(posedge sys_clk_i);
+        input                   data_tx_req_o;
+        output                  data_tx_gnt_i;
+        input                   data_tx_datasize_o;
+        output                  data_tx_i;
+        output                  data_tx_valid_i;
+        input                   data_tx_ready_o;
+    endclocking
+//-------------------------------------------------------
+//Monitor clocking blocks
+//-------------------------------------------------------
+    clocking event_cbm @(posedge sys_clk_i);
+        input                   rx_char_event_o;
+        input                   err_event_o;
+    endclocking
 
-        output                   data_tx_req_o,
-        input                    data_tx_gnt_i,
-        output                   data_tx_datasize_o,
-        input                    data_tx_i,
-        input                    data_tx_valid_i,
-        output                   data_tx_ready_o
-    );
+    clocking cfg_cbm @(posedge sys_clk_i);
+        input                  periph_clk_i;
+        input                  rstn_i;
+
+        input                  cfg_data_i;
+        input                  cfg_addr_i;
+        input                  cfg_valid_i;
+        input                  cfg_rwn_i;
+
+        input                   cfg_ready_o;
+        input                   cfg_data_o;
+    endclocking
+
+    clocking rx_cfg_cbm @(posedge sys_clk_i);
+        input                   cfg_rx_startaddr_o;
+        input                   cfg_rx_size_o;
+        input                   cfg_rx_datasize_o;
+        input                   cfg_rx_continuous_o;
+        input                   cfg_rx_en_o;
+        input                   cfg_rx_clr_o;
+
+        input                  cfg_rx_en_i;
+        input                  cfg_rx_pending_i;
+        input                  cfg_rx_curr_addr_i;
+        input                  cfg_rx_bytes_left_i;
+    endclocking
+
+    clocking rx_data_cbm @(posedge sys_clk_i);
+        input                   data_rx_datasize_o;
+        input                   data_rx_o;
+        input                   data_rx_valid_o;
+        input                   data_rx_ready_i;
+    endclocking
+
+    clocking tx_cfg_cbm @(posedge sys_clk_i);
+        input                   cfg_tx_startaddr_o;
+        input                   cfg_tx_size_o;
+        input                   cfg_tx_datasize_o;
+        input                   cfg_tx_continuous_o;
+        input                   cfg_tx_en_o;
+        input                   cfg_tx_clr_o;
+
+        input                  cfg_tx_en_i;
+        input                  cfg_tx_pending_i;
+        input                  cfg_tx_curr_addr_i;
+        input                  cfg_tx_bytes_left_i;
+    endclocking
+
+    clocking tx_data_cbm @(posedge sys_clk_i);
+        input                   data_tx_req_o;
+        input                   data_tx_gnt_i;
+        input                   data_tx_datasize_o;
+        input                   data_tx_i;
+        input                   data_tx_valid_i;
+        input                   data_tx_ready_o;
+    endclocking
 endinterface: udma_if

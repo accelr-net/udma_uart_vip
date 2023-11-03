@@ -72,7 +72,7 @@ class udma_rx_driver extends uvm_driver #(udma_rx_seq_item);
     endtask: run_phase
 
     task do_udma_rx(udma_rx_seq_item txn,bit data_ready);
-        vif.data_rx_ready_i   = data_ready;
+        this.vif.rx_data_cbd.data_rx_ready_i   <= data_ready;
         #(txn.ready_toggle_time);
     endtask: do_udma_rx
 

@@ -58,9 +58,9 @@ class udma_rx_monitor extends uvm_monitor;
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
         forever begin
             udma_rx_transaction  =  udma_rx_seq_item::type_id::create("udma_rx_transaction",this);
-            @(posedge vif.sys_clk_i);
-            if(vif.data_rx_valid_o && vif.data_rx_ready_i) begin
-                udma_rx_transaction.set_data(vif.data_rx_o);
+            @(this.vif.rx_data_cbm);
+            if(this.vif.rx_data_cbm.data_rx_valid_o && this.vif.rx_data_cbm.data_rx_ready_i) begin
+                udma_rx_transaction.set_data(this.vif.rx_data_cbm.data_rx_o);
                 udma_aport.write(udma_rx_transaction);
             end
         end
