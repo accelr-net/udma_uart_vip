@@ -38,6 +38,7 @@ sources:
   - sim/uvm_vip/uart_agent
   - sim/uvm_vip/udma_cfg_agent
   - sim/uvm_vip/udma_rx_agent
+  - sim/uvm_vip/udma_tx_agent
   - sim/uvm_vip/analysis_component
   - sim/uvm_vip/env
   - sim/uvm_vip/test
@@ -49,6 +50,7 @@ sources:
   - sim/uvm_vip/udma_cfg_agent/cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/udma_rx_agent/udma_rx_agent_pkg.sv
+  - sim/uvm_vip/udma_tx_agent/udma_tx_agent_pkg.sv
   - sim/uvm_vip/if/uart_if.sv
   - sim/uvm_vip/if/udma_if.sv
   - sim/uvm_vip/analysis_component/analysis_components_pkg.sv

@@ -48,8 +48,8 @@ class udma_tx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         udma_tx_seq_item    udma_tx_transaction;
-        forever begin
-            udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction",this);
+        repeat(10) begin
+            udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
             start_item(udma_tx_transaction);
             udma_tx_transaction.set_data(32'h10);
             finish_item(udma_tx_transaction);

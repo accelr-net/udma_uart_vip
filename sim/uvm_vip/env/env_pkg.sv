@@ -39,6 +39,7 @@ package env_pkg;
     import uart_agent_pkg::*;
     import cfg_agent_pkg::*;
     import udma_rx_agent_pkg::*;
+    import udma_tx_agent_pkg::*;
     import analysis_components_pkg::*;
     
     `include "env_config.svh"

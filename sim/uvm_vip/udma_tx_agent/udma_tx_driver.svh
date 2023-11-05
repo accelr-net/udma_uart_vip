@@ -32,7 +32,7 @@
 //  4-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class udma_tx_driver extends uvm_driver;
+class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
     `uvm_component_utils(udma_tx_driver)
 
     virtual udma_if         vif;
@@ -61,9 +61,10 @@ class udma_tx_driver extends uvm_driver;
         udma_tx_seq_item        udma_tx_transaction;
         super.run_phase(phase);
         `uvm_info("[udma_tx_driver]","run_phase",UVM_HIGH)
-        repeat(5) begin
+        forever begin
             udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_txn");
             seq_item_port.get_next_item(udma_tx_transaction);
+            $display("%s udma_tx_transaction : %p %s", BLUE, udma_tx_transaction,WHITE);
             do_udma_tx(udma_tx_transaction);
             seq_item_port.item_done();
         end

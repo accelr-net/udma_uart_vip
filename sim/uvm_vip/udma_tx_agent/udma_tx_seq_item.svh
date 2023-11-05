@@ -35,7 +35,7 @@
 class udma_tx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(udma_tx_seq_item)
     
-    local logic     [31:0]       data;
+    logic     [31:0]       data;
 
 //--------------------------------------------------------------------------------------------------
 // Construct

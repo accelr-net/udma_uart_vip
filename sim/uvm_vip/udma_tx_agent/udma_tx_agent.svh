@@ -58,7 +58,7 @@ class udma_tx_agent extends uvm_agent;
         `uvm_info("[udma_tx_agent]","build_phase",UVM_HIGH);
 
         driver          = udma_tx_driver::type_id::create("udma_tx_driver",this);
-        monitor         = udma_tx_monitor::type_id:;create("udma_tx_monitor",this);
+        monitor         = udma_tx_monitor::type_id::create("udma_tx_monitor",this);
         sequencer       = uvm_sequencer #(udma_tx_seq_item)::type_id::create("udma_tx_sequencer",this);
 
         udma_tx_aport   = new("udma_tx_aport",this);
@@ -71,7 +71,7 @@ class udma_tx_agent extends uvm_agent;
         `uvm_info("[udma_tx_agent]","connect_phase",UVM_HIGH)
         super.connect_phase(phase);
         driver.seq_item_port.connect(sequencer.seq_item_export);
-        udma_rx_aport = monitor.udma_tx_aport;
+        udma_tx_aport = monitor.udma_tx_aport;
     endfunction: connect_phase
 
 //-------------------------------------------------------------------------------------------------
