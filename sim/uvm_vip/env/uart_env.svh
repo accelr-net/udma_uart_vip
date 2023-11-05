@@ -46,6 +46,9 @@ class uart_env extends uvm_env;
     uart_udma_predictor                             predictor;
     uart_udma_checker                               uartudma_checker;
 
+    //udma_tx_agent
+    udma_tx_agent                                   udma_tx_agnt;
+
     uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
     
 //---------------------------------------------------------------------------------------------------------------------
@@ -75,6 +78,8 @@ class uart_env extends uvm_env;
         // uart_tx_config      = uart_agent_config::type_id::create("uart_tx_config",this);
         cfg_config          = cfg_agent_config::type_id::create("cfg_config",this);
 
+        //udma_tx_agents
+        udma_tx_agnt        = udma_tx_agent::type_id::create("udma_tx_agnt",this);
 
         //get environment configs
         if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
