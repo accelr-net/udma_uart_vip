@@ -110,6 +110,9 @@ class uart_monitor extends uvm_monitor;
                 #this.period;
             end
             #(this.period/2); // wait for stop
+            if(!(rx_config.is_rx_agent)) begin
+                $display("%s uart_tx_transactions %p %s",RED,uart_rx_transaction,WHITE);
+            end
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase
