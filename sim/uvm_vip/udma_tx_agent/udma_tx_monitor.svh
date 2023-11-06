@@ -38,11 +38,17 @@ class udma_tx_monitor extends uvm_monitor;
     virtual udma_if                         vif;
     uvm_analysis_port #(udma_tx_seq_item)   udma_tx_aport;
 
+//-------------------------------------------------------------------------------------------------
+// Constructor
+//-------------------------------------------------------------------------------------------------
     function new(string name="udma_tx_monitor",uvm_component parent);
         super.new(name,parent);
         udma_tx_aport   = new("udma_tx_aport",this);
     endfunction: new
 
+//-------------------------------------------------------------------------------------------------
+// Build phase
+//-------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         `uvm_info("[udma_tx_monitor]","build_phase",UVM_HIGH)
@@ -51,6 +57,9 @@ class udma_tx_monitor extends uvm_monitor;
         end
     endfunction: build_phase
 
+//-------------------------------------------------------------------------------------------------
+// Run phase
+//-------------------------------------------------------------------------------------------------
     virtual task run_phase(uvm_phase phase);
         udma_tx_seq_item        udma_tx_transaction;
         super.run_phase(phase);
@@ -58,9 +67,10 @@ class udma_tx_monitor extends uvm_monitor;
         forever begin
             udma_tx_transaction  = udma_tx_seq_item::type_id::create("udma_tx_txn",this);
             @(this.vif.tx_data_cbm);
-            if(this.vif.tx_data_cbm.data_tx_valid_i) begin
+            if(this.vif.tx_data_cbm.data_tx_valid_i && this.vif.tx_data_cbm.data_tx_ready_o) begin
                 udma_tx_transaction.set_data(this.vif.tx_data_cbm.data_tx_i);
                 udma_tx_aport.write(udma_tx_transaction);
+                $display("%s [udma_tx_monitor] txn : %p %s",YELLOW,udma_tx_transaction,WHITE);
             end
         end
     endtask: run_phase

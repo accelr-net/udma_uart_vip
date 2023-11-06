@@ -90,7 +90,7 @@ class cfg_sequence extends uvm_sequence;
         clkdiv      = frequency/baud_rate; 
         reserved_1  = 'h0;
         rx_ena      = 1'b1;
-        tx_ena      = 1'b0;
+        tx_ena      = 1'b1;
         reserved_2  = 2'b00;
         clean_fifo  = 1'b0;
         polling_en  = 1'b0;

@@ -48,10 +48,11 @@ class udma_tx_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         udma_tx_seq_item    udma_tx_transaction;
-        repeat(10) begin
+        forever begin
             udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
             start_item(udma_tx_transaction);
-            udma_tx_transaction.set_data(32'h10);
+            udma_tx_transaction._randomize();
+            $display("%s at udma_tx_sequence txn : %p %s ",GREEN, udma_tx_transaction,WHITE);
             finish_item(udma_tx_transaction);
         end
     endtask: body

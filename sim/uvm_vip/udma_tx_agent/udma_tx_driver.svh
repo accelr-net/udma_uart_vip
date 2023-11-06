@@ -72,6 +72,12 @@ class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
 
     task do_udma_tx(udma_tx_seq_item txn);
         @(vif.tx_data_cbd);
-        this.vif.tx_data_cbd.data_tx_i <= txn.data;
+        this.vif.tx_data_cbd.data_tx_i          <= txn.data;
+        this.vif.tx_data_cbd.data_tx_valid_i    <= 1'b1;
+        this.vif.tx_data_cbd.data_tx_gnt_i      <= 1'b1;
+        @(vif.tx_data_cbd);
+        this.vif.tx_data_cbd.data_tx_valid_i    <= 1'b0;
+        this.vif.tx_data_cbd.data_tx_gnt_i      <= 1'b0;
+        #(txn.backoff_time);
     endtask: do_udma_tx
 endclass 

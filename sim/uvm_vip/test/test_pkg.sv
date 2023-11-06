@@ -39,6 +39,7 @@ package test_pkg;
     import      uart_agent_pkg::*;
     import      cfg_agent_pkg::*;
     import      udma_rx_agent_pkg::*;
+    import      udma_tx_agent_pkg::*;
     import      env_pkg::*;
 
     `include    "uart_test.svh"
