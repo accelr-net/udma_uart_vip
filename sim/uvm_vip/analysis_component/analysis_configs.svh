@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   analysis_components_pkg.sv
+// FILE         :   analysis_configs.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is contain all uvm environment files 
+// DESCRIPTION  :   This is contain all configuration for  cfg_agent
 //
 // ************************************************************************************************
 //
@@ -29,20 +29,18 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  26-oct-2023      Kasun        creation
-//`
+//  18-Sep-2023      Kasun        creation
+//
 //**************************************************************************************************
-package analysis_components_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class analysis_configs extends uvm_object;
+    `uvm_object_utils(analysis_configs)
+    uart_seq_item::parity_type      parity_en = uart_seq_item::PARITY_DISABLE;
 
-    import uvm_colors::*;
-    import uart_agent_pkg::*;
-    import udma_rx_agent_pkg::*;
-    import udma_tx_agent_pkg::*;
-
-    `include "analysis_configs.svh"
-    `include "uart_udma_predictor.svh"
-    `include "uart_udma_checker.svh"
-    `include "udma_uart_predictor.svh"
-endpackage: analysis_components_pkg;
+//---------------------------------------------------------------------------------------------------------------------
+// Constructor
+//---------------------------------------------------------------------------------------------------------------------
+    function new(string name="analysis_configs");
+        super.new(name);
+        `uvm_info("[cfg_agent_config]","constructor",UVM_HIGH)
+    endfunction: new
+endclass : analysis_configs

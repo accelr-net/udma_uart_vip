@@ -130,6 +130,9 @@ class uart_seq_item extends uvm_sequence_item;
             `uvm_fatal("FTR","Illegal do_compare cast")
         end
         eq &= comparer.compare_field("character",this.character,tr.character,$bits(character));
+        if(parity_en == PARITY_ENABLE) begin
+            eq &= comparer.compare_field("parity",this.parity,tr.parity,$bits(parity));
+        end
         return eq;
     endfunction: do_compare
 endclass : uart_seq_item

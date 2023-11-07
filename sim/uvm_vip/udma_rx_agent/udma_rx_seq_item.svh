@@ -89,5 +89,4 @@ class udma_rx_seq_item extends uvm_sequence_item;
         eq &= comparer.compare_field("data",this.data, tr.data, $bits(data));
         return eq;
     endfunction: do_compare
-
 endclass : udma_rx_seq_item

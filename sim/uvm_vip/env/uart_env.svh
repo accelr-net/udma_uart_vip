@@ -50,6 +50,8 @@ class uart_env extends uvm_env;
     udma_tx_agent                                   udma_tx_agnt;
     udma_uart_predictor                             uart_predictor;
 
+    analysis_configs                                analysis_cf;
+
     uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
     
 //---------------------------------------------------------------------------------------------------------------------
@@ -84,6 +86,8 @@ class uart_env extends uvm_env;
         //udma_tx_agents
         udma_tx_agnt        = udma_tx_agent::type_id::create("udma_tx_agnt",this);
 
+        analysis_cf         = analysis_configs::type_id::create("analysis_cf",this);
+
         //get environment configs
         if(!uvm_config_db #(env_config)::get(this,"","env_configs",env_configs)) begin
             `uvm_fatal("[ENV]","cannot find environment configs ")
@@ -107,8 +111,11 @@ class uart_env extends uvm_env;
         uart_tx_config.period       = env_configs.period;
         uart_tx_config.is_rx_agent  = 1'b0;
 
+        analysis_cf.parity_en       = env_configs.parity_en;     
+
         uvm_config_db #(uart_agent_config)::set(this,"uart_rx_agnt*","uart_config",uart_rx_config);
         uvm_config_db #(uart_agent_config)::set(this,"uart_tx_agnt*","uart_config",uart_tx_config);
+        uvm_config_db #(analysis_configs)::set(this,"uart_predictor","analysis_cf",analysis_cf);
     endfunction: build_phase
 
     function void connect_phase(uvm_phase phase);
