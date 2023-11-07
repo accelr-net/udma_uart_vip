@@ -85,5 +85,34 @@ class uart_udma_checker extends uvm_scoreboard;
 
         `uvm_info("[udma_uart_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,uart_comparator.m_matches,WHITE),UVM_LOW)
         `uvm_info("[udma_uart_checker]",$sformatf("\n %s mismatches : %0d %s",RED,uart_comparator.m_mismatches,WHITE),UVM_LOW)
+        display_ascii_art_report();
     endfunction: report_phase
+
+    function void display_ascii_art_report();
+        string a = { "\n",
+        "               +------------------->%sPassed%s \ %sFailed%s <---------------------+         \n",   
+        "               |                     %s %0d %s   \ %s %0d %s                          |         \n",  
+        "        _______|___________+------------------------------------+_________|_________\n",   
+        "           uart_txn        |                                    |        udma_txn   \n",   
+        "                    <<=====| uart_tx_o               udma_tx_i  |<<=====            \n",   
+        "        ___________________|                                    |___________________\n",   
+        "                           |                                    |                   \n",       
+        "                           |                                    |                   \n",   
+        "                           |          uart_udma_top             |                   \n",       
+        "                           |                                    |                   \n",       
+        "                           |                                    |                   \n",       
+        "        ___________________|                                    |___________________\n",   
+        "           uart_txn        |                                    |        udma_txn   \n",   
+        "                    =====>>| uart_rx_i               udma_rx_o  |=====>>            \n",   
+        "        ___________________|                                    |___________________\n",   
+        "               |           +------------------------------------+          |       \n",   
+        "               |                                                           |       \n",           
+        "               +-----------------> %sPassed%s \ %sFailed%s   <----------------------+       \n",       
+        "                                    %s %0d %s \  %s  %0d %s                                \n"           
+        };
+        $display(a, 
+                    GREEN,WHITE,RED,WHITE,GREEN,comparator.m_matches,WHITE,RED,comparator.m_mismatches,WHITE,
+                    GREEN,WHITE,RED,WHITE,GREEN,uart_comparator.m_matches,WHITE,RED,uart_comparator.m_mismatches,WHITE
+                );
+    endfunction: display_ascii_art_report
 endclass : uart_udma_checker

@@ -63,7 +63,7 @@ class udma_uart_predictor extends uvm_subscriber #(udma_tx_seq_item);
         expected_uart_item      = uart_seq_item::type_id::create("expected_uart_txn",this);
         //make expected_udma_txn here
         t.get_uart_char(character);
-        expected_uart_item.set_character_length(8);
+        expected_uart_item.set_character_length(configs.char_length);
         expected_uart_item.set_data(character,configs.parity_en,1'b0);
         expected_uart_item.calculate_parity();
 

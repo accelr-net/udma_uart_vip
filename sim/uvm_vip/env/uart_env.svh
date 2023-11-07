@@ -112,6 +112,7 @@ class uart_env extends uvm_env;
         uart_tx_config.is_rx_agent  = 1'b0;
 
         analysis_cf.parity_en       = env_configs.parity_en;     
+        analysis_cf.char_length     = env_configs.char_length;
 
         uvm_config_db #(uart_agent_config)::set(this,"uart_rx_agnt*","uart_config",uart_rx_config);
         uvm_config_db #(uart_agent_config)::set(this,"uart_tx_agnt*","uart_config",uart_tx_config);
