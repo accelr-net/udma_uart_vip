@@ -61,6 +61,13 @@ class udma_tx_seq_item extends uvm_sequence_item;
         this.backoff_time = backoff_time;
     endfunction: set_backoff_time
 
+    //get uart_char
+    function void get_uart_char(
+        output logic [7:0]     uart_char
+    );
+        uart_char = data[7:0];
+    endfunction
+    
     //randomize data 
     function void _randomize();
         this.uart_char      = $urandom();

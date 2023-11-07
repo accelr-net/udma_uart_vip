@@ -19,9 +19,10 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   udma_tx_sequence.svh
+// FILE         :   udma_uart_predictor.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is for udma_tx_sequence 
+// DESCRIPTION  :   This is take uart_seq_item from analysis export then make udma_seq_item and 
+//                  put on another analysis port 
 //
 // ************************************************************************************************
 //
@@ -29,30 +30,29 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  4-Nov-2023      Kasun        creation
+//  6-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class udma_tx_sequence extends uvm_sequence;
-    `uvm_object_utils(udma_tx_sequence)
+class udma_uart_predictor extends uvm_subscriber #(udma_tx_seq_item);
+    `uvm_component_utils(udma_uart_predictor)
 
-//---------------------------------------------------------------------------------------------------------------------
-// Constructor
-//---------------------------------------------------------------------------------------------------------------------
-    function new(string name="udma_tx_sequence");
-        super.new(name);
-        `uvm_info("[SEQUENCE]","constructor",UVM_HIGH);
-    endfunction
+    uvm_analysis_port   #(uart_seq_item)     expected_uart_aport;
 
-//---------------------------------------------------------------------------------------------------------------------
-// Body
-//---------------------------------------------------------------------------------------------------------------------
-    task body();
-        udma_tx_seq_item    udma_tx_transaction;
-        forever begin
-            udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
-            start_item(udma_tx_transaction);
-            udma_tx_transaction._randomize();
-            finish_item(udma_tx_transaction);
-        end
-    endtask: body
-endclass
+    function new(string name="udma_uart_predictor",uvm_component parent);
+        super.new(name,parent);
+        expected_uart_aport = new("expected_uart_aport",this);
+    endfunction: new
+
+    virtual function void write(udma_tx_seq_item t);
+        uart_seq_item                            expected_uart_item;
+        logic     [7:0]                            character;
+        expected_uart_item      = uart_seq_item::type_id::create("expected_uart_txn",this);
+        //make expected_udma_txn here
+        t.get_uart_char(character);
+        expected_uart_item.set_char(character);
+
+        $display("%s character: %p %s",PURPLE,character,WHITE);
+        //write expected_udma_txn into analysis port
+        expected_uart_aport.write(expected_uart_item);
+    endfunction: write
+endclass: udma_uart_predictor

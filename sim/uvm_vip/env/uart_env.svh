@@ -48,6 +48,7 @@ class uart_env extends uvm_env;
 
     //udma_tx_agent
     udma_tx_agent                                   udma_tx_agnt;
+    udma_uart_predictor                             uart_predictor;
 
     uvm_analysis_port #(uart_seq_item)              uart_rx_aport;
     
@@ -72,6 +73,8 @@ class uart_env extends uvm_env;
         // sub                 = uart_subscriber::type_id::create("sub",this);
         predictor           = uart_udma_predictor::type_id::create("predictor",this);
         uartudma_checker    = uart_udma_checker::type_id::create("checker",this);
+
+        uart_predictor      = udma_uart_predictor::type_id::create("uart_predictor",this);
 
         //create configuration objects for agents
         uart_rx_config      = uart_agent_config::type_id::create("uart_rx_config",this);
@@ -113,6 +116,11 @@ class uart_env extends uvm_env;
         uart_rx_agnt.uart_rx_agent_analysis_port.connect(predictor.analysis_export);
         predictor.expected_udma_aport.connect(uartudma_checker.before_export);
         udma_rx_agnt.udma_rx_aport.connect(uartudma_checker.after_export);
+
+        udma_tx_agnt.udma_tx_aport.connect(uart_predictor.analysis_export);
+        uart_predictor.expected_uart_aport.connect(uartudma_checker.uart_before_export);
+        uart_tx_agnt.uart_rx_agent_analysis_port.connect(uartudma_checker.uart_after_export);
+
         uart_rx_aport = uart_rx_agnt.uart_rx_agent_analysis_port; //take this port from test
     endfunction: connect_phase
 

@@ -37,26 +37,53 @@ class uart_udma_checker extends uvm_scoreboard;
 
     uvm_analysis_export #(udma_rx_seq_item)                         before_export;
     uvm_analysis_export #(udma_rx_seq_item)                         after_export;
-    uvm_in_order_class_comparator #(udma_rx_seq_item)               comparator;
 
+    uvm_analysis_export #(uart_seq_item)                            uart_before_export;                         
+    uvm_analysis_export #(uart_seq_item)                            uart_after_export;                         
+
+    uvm_in_order_class_comparator #(udma_rx_seq_item)               comparator;
+    uvm_in_order_class_comparator #(uart_seq_item)                  uart_comparator;
+
+//------------------------------------------------------------------------------------------
+// Constructor
+//------------------------------------------------------------------------------------------
     function new(string name="uart_udma_checker",uvm_component parent);
         super.new(name,parent);
     endfunction: new
 
+//------------------------------------------------------------------------------------------
+// Build Phase
+//------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
-        before_export = new("before_export",this);
-        after_export  = new("after_export",this);
+        before_export       = new("before_export",this);
+        after_export        = new("after_export",this);
 
-        comparator    = uvm_in_order_class_comparator #(udma_rx_seq_item)::type_id::create("comparator",this);
+        uart_before_export  = new("uart_before_export",this);
+        uart_after_export   = new("uart_after_export",this);
+        
+        comparator          = uvm_in_order_class_comparator #(udma_rx_seq_item)::type_id::create("comparator",this);
+        uart_comparator     = uvm_in_order_class_comparator #(uart_seq_item)::type_id::create("uart_comparator",this);
     endfunction: build_phase
 
+//------------------------------------------------------------------------------------------
+// Connect Phase
+//------------------------------------------------------------------------------------------
     virtual function void connect_phase(uvm_phase phase);
         before_export.connect(comparator.before_export);
         after_export.connect(comparator.after_export);
+
+        uart_before_export.connect(uart_comparator.before_export);
+        uart_after_export.connect(uart_comparator.after_export);
     endfunction: connect_phase
 
+//------------------------------------------------------------------------------------------
+// Report Phase
+//------------------------------------------------------------------------------------------
     virtual function void report_phase(uvm_phase phase);
         `uvm_info("[uart_udma_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,comparator.m_matches,WHITE),UVM_LOW)
         `uvm_info("[uart_udma_checker]",$sformatf("\n %s mismatches : %0d %s",RED,comparator.m_mismatches,WHITE),UVM_LOW)
+
+        `uvm_info("[udma_uart_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,uart_comparator.m_matches,WHITE),UVM_LOW)
+        `uvm_info("[udma_uart_checker]",$sformatf("\n %s mismatches : %0d %s",RED,uart_comparator.m_mismatches,WHITE),UVM_LOW)
     endfunction: report_phase
 endclass : uart_udma_checker

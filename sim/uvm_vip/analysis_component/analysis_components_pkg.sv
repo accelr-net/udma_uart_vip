@@ -39,7 +39,9 @@ package analysis_components_pkg;
     import uvm_colors::*;
     import uart_agent_pkg::*;
     import udma_rx_agent_pkg::*;
+    import udma_tx_agent_pkg::*;
 
     `include "uart_udma_predictor.svh"
     `include "uart_udma_checker.svh"
+    `include "udma_uart_predictor.svh"
 endpackage: analysis_components_pkg;
