@@ -122,8 +122,8 @@ class uart_env extends uvm_env;
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
         uart_rx_agnt.uart_rx_agent_analysis_port.connect(predictor.analysis_export);
-        predictor.expected_udma_aport.connect(uartudma_checker.before_export);
-        udma_rx_agnt.udma_rx_aport.connect(uartudma_checker.after_export);
+        predictor.expected_udma_aport.connect(uartudma_checker.udma_before_export);
+        udma_rx_agnt.udma_rx_aport.connect(uartudma_checker.udma_after_export);
 
         udma_tx_agnt.udma_tx_aport.connect(uart_predictor.analysis_export);
         uart_predictor.expected_uart_aport.connect(uartudma_checker.uart_before_export);

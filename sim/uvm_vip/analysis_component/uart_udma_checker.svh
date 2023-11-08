@@ -35,13 +35,13 @@
 class uart_udma_checker extends uvm_scoreboard;
     `uvm_component_utils(uart_udma_checker)
 
-    uvm_analysis_export #(udma_rx_seq_item)                         before_export;
-    uvm_analysis_export #(udma_rx_seq_item)                         after_export;
+    uvm_analysis_export #(udma_rx_seq_item)                         udma_before_export;
+    uvm_analysis_export #(udma_rx_seq_item)                         udma_after_export;
 
     uvm_analysis_export #(uart_seq_item)                            uart_before_export;                         
     uvm_analysis_export #(uart_seq_item)                            uart_after_export;                         
 
-    uvm_in_order_class_comparator #(udma_rx_seq_item)               comparator;
+    uvm_in_order_class_comparator #(udma_rx_seq_item)               udma_comparator;
     uvm_in_order_class_comparator #(uart_seq_item)                  uart_comparator;
 
 //------------------------------------------------------------------------------------------
@@ -55,13 +55,13 @@ class uart_udma_checker extends uvm_scoreboard;
 // Build Phase
 //------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
-        before_export       = new("before_export",this);
-        after_export        = new("after_export",this);
+        udma_before_export  = new("udma_before_export",this);
+        udma_after_export   = new("udma_after_export",this);
 
         uart_before_export  = new("uart_before_export",this);
         uart_after_export   = new("uart_after_export",this);
         
-        comparator          = uvm_in_order_class_comparator #(udma_rx_seq_item)::type_id::create("comparator",this);
+        udma_comparator     = uvm_in_order_class_comparator #(udma_rx_seq_item)::type_id::create("udma_comparator",this);
         uart_comparator     = uvm_in_order_class_comparator #(uart_seq_item)::type_id::create("uart_comparator",this);
     endfunction: build_phase
 
@@ -69,8 +69,8 @@ class uart_udma_checker extends uvm_scoreboard;
 // Connect Phase
 //------------------------------------------------------------------------------------------
     virtual function void connect_phase(uvm_phase phase);
-        before_export.connect(comparator.before_export);
-        after_export.connect(comparator.after_export);
+        udma_before_export.connect(udma_comparator.before_export);
+        udma_after_export.connect(udma_comparator.after_export);
 
         uart_before_export.connect(uart_comparator.before_export);
         uart_after_export.connect(uart_comparator.after_export);
@@ -80,11 +80,6 @@ class uart_udma_checker extends uvm_scoreboard;
 // Report Phase
 //------------------------------------------------------------------------------------------
     virtual function void report_phase(uvm_phase phase);
-        // `uvm_info("[uart_udma_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,comparator.m_matches,WHITE),UVM_LOW)
-        // `uvm_info("[uart_udma_checker]",$sformatf("\n %s mismatches : %0d %s",RED,comparator.m_mismatches,WHITE),UVM_LOW)
-
-        // `uvm_info("[udma_uart_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,uart_comparator.m_matches,WHITE),UVM_LOW)
-        // `uvm_info("[udma_uart_checker]",$sformatf("\n %s mismatches : %0d %s",RED,uart_comparator.m_mismatches,WHITE),UVM_LOW)
         display_ascii_art_report();
     endfunction: report_phase
 
@@ -111,7 +106,7 @@ class uart_udma_checker extends uvm_scoreboard;
         "                                    %s %0d %s \  %s  %0d %s                                \n"           
         };
         $display(a, 
-                    GREEN,WHITE,RED,WHITE,GREEN,comparator.m_matches,WHITE,RED,comparator.m_mismatches,WHITE,
+                    GREEN,WHITE,RED,WHITE,GREEN,udma_comparator.m_matches,WHITE,RED,udma_comparator.m_mismatches,WHITE,
                     GREEN,WHITE,RED,WHITE,GREEN,uart_comparator.m_matches,WHITE,RED,uart_comparator.m_mismatches,WHITE
                 );
     endfunction: display_ascii_art_report
