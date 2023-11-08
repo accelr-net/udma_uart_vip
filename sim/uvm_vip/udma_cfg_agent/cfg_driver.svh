@@ -50,7 +50,7 @@ class cfg_driver extends uvm_driver #(cfg_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual udma_if)::get(this, "*", "vif",vif)) begin
+        if(!uvm_config_db #(virtual udma_if)::get(this, "*", "udma_vif",vif)) begin
             `uvm_fatal("cfg_driver/build_phase","No virtual interface specified for this driver instance");
         end
         `uvm_info("[DRIVER]","build_phase", UVM_LOW)

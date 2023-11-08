@@ -35,7 +35,7 @@
 class uart_driver extends uvm_driver #(uart_seq_item);
     `uvm_component_utils(uart_driver)
     parameter               char_length = 8;
-    virtual uart_if         intf_uart_side;
+    virtual uart_if         uart_vif;
     int                     period;
 
     uart_agent_config       rx_config;
@@ -52,7 +52,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual uart_if)::get(this,"*","intf_uart_side",intf_uart_side)) begin
+        if(!uvm_config_db #(virtual uart_if)::get(this,"*","uart_vif",uart_vif)) begin
             `uvm_fatal("uart_driver/build_phase","No virtual interface is found");
         end
 
@@ -104,18 +104,18 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
         #(this.period);
-        intf_uart_side.uart_rx_i = 1'b0; //start bit
+        uart_vif.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin
             #(this.period);
-            intf_uart_side.uart_rx_i   = character[i];
+            uart_vif.uart_rx_i   = character[i];
         end
         if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
             #(this.period);
-            intf_uart_side.uart_rx_i   = parity;
+            uart_vif.uart_rx_i   = parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
             #(this.period);
-            intf_uart_side.uart_rx_i = 1'b1; //stop bit
+            uart_vif.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx
 endclass: uart_driver

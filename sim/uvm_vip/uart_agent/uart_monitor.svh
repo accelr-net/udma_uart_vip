@@ -35,7 +35,7 @@
 class uart_monitor extends uvm_monitor;
     `uvm_component_utils(uart_monitor)
 
-    virtual uart_if                          intf_uart_side;
+    virtual uart_if                          uart_vif;
     
     uart_agent_config                        rx_config;
     int                                      period;
@@ -50,7 +50,7 @@ class uart_monitor extends uvm_monitor;
 
     function void build_phase(uvm_phase phase);
         `uvm_info("MONITOR","build_phase", UVM_HIGH)
-        if(!uvm_config_db #(virtual uart_if)::get(this, "","intf_uart_side",intf_uart_side)) begin
+        if(!uvm_config_db #(virtual uart_if)::get(this, "","uart_vif",uart_vif)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
 
@@ -81,15 +81,15 @@ class uart_monitor extends uvm_monitor;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
             uart_rx_transaction.set_character_length(rx_config.char_length);
             if(rx_config.is_rx_agent) begin
-                @(negedge intf_uart_side.uart_rx_i);
+                @(negedge uart_vif.uart_rx_i);
             end else begin
-                @(negedge intf_uart_side.uart_tx_o);
+                @(negedge uart_vif.uart_tx_o);
             end
             #(this.period/2);
             #this.period; // wait for start_bit
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
-                character[i] = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:  intf_uart_side.uart_tx_o;
+                character[i] = rx_config.is_rx_agent? uart_vif.uart_rx_i:  uart_vif.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
                     #this.period;
                 end
@@ -98,7 +98,7 @@ class uart_monitor extends uvm_monitor;
             //get parity
             if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
                 parity_en = uart_seq_item::PARITY_ENABLE;
-                parity   = rx_config.is_rx_agent? intf_uart_side.uart_rx_i:intf_uart_side.uart_tx_o;
+                parity   = rx_config.is_rx_agent? uart_vif.uart_rx_i:uart_vif.uart_tx_o;
                 #this.period; 
             end else begin
                 parity_en = uart_seq_item::PARITY_DISABLE;

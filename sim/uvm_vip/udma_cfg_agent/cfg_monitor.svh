@@ -54,7 +54,7 @@ class cfg_monitor extends uvm_monitor;
 //---------------------------------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
         `uvm_info("[MONITOR]","build_phase", UVM_HIGH)
-        if(!uvm_config_db #(virtual udma_if)::get(this,"*","vif",vif)) begin
+        if(!uvm_config_db #(virtual udma_if)::get(this,"*","udma_vif",vif)) begin
             `uvm_fatal("cfg_monitor/build_phase","No virtual interface specified for this monitor instance");
         end
     endfunction: build_phase

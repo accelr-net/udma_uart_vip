@@ -52,7 +52,7 @@ class udma_tx_monitor extends uvm_monitor;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         `uvm_info("[udma_tx_monitor]","build_phase",UVM_HIGH)
-        if(!uvm_config_db #(virtual udma_if)::get(this,"","vif",vif)) begin
+        if(!uvm_config_db #(virtual udma_if)::get(this,"","udma_vif",vif)) begin
             `uvm_fatal("[udma_tx_monitor]","No virtual interface specified for this monitor")
         end
     endfunction: build_phase
