@@ -80,11 +80,11 @@ class uart_udma_checker extends uvm_scoreboard;
 // Report Phase
 //------------------------------------------------------------------------------------------
     virtual function void report_phase(uvm_phase phase);
-        `uvm_info("[uart_udma_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,comparator.m_matches,WHITE),UVM_LOW)
-        `uvm_info("[uart_udma_checker]",$sformatf("\n %s mismatches : %0d %s",RED,comparator.m_mismatches,WHITE),UVM_LOW)
+        // `uvm_info("[uart_udma_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,comparator.m_matches,WHITE),UVM_LOW)
+        // `uvm_info("[uart_udma_checker]",$sformatf("\n %s mismatches : %0d %s",RED,comparator.m_mismatches,WHITE),UVM_LOW)
 
-        `uvm_info("[udma_uart_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,uart_comparator.m_matches,WHITE),UVM_LOW)
-        `uvm_info("[udma_uart_checker]",$sformatf("\n %s mismatches : %0d %s",RED,uart_comparator.m_mismatches,WHITE),UVM_LOW)
+        // `uvm_info("[udma_uart_checker]",$sformatf("\n %s matches    : %0d %s",GREEN,uart_comparator.m_matches,WHITE),UVM_LOW)
+        // `uvm_info("[udma_uart_checker]",$sformatf("\n %s mismatches : %0d %s",RED,uart_comparator.m_mismatches,WHITE),UVM_LOW)
         display_ascii_art_report();
     endfunction: report_phase
 

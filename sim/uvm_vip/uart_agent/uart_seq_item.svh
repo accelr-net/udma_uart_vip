@@ -109,6 +109,11 @@ class uart_seq_item extends uvm_sequence_item;
         calculate_parity();
     endfunction
 
+    function void _randomize();
+        this.character = $urandom_range(256,0);
+        calculate_parity();
+    endfunction: _randomize
+
     function void do_print(uvm_printer printer);
         printer.m_string = convert2string();
     endfunction: do_print

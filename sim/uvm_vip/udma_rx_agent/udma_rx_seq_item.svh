@@ -36,6 +36,8 @@ class udma_rx_seq_item extends uvm_sequence_item;
     `uvm_object_utils(udma_rx_seq_item)
     rand     int                     ready_toggle_time;
     local    logic [31:0]            data;
+    local    int                     max_time       = 500;
+    local    int                     min_time       = 0;
 
     constraint time_range { 
         ready_toggle_time < 100;
@@ -62,6 +64,12 @@ class udma_rx_seq_item extends uvm_sequence_item;
     );
         this.ready_toggle_time = ready_toggle_time;
     endfunction
+
+    //randomize ready_toggle_time
+    function void _randomize();
+        this.ready_toggle_time = $urandom_range(max_time,min_time);
+    endfunction
+
     //get data value
     function void get_data(
         output  logic [31:0]       data_out 

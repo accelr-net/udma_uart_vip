@@ -59,8 +59,9 @@ class uart_sequence extends uvm_sequence;
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
             uart_rx_transaction.set_character_length(char_length);
-            // uart_rx_transaction.randomize();
             uart_rx_transaction.set_data(8'h3,uart_seq_item::PARITY_DISABLE,1'b1);
+            uart_rx_transaction._randomize();
+            $display("uart_rx_transaction %p",uart_rx_transaction);
             finish_item(uart_rx_transaction);
         end
     endtask: body
