@@ -159,13 +159,14 @@ module tb_top();
     initial begin
         sys_clk_i <= 1'b1;
         udma_vif.periph_clk_i <= 1'b1;
-        $display("[manual_data_send] - before run uart test v.3");
+        $display("above run_test");
         run_test("uart_test");      
+        // run_test("uart_test");      
+        $display("after run_test");
     end
 
     initial begin
         clock_frequency = 10**9/(CLOCK_PERIOD);
-        $display("[tb_top] clock_frequency %d",clock_frequency);
         uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);

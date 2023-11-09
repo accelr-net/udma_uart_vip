@@ -70,7 +70,6 @@ class udma_tx_monitor extends uvm_monitor;
             if(this.vif.tx_data_cbm.data_tx_valid_i && this.vif.tx_data_cbm.data_tx_ready_o) begin
                 udma_tx_transaction.set_data(this.vif.tx_data_cbm.data_tx_i);
                 udma_tx_aport.write(udma_tx_transaction);
-                $display("%s [udma_tx_monitor] txn : %p %s",YELLOW,udma_tx_transaction,WHITE);
             end
         end
     endtask: run_phase

@@ -51,7 +51,7 @@ class uart_test extends uvm_test;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="cfg_test",uvm_component parent);
+    function new(string name="uart_test",uvm_component parent);
         super.new(name,parent);
         `uvm_info("[TEST]","top level tconstructor", UVM_LOW)
     endfunction: new

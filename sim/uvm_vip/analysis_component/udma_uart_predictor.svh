@@ -67,7 +67,6 @@ class udma_uart_predictor extends uvm_subscriber #(udma_tx_seq_item);
         expected_uart_item.set_data(character,configs.parity_en,1'b0);
         expected_uart_item.calculate_parity();
 
-        $display("%s expected_uart_item : %p %s",GREEN,expected_uart_item,WHITE);
         //write expected_udma_txn into analysis port
         expected_uart_aport.write(expected_uart_item);
     endfunction: write
