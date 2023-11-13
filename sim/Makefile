@@ -32,7 +32,11 @@ SIM_TOP     = tb_top
 
 ## Compile RTL with Questasim
 all: lib build opt
-	vsim -do run.tcl
+	# vsim -c -do run.tcl
+	$(VSIM) -64 -c vopt_tb \
+	+UVM_TESTNAME=uart_test \
+	-do run.tcl
+
 ## vsim targets
 .PHONY: sim
 ## Simulate RTL with Questasim (GUI)
@@ -55,7 +59,7 @@ simc:
 
 .PHONY: opt
 opt:
-	$(VOPT) $(VOPT_FLAGS) -o vopt_tb $(SIM_TOP) -work work
+	$(VOPT) $(VOPT_FLAGS) -o vopt_tb $(SIM_TOP) -work work 
 
 .PHONY: opt
 build:

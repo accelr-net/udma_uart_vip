@@ -160,7 +160,7 @@ module tb_top();
         sys_clk_i <= 1'b1;
         udma_vif.periph_clk_i <= 1'b1;
         $display("above run_test");
-        run_test("uart_test");      
+        run_test();      
         // run_test("uart_test");      
         $display("after run_test");
     end
