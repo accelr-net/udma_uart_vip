@@ -41,10 +41,10 @@ class uart_env extends uvm_env;
     env_config                                      env_configs;
     uart_agent_config                               uart_rx_config;
     uart_agent_config                               uart_tx_config;
-    cfg_agent_config                                cfg_config;
     uart_subscriber                                 sub;
     uart_udma_predictor                             predictor;
     uart_udma_checker                               uartudma_checker;
+    cfg_agent_config                                cfg_config;
 
     //udma_tx_agent
     udma_tx_agent                                   udma_tx_agnt;
@@ -77,7 +77,7 @@ class uart_env extends uvm_env;
         uartudma_checker    = uart_udma_checker::type_id::create("checker",this);
 
         uart_predictor      = udma_uart_predictor::type_id::create("uart_predictor",this);
-
+        
         //create configuration objects for agents
         uart_rx_config      = uart_agent_config::type_id::create("uart_rx_config",this);
         uart_tx_config      = uart_agent_config::type_id::create("uart_tx_config",this);
@@ -93,9 +93,16 @@ class uart_env extends uvm_env;
             `uvm_fatal("[ENV]","cannot find environment configs ")
         end
 
-        //set for agent configuration
         cfg_config.baud_rate        = env_configs.baud_rate;
         cfg_config.frequency        = env_configs.frequency;
+        cfg_config.char_length      = env_configs.char_length;
+        cfg_config.stop_bits        = env_configs.stop_bits;
+        case(env_configs.parity_en)
+            uart_seq_item::PARITY_ENABLE  : cfg_config.parity_en = 1'b1;
+            uart_seq_item::PARITY_DISABLE : cfg_config.parity_en = 1'b0;
+        endcase
+        cfg_config.rx_ena           = 1'b1;
+        cfg_config.tx_ena           = 1'b1;
 
         uart_rx_config.baud_rate    = env_configs.baud_rate;
         uart_rx_config.parity_en    = env_configs.parity_en;
@@ -114,6 +121,7 @@ class uart_env extends uvm_env;
         analysis_cf.parity_en       = env_configs.parity_en;     
         analysis_cf.char_length     = env_configs.char_length;
 
+        uvm_config_db #(cfg_agent_config)::set(null,"*","cfg_agent_config",cfg_config);
         uvm_config_db #(uart_agent_config)::set(this,"uart_rx_agnt*","uart_config",uart_rx_config);
         uvm_config_db #(uart_agent_config)::set(this,"uart_tx_agnt*","uart_config",uart_tx_config);
         uvm_config_db #(analysis_configs)::set(this,"uart_predictor","analysis_cf",analysis_cf);

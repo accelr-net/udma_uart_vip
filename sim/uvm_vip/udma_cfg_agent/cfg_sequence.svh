@@ -60,6 +60,9 @@ class cfg_sequence extends uvm_sequence;
         if(!uvm_config_db #(int)::get(null, "*","stop_bits",stop_bits_count)) begin
             `uvm_fatal("Cannot find stop_bits","set stop_bits values to config_db");
         end
+        if(!uvm_config_db #(cfg_agent_config)::get(null, "*","cfg_agent_config",config_obj)) begin
+            `uvm_fatal($sformatf("%s Cannot find cfg_agent_config %s",RED,WHITE),"set cfg_agent_config values to config_db");
+        end
         if(baud_rate == 0) begin
             `uvm_fatal("Zero divition erro","please give value to baud_rate")
         end
@@ -87,26 +90,26 @@ class cfg_sequence extends uvm_sequence;
         uart_reg_offsets    reg_offsets;
 
         //set setup values
-        clkdiv      = frequency/baud_rate; 
+        clkdiv      = config_obj.frequency/config_obj.baud_rate; 
         reserved_1  = 'h0;
-        rx_ena      = 1'b1;
-        tx_ena      = 1'b1;
+        rx_ena      = config_obj.rx_ena;
+        tx_ena      = config_obj.tx_ena;
         reserved_2  = 2'b00;
         clean_fifo  = 1'b0;
         polling_en  = 1'b0;
-        case(stop_bits_count)
+        case(config_obj.stop_bits)
             1       : stop_bits   = 1'b0;
             2       : stop_bits   = 1'b1;
             default : `uvm_fatal("Incorrect number of Stop bits","stop bits should be 1 or 2")
         endcase
-        case (char_length)
+        case (config_obj.char_length)
             8       : bit_length  = 2'b11;
             7       : bit_length  = 2'b10;
             6       : bit_length  = 2'b01;
             5       : bit_length  = 2'b00;
             default : `uvm_fatal("Incorrect character length","character length should be between 5-8")
         endcase
-        parity_en   = parity;
+        parity_en   = config_obj.parity_en;
 
         reg_offsets = new();
 

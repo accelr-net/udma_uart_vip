@@ -88,7 +88,6 @@ class uart_test extends uvm_test;
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
 
         //set configuration for cfg_sequence
-        
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

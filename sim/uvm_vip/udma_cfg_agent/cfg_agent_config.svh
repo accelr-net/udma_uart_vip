@@ -34,9 +34,14 @@
 //**************************************************************************************************
 class cfg_agent_config extends uvm_object;
     `uvm_object_utils(cfg_agent_config)
-    int     baud_rate   = 115200;
-    int     frequency   = 50000000;
-    int     char_length = 8;
+    int    baud_rate   = 115200;
+    int    frequency   = 50000000;
+    int    char_length = 8;
+    int    stop_bits   = 1;
+    bit    parity_en   = 1'b0;
+    bit    rx_ena      = 1'b1;
+    bit    tx_ena      = 1'b1;
+
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -44,5 +49,4 @@ class cfg_agent_config extends uvm_object;
         super.new(name);
         `uvm_info("[cfg_agent_config]","constructor",UVM_HIGH)
     endfunction: new
-
 endclass : cfg_agent_config
