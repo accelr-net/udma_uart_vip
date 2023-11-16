@@ -36,11 +36,13 @@ class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
     int                                 baud_rate    = 115200;
-    const int                           char_length  = 8;
+    int                                 char_length  = 8;
     int                                 frequency    = 50000000;
     int                                 stop_bits    = 1;
     uart_seq_item::parity_type          parity_en    = uart_seq_item::PARITY_DISABLE;
     int                                 period;
+    bit                                 rx_ena       = 1'b1;
+    bit                                 tx_ena       = 1'b1;
 
     uart_env                            env;
     env_config                          env_config_obj;
@@ -48,6 +50,32 @@ class uart_test extends uvm_test;
     virtual     uart_if                 uart_vif;
     virtual     udma_if                 vif;
 
+//---------------------------------------------------------------------------------------------------------------------
+// Set parameter methods
+//---------------------------------------------------------------------------------------------------------------------
+    virtual function void set_baud_rate(int baud_rate);
+        this.baud_rate = baud_rate;
+    endfunction: set_baud_rate
+    
+    virtual function void set_char_length(int char_length);
+        this.char_length = char_length;
+    endfunction: set_char_length
+
+    virtual function void set_stop_bits(int stop_bits);
+        this.stop_bits = stop_bits;
+    endfunction: set_stop_bits
+
+    virtual function void set_parity_en(uart_seq_item::parity_type parity_en);
+        this.parity_en = parity_en;
+    endfunction: set_parity_en
+
+    virtual function void set_rx_ena(bit rx_ena);
+        this.rx_ena = rx_ena;
+    endfunction: set_rx_ena
+
+    virtual function void set_tx_ena(bit tx_ena);
+        this.tx_ena = tx_ena;
+    endfunction: set_tx_ena
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -62,6 +90,8 @@ class uart_test extends uvm_test;
     //In build phase construct the cfg_env class using factory and
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
+        $display("baud_rate %d",this.baud_rate);
+        $display("char_length %d",this.char_length);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         
         //get values from top
@@ -78,6 +108,8 @@ class uart_test extends uvm_test;
         env_config_obj.stop_bits    = stop_bits;
         env_config_obj.period       = period;
         env_config_obj.parity_en    = parity_en;
+        env_config_obj.rx_ena       = rx_ena;
+        env_config_obj.tx_ena       = tx_ena;
 
         //set environment configuration into the config_db
         uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);

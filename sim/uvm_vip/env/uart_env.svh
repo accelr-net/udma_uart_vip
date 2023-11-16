@@ -101,8 +101,8 @@ class uart_env extends uvm_env;
             uart_seq_item::PARITY_ENABLE  : cfg_config.parity_en = 1'b1;
             uart_seq_item::PARITY_DISABLE : cfg_config.parity_en = 1'b0;
         endcase
-        cfg_config.rx_ena           = 1'b1;
-        cfg_config.tx_ena           = 1'b1;
+        cfg_config.rx_ena           = env_configs.rx_ena;
+        cfg_config.tx_ena           = env_configs.tx_ena;
 
         uart_rx_config.baud_rate    = env_configs.baud_rate;
         uart_rx_config.parity_en    = env_configs.parity_en;

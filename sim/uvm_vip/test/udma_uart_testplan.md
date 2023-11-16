@@ -27,7 +27,7 @@
 
 We have to make individual test with hardcoded. Every test will be change with default position (only change single parameter others are constants). I take default position as {baud_rate : 115200, parity_en : Disable, stop_bits: 1, character_length : 8, TX enable : Enable, RX enable : Enable \}
  test classes has naming convention
-format is \<parameter\>_test_\<value\>.svh (ex: baud_rate_test_9600.svh).
+format is \<parameter\>\_test\_\<value\>.svh (ex: baud_rate_test_9600.svh).
 
 ## UNIT TEST SECTION
 

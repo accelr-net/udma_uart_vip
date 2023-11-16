@@ -94,6 +94,8 @@ class cfg_sequence extends uvm_sequence;
         reserved_1  = 'h0;
         rx_ena      = config_obj.rx_ena;
         tx_ena      = config_obj.tx_ena;
+        $display("tx_ena %b",tx_ena);
+        $display("rx_ena %b",rx_ena);
         reserved_2  = 2'b00;
         clean_fifo  = 1'b0;
         polling_en  = 1'b0;

@@ -85,8 +85,8 @@ class uart_udma_checker extends uvm_scoreboard;
 
     function void display_ascii_art_report();
         string a = { "\n",
-        "               +------------------->%sPassed%s \ %sFailed%s <---------------------+         \n",   
-        "               |                     %s %0d %s   \ %s %0d %s                          |         \n",  
+        "               +-------------------> %sPassed%s \ %sFailed%s <---------------------+         \n",   
+        "               |                      %s %0d %s   \ %s %0d %s                         |         \n",  
         "        _______|___________+------------------------------------+_________|_________\n",   
         "           uart_txn        |                                    |        udma_txn   \n",   
         "                    <<=====| uart_tx_o               udma_tx_i  |<<=====            \n",   
@@ -102,8 +102,8 @@ class uart_udma_checker extends uvm_scoreboard;
         "        ___________________|                                    |___________________\n",   
         "               |           +------------------------------------+          |       \n",   
         "               |                                                           |       \n",           
-        "               +-----------------> %sPassed%s \ %sFailed%s   <----------------------+       \n",       
-        "                                    %s %0d %s \  %s  %0d %s                                \n"           
+        "               +-------------------> %sPassed%s \ %sFailed%s  <---------------------+       \n",       
+        "                                      %s %0d %s \  %s  %0d %s                                \n"           
         };
         $display(a, 
                     GREEN,WHITE,RED,WHITE,GREEN,udma_comparator.m_matches,WHITE,RED,udma_comparator.m_mismatches,WHITE,

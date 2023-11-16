@@ -40,6 +40,8 @@ class env_config extends uvm_object;
     uart_seq_item::parity_type          parity_en           = uart_seq_item::PARITY_ENABLE;
     int                                 stop_bits           = 1;
     int                                 period              = 10;
+    bit                                 rx_ena              = 1'b1;
+    bit                                 tx_ena              = 1'b1;
 
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
