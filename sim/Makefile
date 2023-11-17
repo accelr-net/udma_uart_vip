@@ -34,14 +34,14 @@ SIM_TOP     = tb_top
 all: lib build opt
 	# vsim -c -do run.tcl
 	$(VSIM) -64 -c vopt_tb \
-	+UVM_TESTNAME=uart_test \
+	+UVM_TESTNAME=char_length_test_5 \
 	-do run.tcl
 
 ## vsim targets
 .PHONY: sim
 ## Simulate RTL with Questasim (GUI)
 sim:
-	$(VSIM) -64 -gui vopt_tb \
+	$(VSIM) -64 -c vopt_tb \
 		$(VSIM_SUPPRESS) \
 		+UVM_NO_RELNOTES -stats -t ps \
 	        $(VSIM_FLAGS) \

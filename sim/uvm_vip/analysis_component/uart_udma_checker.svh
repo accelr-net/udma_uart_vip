@@ -106,8 +106,8 @@ class uart_udma_checker extends uvm_scoreboard;
         "                                      %s %0d %s \  %s  %0d %s                                \n"           
         };
         $display(a, 
-                    GREEN,WHITE,RED,WHITE,GREEN,udma_comparator.m_matches,WHITE,RED,udma_comparator.m_mismatches,WHITE,
-                    GREEN,WHITE,RED,WHITE,GREEN,uart_comparator.m_matches,WHITE,RED,uart_comparator.m_mismatches,WHITE
+                    GREEN,WHITE,RED,WHITE,GREEN,uart_comparator.m_matches,WHITE,RED,uart_comparator.m_mismatches,WHITE,
+                    GREEN,WHITE,RED,WHITE,GREEN,udma_comparator.m_matches,WHITE,RED,udma_comparator.m_mismatches,WHITE
                 );
     endfunction: display_ascii_art_report
 endclass : uart_udma_checker

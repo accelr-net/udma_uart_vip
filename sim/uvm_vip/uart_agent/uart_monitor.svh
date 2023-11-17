@@ -72,7 +72,7 @@ class uart_monitor extends uvm_monitor;
         uart_seq_item   uart_rx_transaction;
         super.run_phase(phase);
         `uvm_info("[MONITOR]","run_phase",UVM_HIGH)
-
+        $display("%s monitor char_length %d %s",RED,rx_config.char_length, WHITE);
         forever begin
             bit                              parity;
             uart_seq_item::parity_type       parity_en;

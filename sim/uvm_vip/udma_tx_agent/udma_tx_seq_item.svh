@@ -72,7 +72,7 @@ class udma_tx_seq_item extends uvm_sequence_item;
     function void _randomize();
         this.uart_char      = $urandom();
         this.backoff_time   = $urandom_range(max_time, min_time);
-        this.data           = {24'h0,this.uart_char};
+        this.data           = {24'h0,this.uart_char[7:0]};
     endfunction: _randomize
 
     function void do_print(uvm_printer printer);

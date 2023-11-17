@@ -60,13 +60,17 @@ class udma_uart_predictor extends uvm_subscriber #(udma_tx_seq_item);
     virtual function void write(udma_tx_seq_item t);
         uart_seq_item                            expected_uart_item;
         logic     [7:0]                          character;
+        int                                      char_length;
+        char_length        =  configs.char_length;
         expected_uart_item      = uart_seq_item::type_id::create("expected_uart_txn",this);
         //make expected_udma_txn here
         t.get_uart_char(character);
         expected_uart_item.set_character_length(configs.char_length);
+        character  = 8'b11111111 >> (8 - configs.char_length) & character;
         expected_uart_item.set_data(character,configs.parity_en,1'b0);
         expected_uart_item.calculate_parity();
 
+        $display("%s expected_uart_item %p %s",YELLOW, expected_uart_item,WHITE);
         //write expected_udma_txn into analysis port
         expected_uart_aport.write(expected_uart_item);
     endfunction: write
