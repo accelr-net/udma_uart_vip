@@ -34,7 +34,7 @@ SIM_TOP     = tb_top
 all: lib build opt
 	# vsim -c -do run.tcl
 	$(VSIM) -64 -c vopt_tb \
-	+UVM_TESTNAME=char_length_test_5 \
+	+UVM_TESTNAME=stop_bits_test_2 \
 	-do run.tcl
 
 ## vsim targets
