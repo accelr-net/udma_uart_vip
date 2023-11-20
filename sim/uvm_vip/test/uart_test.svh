@@ -100,6 +100,9 @@ class uart_test extends uvm_test;
         if(!uvm_config_db #(int)::get(this,"","period",period)) begin
             `uvm_fatal("[TEST]","Cannot find period value!");
         end
+        if(!uvm_config_db #(int)::get(this,"","clock_frequency",frequency)) begin
+            `uvm_fatal("[TEST]","Cannot find clock frequency!");
+        end
         env_config_obj  = env_config::type_id::create("env_config_obj",this);
         env             = uart_env::type_id::create("env",this);
 

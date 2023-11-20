@@ -167,6 +167,7 @@ module tb_top();
 
     initial begin
         clock_frequency = 10**9/(CLOCK_PERIOD);
+        $display("%s clock_frequency %p %s", RED,clock_frequency,WHITE);
         uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
