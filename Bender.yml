@@ -47,7 +47,7 @@ sources:
   # - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
   # - rtl/uart_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_colors.sv
-  - sim/uvm_vip/udma_cfg_agent/cfg_agent_pkg.sv
+  - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/udma_rx_agent/udma_rx_agent_pkg.sv
   - sim/uvm_vip/udma_tx_agent/udma_tx_agent_pkg.sv

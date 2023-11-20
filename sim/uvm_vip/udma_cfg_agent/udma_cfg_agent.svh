@@ -33,8 +33,8 @@
 //
 //**************************************************************************************************
 
-class cfg_agent extends uvm_agent;
-    `uvm_component_utils(cfg_agent)
+class udma_cfg_agent extends uvm_agent;
+    `uvm_component_utils(udma_cfg_agent)
     
     //Agent will have driver, monitor component
     cfg_driver                      driver;
@@ -48,7 +48,7 @@ class cfg_agent extends uvm_agent;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name = "cfg_agent",uvm_component parent);
+    function new(string name = "udma_cfg_agent",uvm_component parent);
         super.new(name,parent);
         `uvm_info("[UVM agent]","constructor", UVM_HIGH)
     endfunction: new
@@ -77,4 +77,4 @@ class cfg_agent extends uvm_agent;
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
     endtask
-endclass : cfg_agent
+endclass : udma_cfg_agent

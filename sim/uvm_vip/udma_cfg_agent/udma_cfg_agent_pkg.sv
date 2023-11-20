@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cfg_agent_pkg.sv
+// FILE         :   udma_cfg_agent_pkg.sv
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is included all uvm svh files for cfg. 
 //
@@ -32,7 +32,7 @@
 //  05-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-package cfg_agent_pkg;
+package udma_cfg_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
@@ -46,5 +46,5 @@ package cfg_agent_pkg;
     `include "cfg_sequence.svh"
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
-    `include "cfg_agent.svh"
-endpackage: cfg_agent_pkg
+    `include "udma_cfg_agent.svh"
+endpackage: udma_cfg_agent_pkg

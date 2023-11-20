@@ -34,7 +34,7 @@
 //**************************************************************************************************
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
-    cfg_agent                                       cfg_agnt;
+    udma_cfg_agent                                       cfg_agnt;
     uart_agent                                      uart_rx_agnt;
     uart_agent                                      uart_tx_agnt;
     udma_rx_agent                                   udma_rx_agnt;
@@ -67,7 +67,7 @@ class uart_env extends uvm_env;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         `uvm_info("[ENV]","build_phase",UVM_LOW)
-        cfg_agnt            = cfg_agent::type_id::create("cfg_agent",this);
+        cfg_agnt            = udma_cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);
         uart_tx_agnt        = uart_agent::type_id::create("uart_tx_agnt",this);
         udma_rx_agnt        = udma_rx_agent::type_id::create("udma_rx_agnt",this);

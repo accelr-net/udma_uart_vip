@@ -37,7 +37,7 @@ package env_pkg;
     `include "uvm_macros.svh"
 
     import uart_agent_pkg::*;
-    import cfg_agent_pkg::*;
+    import udma_cfg_agent_pkg::*;
     import udma_rx_agent_pkg::*;
     import udma_tx_agent_pkg::*;
     import analysis_components_pkg::*;

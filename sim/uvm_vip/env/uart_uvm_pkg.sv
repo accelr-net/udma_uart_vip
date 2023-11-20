@@ -43,7 +43,7 @@ package uart_uvm_pkg;
     `include "cfg_sequence.svh"
     `include "cfg_driver.svh"
     `include "cfg_monitor.svh"
-    `include "cfg_agent.svh"
+    `include "udma_cfg_agent.svh"
 
     `include "uart_seq_item.svh"
     `include "uart_agent_config.svh"
