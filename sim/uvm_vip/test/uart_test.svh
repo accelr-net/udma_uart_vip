@@ -32,6 +32,8 @@
 //  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
+
+//ToDo: change name uart_test into uart_base_test
 class uart_test extends uvm_test;
     `uvm_component_utils(uart_test)
     //primary configurations
@@ -48,7 +50,7 @@ class uart_test extends uvm_test;
     env_config                          env_config_obj;
 
     virtual     uart_if                 uart_vif;
-    virtual     udma_if                 vif;
+    virtual     udma_if                 vif; //ToDo: change into vif into udma_vif
 
 //---------------------------------------------------------------------------------------------------------------------
 // Set parameter methods

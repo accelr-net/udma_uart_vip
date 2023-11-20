@@ -34,15 +34,10 @@
 //**************************************************************************************************
 class baud_rate_test_9600 extends uart_test;
     `uvm_component_utils(baud_rate_test_9600)
-    //change configuration
-    int             baud_rate = 9600;
 
     function new(string name="baud_rate_test_9600",uvm_component parent);
         super.new(name,parent);
+        super.set_baud_rate(9600);
     endfunction
 
-    function void build_phase(uvm_phase phase);
-        super.set_baud_rate(baud_rate);
-        super.build_phase(phase);
-    endfunction : build_phase
 endclass: baud_rate_test_9600

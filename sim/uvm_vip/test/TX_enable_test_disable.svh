@@ -32,6 +32,8 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
+
+//ToDo: change file name TX -> tx
 class TX_enable_test_disable extends uart_test;
     `uvm_component_utils(TX_enable_test_disable);
 
