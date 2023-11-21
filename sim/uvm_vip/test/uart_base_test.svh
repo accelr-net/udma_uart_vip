@@ -49,9 +49,6 @@ class uart_base_test extends uvm_test;
     uart_env                            env;
     env_config                          env_config_obj;
 
-    virtual     uart_if                 uart_vif;
-    virtual     udma_if                 udma_vif; //ToDo: change into vif into udma_vif
-
 //---------------------------------------------------------------------------------------------------------------------
 // Set parameter methods
 //---------------------------------------------------------------------------------------------------------------------
