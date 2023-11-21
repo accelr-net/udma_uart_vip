@@ -32,7 +32,7 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class stop_bits_2_test extends uart_test;
+class stop_bits_2_test extends uart_base_test;
     `uvm_component_utils(stop_bits_2_test)
 
     function new(string name="stop_bits_2_test",uvm_component parent);

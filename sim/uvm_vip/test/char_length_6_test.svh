@@ -32,7 +32,7 @@
 //  17-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class char_length_6_test extends uart_test;
+class char_length_6_test extends uart_base_test;
     `uvm_component_utils(char_length_6_test)
 
     function new(string name="char_length_6_test",uvm_component parent);

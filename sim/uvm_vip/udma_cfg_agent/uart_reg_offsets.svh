@@ -32,7 +32,7 @@
 //  27-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-class uart_reg_offsets; // ToDo: const offsets 
+class uart_reg_offsets; // offsets 
     const logic [4:0]        rx_saddr         = 5'h00;
     const logic [4:0]        rx_size_addr     = 5'h01;
     const logic [4:0]        rx_cfg_addr      = 5'h02;

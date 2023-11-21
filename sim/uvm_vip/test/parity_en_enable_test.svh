@@ -32,7 +32,7 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class parity_en_enable_test extends uart_test;
+class parity_en_enable_test extends uart_base_test;
     `uvm_component_utils(parity_en_enable_test)
 
     function new(string name="parity_en_enable_test",uvm_component parent);

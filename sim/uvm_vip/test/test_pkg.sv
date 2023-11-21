@@ -42,7 +42,7 @@ package test_pkg;
     import       udma_tx_agent_pkg::*;
     import       env_pkg::*;
 
-    `include     "uart_test.svh"
+    `include     "uart_base_test.svh"
     `include     "baud_rate_9600_test.svh"
     `include     "baud_rate_19200_test.svh"
     `include     "baud_rate_38400_test.svh"
@@ -50,7 +50,7 @@ package test_pkg;
     `include     "char_length_6_test.svh"
     `include     "char_length_7_test.svh"
     `include     "parity_en_enable_test.svh"
-    `include     "RX_enable_disable_test.svh"
-    `include     "TX_enable_disable_test.svh"
+    `include     "rx_enable_disable_test.svh"
+    `include     "tx_enable_disable_test.svh"
     `include     "stop_bits_2_test.svh"
 endpackage: test_pkg

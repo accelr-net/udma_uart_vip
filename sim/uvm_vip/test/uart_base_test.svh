@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   uart_test.svh
+// FILE         :   uart_base_test.svh
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   This is contain all svh file for uart RX agent
 //
@@ -33,9 +33,9 @@
 //
 //**************************************************************************************************
 
-//ToDo: change name uart_test into uart_base_test
-class uart_test extends uvm_test;
-    `uvm_component_utils(uart_test)
+//ToDo: change name uart_base_test into uart_base_test
+class uart_base_test extends uvm_test;
+    `uvm_component_utils(uart_base_test)
     //primary configurations
     int                                 baud_rate    = 115200;
     int                                 char_length  = 8;
@@ -50,7 +50,7 @@ class uart_test extends uvm_test;
     env_config                          env_config_obj;
 
     virtual     uart_if                 uart_vif;
-    virtual     udma_if                 vif; //ToDo: change into vif into udma_vif
+    virtual     udma_if                 udma_vif; //ToDo: change into vif into udma_vif
 
 //---------------------------------------------------------------------------------------------------------------------
 // Set parameter methods
@@ -81,7 +81,7 @@ class uart_test extends uvm_test;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
-    function new(string name="uart_test",uvm_component parent);
+    function new(string name="uart_base_test",uvm_component parent);
         super.new(name,parent);
         `uvm_info("[TEST]","top level tconstructor", UVM_LOW)
     endfunction: new
@@ -156,4 +156,4 @@ class uart_test extends uvm_test;
         #100000ns;
         phase.drop_objection(this);
     endtask: run_phase
-endclass: uart_test
+endclass: uart_base_test

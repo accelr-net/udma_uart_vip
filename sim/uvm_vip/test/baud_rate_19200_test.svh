@@ -32,7 +32,7 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class baud_rate_19200_test extends uart_test;
+class baud_rate_19200_test extends uart_base_test;
     `uvm_component_utils(baud_rate_19200_test)
 
     function new(string name="baud_rate_19200_test",uvm_component parent);

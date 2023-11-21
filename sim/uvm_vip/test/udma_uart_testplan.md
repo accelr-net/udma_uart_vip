@@ -42,7 +42,7 @@ Evaluate new features and bug fixes introduced in this release
 
 | \# | OBJECTIVE              | INPUT TRNSACTION | EXPECTED RESULTS |
 | -- | ---------------------- | ---------------- | ---------------- |
-| 0  | default_test           | 10000            | 10000            |
+| 0  | uart_base_test         | 10000            | 10000            |
 | 1  | baud_rate_9600_test    | 1000             | 1000             |
 | 2  | baud_rate_19200_test   | 1000             | 1000             |
 | 3  | parity_en_enable_test  | 1000             | 1000             |

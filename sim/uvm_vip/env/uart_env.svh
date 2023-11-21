@@ -34,25 +34,21 @@
 //**************************************************************************************************
 class uart_env extends uvm_env;
     `uvm_component_utils(uart_env)
-    udma_cfg_agent                                       cfg_agnt;
-    uart_agent                                      uart_rx_agnt;
-    uart_agent                                      uart_tx_agnt;
-    udma_rx_agent                                   udma_rx_agnt;
-
     env_config                                      env_configs;    
-    uart_agent_config                               uart_rx_config; //ToDo: Change to local variable
-    uart_agent_config                               uart_tx_config; //ToDo: Change to local variable
-    uart_udma_predictor                             predictor;
-    uart_udma_checker                               uartudma_checker;
-    cfg_agent_config                                cfg_config;     //ToDo:  Change to local variable
+    udma_cfg_agent                                  cfg_agnt;
 
-    //udma_tx_agent
+    //udma_rx
+    udma_rx_agent                                   udma_rx_agnt;
+    uart_agent                                      uart_rx_agnt;
+    uart_udma_predictor                             predictor;
+
+    //udma_tx
+    uart_agent                                      uart_tx_agnt;
     udma_tx_agent                                   udma_tx_agnt;
     udma_uart_predictor                             uart_predictor;
 
-    analysis_configs                                analysis_cf;    //ToDo: rename and make local variable
-
-    
+    //Checker
+    uart_udma_checker                               uartudma_checker;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -65,7 +61,13 @@ class uart_env extends uvm_env;
 // Build phase
 //---------------------------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
+        uart_agent_config                               uart_rx_config; 
+        uart_agent_config                               uart_tx_config; 
+        cfg_agent_config                                cfg_config;     
+        analysis_configs                                analysis_cf;    
+
         super.build_phase(phase);
+    
         `uvm_info("[ENV]","build_phase",UVM_LOW)
         cfg_agnt            = udma_cfg_agent::type_id::create("cfg_agent",this);
         uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);

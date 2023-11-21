@@ -138,6 +138,5 @@ class cfg_sequence extends uvm_sequence;
         cfg_item.rw             <= cfg_seq_item::WRITE;
         finish_item(cfg_item);
         
-        //ToDo: add other register values later with other agents 
     endtask: body
 endclass: cfg_sequence
