@@ -34,7 +34,7 @@
 //**************************************************************************************************
 class analysis_configs extends uvm_object;
     `uvm_object_utils(analysis_configs)
-    uart_seq_item::parity_type      parity_en   = uart_seq_item::PARITY_DISABLE;
+    bit                             parity_en   = 1'b0;
     int                             char_length = 8;
 
 //---------------------------------------------------------------------------------------------------------------------

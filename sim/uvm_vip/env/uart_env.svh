@@ -98,10 +98,7 @@ class uart_env extends uvm_env;
         cfg_config.frequency        = env_configs.frequency;
         cfg_config.char_length      = env_configs.char_length;
         cfg_config.stop_bits        = env_configs.stop_bits;
-        case(env_configs.parity_en)
-            uart_seq_item::PARITY_ENABLE  : cfg_config.parity_en = 1'b1;
-            uart_seq_item::PARITY_DISABLE : cfg_config.parity_en = 1'b0;
-        endcase
+        cfg_config.parity_en        = env_configs.parity_en;
         cfg_config.rx_ena           = env_configs.rx_ena;
         cfg_config.tx_ena           = env_configs.tx_ena;
 

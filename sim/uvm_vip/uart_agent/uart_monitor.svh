@@ -75,7 +75,7 @@ class uart_monitor extends uvm_monitor;
         $display("%s monitor char_length %d %s",RED,rx_config.char_length, WHITE);
         forever begin
             bit                              parity;
-            uart_seq_item::parity_type       parity_en;
+            bit                              parity_en;
             bit [7:0]                        character;
             //create a transaction object 
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction",this);
@@ -96,12 +96,12 @@ class uart_monitor extends uvm_monitor;
             end
 
             //get parity
-            if(rx_config.parity_en == uart_seq_item::PARITY_ENABLE) begin
-                parity_en = uart_seq_item::PARITY_ENABLE;
+            if(rx_config.parity_en == 1'b1) begin
+                parity_en = 1'b1;
                 parity   = rx_config.is_rx_agent? uart_vif.uart_rx_i:uart_vif.uart_tx_o;
                 #this.period; 
             end else begin
-                parity_en = uart_seq_item::PARITY_DISABLE;
+                parity_en = 1'b0;
             end
             //set character and parity
             uart_rx_transaction.set_data(character,parity_en,parity);

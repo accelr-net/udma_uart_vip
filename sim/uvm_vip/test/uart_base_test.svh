@@ -41,7 +41,7 @@ class uart_base_test extends uvm_test;
     int                                 char_length  = 8;
     int                                 frequency    = 50000000;
     int                                 stop_bits    = 1;
-    uart_seq_item::parity_type          parity_en    = uart_seq_item::PARITY_DISABLE;
+    bit                                 parity_en    = 1'b0;
     int                                 period;
     bit                                 rx_ena       = 1'b1;
     bit                                 tx_ena       = 1'b1;
@@ -64,7 +64,7 @@ class uart_base_test extends uvm_test;
         this.stop_bits = stop_bits;
     endfunction: set_stop_bits
 
-    virtual function void set_parity_en(uart_seq_item::parity_type parity_en);
+    virtual function void set_parity_en(bit parity_en);
         this.parity_en = parity_en;
     endfunction: set_parity_en
 

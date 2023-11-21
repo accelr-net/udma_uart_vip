@@ -37,7 +37,7 @@ class parity_en_enable_test extends uart_base_test;
 
     function new(string name="parity_en_enable_test",uvm_component parent);
         super.new(name,parent);
-        super.set_parity_en(uart_seq_item::PARITY_DISABLE);
+        super.set_parity_en(1'b0);
     endfunction: new
 
 endclass: parity_en_enable_test

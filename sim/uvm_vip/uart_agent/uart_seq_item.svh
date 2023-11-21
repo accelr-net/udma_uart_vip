@@ -34,8 +34,7 @@
 //**************************************************************************************************
 class uart_seq_item extends uvm_sequence_item;
     `uvm_object_utils(uart_seq_item)
-    typedef enum {PARITY_DISABLE,PARITY_ENABLE}           parity_type;
-    parity_type                                           parity_en;
+    bit                                                   parity_en;
     local int                                             character_length;                                
     local bit         [7:0]                               character_mask;
     local rand bit    [7:0]                               character;
@@ -51,7 +50,7 @@ class uart_seq_item extends uvm_sequence_item;
     //set data values
     function void set_data(
         bit     [7:0]      character,
-        parity_type        parity_en,
+        bit                parity_en,
         bit                parity
     );
         this.character   = character;
@@ -135,7 +134,7 @@ class uart_seq_item extends uvm_sequence_item;
             `uvm_fatal("FTR","Illegal do_compare cast")
         end
         eq &= comparer.compare_field("character",this.character,tr.character,$bits(character));
-        if(parity_en == PARITY_ENABLE) begin
+        if(parity_en == 1'b1) begin
             eq &= comparer.compare_field("parity",this.parity,tr.parity,$bits(parity));
         end
         return eq;
