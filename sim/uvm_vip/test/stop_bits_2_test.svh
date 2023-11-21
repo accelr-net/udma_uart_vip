@@ -35,14 +35,9 @@
 class stop_bits_2_test extends uart_test;
     `uvm_component_utils(stop_bits_2_test)
 
-    int stop_bits = 2;
-
     function new(string name="stop_bits_2_test",uvm_component parent);
         super.new(name,parent);
+        super.set_stop_bits(2);
     endfunction: new
     
-    function void build_phase(uvm_phase phase);
-        super.set_stop_bits(stop_bits);
-        super.build_phase(phase);
-    endfunction: build_phase
 endclass: stop_bits_2_test

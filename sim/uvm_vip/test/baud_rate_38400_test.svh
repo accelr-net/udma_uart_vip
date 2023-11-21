@@ -34,15 +34,10 @@
 //**************************************************************************************************
 class baud_rate_38400_test extends uart_test;
     `uvm_component_utils(baud_rate_38400_test)
-    //change configuration
-    int             baud_rate = 38400;
 
     function new(string name="baud_rate_38400_test",uvm_component parent);
         super.new(name,parent);
+        super.set_baud_rate(38400);
     endfunction
 
-    function void build_phase(uvm_phase phase);
-        super.set_baud_rate(baud_rate);
-        super.build_phase(phase);
-    endfunction : build_phase
 endclass: baud_rate_38400_test

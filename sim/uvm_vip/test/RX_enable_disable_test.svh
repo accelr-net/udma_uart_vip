@@ -37,14 +37,9 @@
 class RX_enable_disable_test extends uart_test;
     `uvm_component_utils(RX_enable_disable_test)
 
-    bit rx_ena = 1'b0;
-
     function new(string name="RX_enable_disable_test",uvm_component parent);
         super.new(name,parent);
+        super.set_rx_ena(1'b0);
     endfunction: new
 
-    function void build_phase(uvm_phase phase);
-        super.set_rx_ena(rx_ena);
-        super.build_phase(phase);
-    endfunction: build_phase
 endclass: RX_enable_disable_test

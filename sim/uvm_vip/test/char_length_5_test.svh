@@ -19,7 +19,7 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   char_length_test_5.svh
+// FILE         :   char_length_5_test.svh
 // AUTHOR       :   Kasun Buddhi
 // DESCRIPTION  :   Test with character length = 5
 //
@@ -32,17 +32,12 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class char_length_test_5 extends uart_test;
-    `uvm_component_utils(char_length_test_5)
+class char_length_5_test extends uart_test;
+    `uvm_component_utils(char_length_5_test)
 
-    int char_length     = 5;
-
-    function new(string name="char_length_test_5",uvm_component parent);
+    function new(string name="char_length_5_test",uvm_component parent);
         super.new(name,parent);
+        super.set_char_length(5);
     endfunction: new
 
-    function void build_phase(uvm_phase phase);
-        super.set_char_length(char_length);
-        super.build_phase(phase);
-    endfunction: build_phase
-endclass: char_length_test_5
+endclass: char_length_5_test

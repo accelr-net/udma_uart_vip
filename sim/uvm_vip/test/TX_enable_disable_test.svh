@@ -37,15 +37,9 @@
 class TX_enable_disable_test extends uart_test;
     `uvm_component_utils(TX_enable_disable_test);
 
-    bit    tx_ena = 1'b0;
-
     function new(string name="TX_enable_disable_test",uvm_component parent);
         super.new(name,parent);
+        super.set_tx_ena(1'b0);
     endfunction: new
-
-    function void build_phase(uvm_phase phase);
-       super.set_tx_ena(tx_ena);
-       super.build_phase(phase);
-    endfunction: build_phase
 
 endclass: TX_enable_disable_test
