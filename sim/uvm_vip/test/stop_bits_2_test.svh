@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   parity_en_test_enable.svh
+// FILE         :   stop_bits_2_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with parity enable
+// DESCRIPTION  :   Test with RX Disable end TX enable 
 //
 // ************************************************************************************************
 //
@@ -32,17 +32,17 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class parity_en_test_enable extends uart_test;
-    `uvm_component_utils(parity_en_test_enable)
+class stop_bits_2_test extends uart_test;
+    `uvm_component_utils(stop_bits_2_test)
 
-    uart_seq_item::parity_type      parity_en = uart_seq_item::PARITY_DISABLE;
+    int stop_bits = 2;
 
-    function new(string name="parity_en_test_enable",uvm_component parent);
+    function new(string name="stop_bits_2_test",uvm_component parent);
         super.new(name,parent);
     endfunction: new
-
+    
     function void build_phase(uvm_phase phase);
-        super.set_parity_en(parity_en);
+        super.set_stop_bits(stop_bits);
         super.build_phase(phase);
-    endfunction: build_phase 
-endclass: parity_en_test_enable
+    endfunction: build_phase
+endclass: stop_bits_2_test

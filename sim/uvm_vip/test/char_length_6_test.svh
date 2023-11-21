@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   stop_bits_test_2.svh
+// FILE         :   char_length_6_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with RX Disable end TX enable 
+// DESCRIPTION  :   Test with character length = 6
 //
 // ************************************************************************************************
 //
@@ -29,20 +29,20 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  15-Nov-2023      Kasun        creation
+//  17-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class stop_bits_test_2 extends uart_test;
-    `uvm_component_utils(stop_bits_test_2)
+class char_length_6_test extends uart_test;
+    `uvm_component_utils(char_length_6_test)
 
-    int stop_bits = 2;
+    int char_length     = 6;
 
-    function new(string name="stop_bits_test_2",uvm_component parent);
+    function new(string name="char_length_6_test",uvm_component parent);
         super.new(name,parent);
     endfunction: new
-    
+
     function void build_phase(uvm_phase phase);
-        super.set_stop_bits(stop_bits);
+        super.set_char_length(char_length);
         super.build_phase(phase);
     endfunction: build_phase
-endclass: stop_bits_test_2
+endclass: char_length_6_test

@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   RX_enable_test_disable.svh
+// FILE         :   baud_rate_19200_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with RX Disable end TX enable 
+// DESCRIPTION  :   Test with baud_rate with 19200
 //
 // ************************************************************************************************
 //
@@ -32,19 +32,17 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
+class baud_rate_19200_test extends uart_test;
+    `uvm_component_utils(baud_rate_19200_test)
+    //change configuration
+    int             baud_rate = 19200;
 
-//ToDo: change file name RX -> rx
-class RX_enable_test_disable extends uart_test;
-    `uvm_component_utils(RX_enable_test_disable)
-
-    bit rx_ena = 1'b0;
-
-    function new(string name="RX_enable_test_disable",uvm_component parent);
+    function new(string name="baud_rate_19200_test",uvm_component parent);
         super.new(name,parent);
-    endfunction: new
+    endfunction
 
     function void build_phase(uvm_phase phase);
-        super.set_rx_ena(rx_ena);
+        super.set_baud_rate(baud_rate);
         super.build_phase(phase);
-    endfunction: build_phase
-endclass: RX_enable_test_disable
+    endfunction : build_phase
+endclass: baud_rate_19200_test

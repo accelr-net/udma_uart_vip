@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   char_length_test_6.svh
+// FILE         :   TX_enable_disable_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with character length = 6
+// DESCRIPTION  :   Test with TX Disable end RX enable 
 //
 // ************************************************************************************************
 //
@@ -29,20 +29,23 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  17-Nov-2023      Kasun        creation
+//  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class char_length_test_6 extends uart_test;
-    `uvm_component_utils(char_length_test_6)
 
-    int char_length     = 6;
+//ToDo: change file name TX -> tx
+class TX_enable_disable_test extends uart_test;
+    `uvm_component_utils(TX_enable_disable_test);
 
-    function new(string name="char_length_test_6",uvm_component parent);
+    bit    tx_ena = 1'b0;
+
+    function new(string name="TX_enable_disable_test",uvm_component parent);
         super.new(name,parent);
     endfunction: new
 
     function void build_phase(uvm_phase phase);
-        super.set_char_length(char_length);
-        super.build_phase(phase);
+       super.set_tx_ena(tx_ena);
+       super.build_phase(phase);
     endfunction: build_phase
-endclass: char_length_test_6
+
+endclass: TX_enable_disable_test

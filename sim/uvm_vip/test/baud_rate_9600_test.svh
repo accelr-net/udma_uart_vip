@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   char_length_test_7.svh
+// FILE         :   baud_rate_9600_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with character length = 7
+// DESCRIPTION  :   Test with baud_rate with 9600
 //
 // ************************************************************************************************
 //
@@ -32,17 +32,12 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class char_length_test_7 extends uart_test;
-    `uvm_component_utils(char_length_test_7)
+class baud_rate_9600_test extends uart_test;
+    `uvm_component_utils(baud_rate_9600_test)
 
-    int char_length  = 7;
-
-    function new(string name="char_length_test_7",uvm_component parent);
+    function new(string name="baud_rate_9600_test",uvm_component parent);
         super.new(name,parent);
-    endfunction: new 
+        super.set_baud_rate(9600);
+    endfunction
 
-    function void build_phase(uvm_phase phase);
-        super.set_char_length(char_length);
-        super.build_phase(phase);
-    endfunction: build_phase
-endclass: char_length_test_7
+endclass: baud_rate_9600_test

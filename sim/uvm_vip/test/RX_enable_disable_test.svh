@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   baud_rate_test_38400.svh
+// FILE         :   RX_enable_disable_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with baud_rate with 38400
+// DESCRIPTION  :   Test with RX Disable end TX enable 
 //
 // ************************************************************************************************
 //
@@ -29,20 +29,22 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  18-Nov-2023      Kasun        creation
+//  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class baud_rate_test_38400 extends uart_test;
-    `uvm_component_utils(baud_rate_test_38400)
-    //change configuration
-    int             baud_rate = 38400;
 
-    function new(string name="baud_rate_test_38400",uvm_component parent);
+//ToDo: change file name RX -> rx
+class RX_enable_disable_test extends uart_test;
+    `uvm_component_utils(RX_enable_disable_test)
+
+    bit rx_ena = 1'b0;
+
+    function new(string name="RX_enable_disable_test",uvm_component parent);
         super.new(name,parent);
-    endfunction
+    endfunction: new
 
     function void build_phase(uvm_phase phase);
-        super.set_baud_rate(baud_rate);
+        super.set_rx_ena(rx_ena);
         super.build_phase(phase);
-    endfunction : build_phase
-endclass: baud_rate_test_38400
+    endfunction: build_phase
+endclass: RX_enable_disable_test

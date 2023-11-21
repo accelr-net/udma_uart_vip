@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   baud_rate_test_19200.svh
+// FILE         :   baud_rate_38400_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with baud_rate with 19200
+// DESCRIPTION  :   Test with baud_rate with 38400
 //
 // ************************************************************************************************
 //
@@ -29,15 +29,15 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  15-Nov-2023      Kasun        creation
+//  18-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class baud_rate_test_19200 extends uart_test;
-    `uvm_component_utils(baud_rate_test_19200)
+class baud_rate_38400_test extends uart_test;
+    `uvm_component_utils(baud_rate_38400_test)
     //change configuration
-    int             baud_rate = 19200;
+    int             baud_rate = 38400;
 
-    function new(string name="baud_rate_test_19200",uvm_component parent);
+    function new(string name="baud_rate_38400_test",uvm_component parent);
         super.new(name,parent);
     endfunction
 
@@ -45,4 +45,4 @@ class baud_rate_test_19200 extends uart_test;
         super.set_baud_rate(baud_rate);
         super.build_phase(phase);
     endfunction : build_phase
-endclass: baud_rate_test_19200
+endclass: baud_rate_38400_test
