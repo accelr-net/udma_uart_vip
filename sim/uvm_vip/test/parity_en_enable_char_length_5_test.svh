@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   test_pkg.sv
+// FILE         :   parity_en_enable_char_length_5_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is contain all uvm_test files
+// DESCRIPTION  :   parity enable with char length 5
 //
 // ************************************************************************************************
 //
@@ -29,29 +29,16 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  11-oct-2023      Kasun        creation
+//  28-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-package test_pkg;
-    import       uvm_pkg::*;
-    `include     "uvm_macros.svh"
+class parity_en_enable_char_length_5_test extends uart_base_test;
+    `uvm_component_utils(parity_en_enable_char_length_5_test)
 
-    import       uart_agent_pkg::*;
-    import       udma_cfg_agent_pkg::*;
-    import       udma_rx_agent_pkg::*;
-    import       udma_tx_agent_pkg::*;
-    import       env_pkg::*;
+    function new(string name="parity_en_enable_char_length_5_test",uvm_component parent);
+        super.new(name,parent);
+        super.set_parity_en(1'b0);
+        super.set_char_length(5);
+    endfunction
 
-    `include     "uart_base_test.svh"
-    `include     "baud_rate_9600_test.svh"
-    `include     "baud_rate_19200_test.svh"
-    `include     "baud_rate_38400_test.svh"
-    `include     "char_length_5_test.svh"
-    `include     "char_length_6_test.svh"
-    `include     "char_length_7_test.svh"
-    `include     "parity_en_enable_test.svh"
-    `include     "rx_enable_disable_test.svh"
-    `include     "tx_enable_disable_test.svh"
-    `include     "stop_bits_2_test.svh"
-    `include     "parity_en_enable_char_length_5_test.svh"
-endpackage: test_pkg
+endclass: parity_en_enable_char_length_5_test
