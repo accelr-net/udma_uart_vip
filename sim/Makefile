@@ -30,12 +30,18 @@ VMAP            ?= vmap
 # top-level (tesbench)
 SIM_TOP     = tb_top 
 
+TEST_NAME	?= uart_base_test
+
+error_file:
+	@echo "errors" > error_detect.txt
+
 ## Compile RTL with Questasim
-all: lib build opt
+all:error_file lib build opt
 	# vsim -c -do run.tcl
 	$(VSIM) -64 -c vopt_tb \
-	+UVM_TESTNAME=parity_en_enable_test \
-	-do run.tcl
+	+UVM_TESTNAME=$(TEST_NAME) \
+	-do run.tcl > error_detect.txt
+# @echo "no_errors" > error_detect.txt
 
 ## vsim targets
 .PHONY: sim

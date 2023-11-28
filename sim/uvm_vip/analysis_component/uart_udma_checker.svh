@@ -76,6 +76,17 @@ class uart_udma_checker extends uvm_scoreboard;
         uart_after_export.connect(uart_comparator.after_export);
     endfunction: connect_phase
 
+    task run_phase(uvm_phase phase);
+        super.run_phase(phase);
+        $display("%s run_phase %s",RED,WHITE);
+        forever begin
+            #(100);
+            if(uart_comparator.m_mismatches > 0) begin
+                $display("%s found maches %s",RED,WHITE);
+                $fatal(1,"found mismaches!!");
+            end
+        end
+    endtask:run_phase
 //------------------------------------------------------------------------------------------
 // Report Phase
 //------------------------------------------------------------------------------------------
