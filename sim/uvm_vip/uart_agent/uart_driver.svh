@@ -37,6 +37,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
     parameter               char_length = 8;
     virtual uart_if         uart_vif;
     int                     period;
+    bit                     parity_error_inject = 1'b0;
 
     uart_agent_config       rx_config;
 
@@ -58,6 +59,10 @@ class uart_driver extends uvm_driver #(uart_seq_item);
 
         if(!uvm_config_db #(uart_agent_config)::get(this,"","uart_config",rx_config)) begin
             `uvm_fatal("uart_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
+        end
+
+        if(!uvm_config_db #(bit)::get(this,"","parity_error",parity_error_inject)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
         end
         `uvm_info("[DRIVER]","build_phase",UVM_HIGH);
         calculate_period(rx_config.baud_rate); // calculate period there
@@ -103,6 +108,9 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
+        if(parity_error_inject) begin
+            parity = ~parity;
+        end
         #(this.period);
         uart_vif.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin

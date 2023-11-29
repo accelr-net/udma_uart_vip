@@ -38,7 +38,7 @@ error_file:
 ## Compile RTL with Questasim
 all:error_file lib build opt
 	# vsim -c -do run.tcl
-	$(VSIM) -64 -c vopt_tb \
+	$(VSIM) -64 vopt_tb \
 	+UVM_TESTNAME=$(TEST_NAME) \
 	-do run.tcl > error_detect.txt
 # @echo "no_errors" > error_detect.txt

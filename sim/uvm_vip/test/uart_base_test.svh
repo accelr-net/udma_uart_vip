@@ -37,14 +37,16 @@
 class uart_base_test extends uvm_test;
     `uvm_component_utils(uart_base_test)
     //primary configurations
-    int                                 baud_rate    = 115200;
-    int                                 char_length  = 8;
-    int                                 frequency    = 50000000;
-    int                                 stop_bits    = 1;
-    bit                                 parity_en    = 1'b0;
+    int                                 baud_rate           = 115200;
+    int                                 char_length         = 8;
+    int                                 frequency           = 50000000;
+    int                                 stop_bits           = 1;
+    bit                                 parity_en           = 1'b0;
     int                                 period;
-    bit                                 rx_ena       = 1'b1;
-    bit                                 tx_ena       = 1'b1;
+    bit                                 rx_ena              = 1'b1;
+    bit                                 tx_ena              = 1'b1;
+
+    bit                                 parity_error_inject = 1'b0;
 
     uart_env                            env;
     env_config                          env_config_obj;
@@ -75,6 +77,10 @@ class uart_base_test extends uvm_test;
     virtual function void set_tx_ena(bit tx_ena);
         this.tx_ena = tx_ena;
     endfunction: set_tx_ena
+
+    virtual function void set_parity_error_inject(bit parity_error_inject);
+        this.parity_error_inject = parity_error_inject;
+    endfunction: set_parity_error_inject
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -120,7 +126,7 @@ class uart_base_test extends uvm_test;
         uvm_config_db #(int)::set(null,"*","char_length",char_length);
         uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
-
+        uvm_config_db #(bit)::set(null,"*","parity_error",parity_error_inject);
         //set configuration for cfg_sequence
     endfunction: build_phase
 

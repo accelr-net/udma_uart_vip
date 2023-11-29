@@ -55,4 +55,5 @@ package test_pkg;
     `include     "stop_bits_2_test.svh"
     `include     "parity_en_enable_char_length_5_test.svh"
     `include     "stop_bits_2_char_length_5_test.svh"
+    `include     "parity_en_enable_error_inject_test.svh"
 endpackage: test_pkg

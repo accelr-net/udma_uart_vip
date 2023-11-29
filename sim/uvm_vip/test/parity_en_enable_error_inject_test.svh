@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   parity_en_enable_test.svh
+// FILE         :   parity_en_enable_error_inject_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with parity enable
+// DESCRIPTION  :   Test with baud_rate with 9600
 //
 // ************************************************************************************************
 //
@@ -29,15 +29,15 @@
 //
 //  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  15-Nov-2023      Kasun        creation
+//  29-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class parity_en_enable_test extends uart_base_test;
-    `uvm_component_utils(parity_en_enable_test)
+class parity_en_enable_error_inject_test extends uart_base_test;
+    `uvm_component_utils(parity_en_enable_error_inject_test)
 
-    function new(string name="parity_en_enable_test",uvm_component parent);
+    function new(string name="parity_en_enable_error_inject_test",uvm_component parent);
         super.new(name,parent);
         super.set_parity_en(1'b1);
-    endfunction: new
-
-endclass: parity_en_enable_test
+        super.set_parity_error_inject(1'b1);
+    endfunction
+endclass: parity_en_enable_error_inject_test

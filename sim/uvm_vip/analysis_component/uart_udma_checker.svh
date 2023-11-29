@@ -35,6 +35,8 @@
 class uart_udma_checker extends uvm_scoreboard;
     `uvm_component_utils(uart_udma_checker)
 
+    bit         error_inject = 1'b0;
+
     uvm_analysis_export #(udma_rx_seq_item)                         udma_before_export;
     uvm_analysis_export #(udma_rx_seq_item)                         udma_after_export;
 
@@ -55,6 +57,9 @@ class uart_udma_checker extends uvm_scoreboard;
 // Build Phase
 //------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
+        if(!uvm_config_db #(bit)::get(this,"","parity_error",error_inject)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+        end
         udma_before_export  = new("udma_before_export",this);
         udma_after_export   = new("udma_after_export",this);
 
@@ -81,9 +86,16 @@ class uart_udma_checker extends uvm_scoreboard;
         $display("%s run_phase %s",RED,WHITE);
         forever begin
             #(100);
-            if(uart_comparator.m_mismatches > 0) begin
-                $display("%s found maches %s",RED,WHITE);
-                $fatal(1,"found mismaches!!");
+            if(!error_inject) begin
+                if(uart_comparator.m_mismatches > 0) begin
+                    $display("%s found m_mismatches %s",RED,WHITE);
+                    $fatal(1,"found mismaches!!");
+                end
+            end else begin
+                if(uart_comparator.m_matches > 0) begin
+                    $display("%s found m_matches %s",RED,WHITE);
+                    $fatal(1,"found matches!!");
+                end
             end
         end
     endtask:run_phase
