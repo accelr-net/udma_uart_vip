@@ -32,8 +32,6 @@
 //  18-Sep-2023      Kasun        creation
 //
 //**************************************************************************************************
-
-//ToDo: change name uart_base_test into uart_base_test
 class uart_base_test extends uvm_test;
     `uvm_component_utils(uart_base_test)
     //primary configurations

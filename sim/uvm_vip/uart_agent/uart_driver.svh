@@ -108,6 +108,8 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
+        $display("%s error injection %b %s",RED,parity_error_inject,WHITE);
+        $display("%s parity %b %s",RED,parity,WHITE);
         if(parity_error_inject) begin
             parity = ~parity;
         end
