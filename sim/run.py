@@ -33,9 +33,12 @@
 #
 #*************************************************************************************************
 import subprocess
+from tqdm import tqdm
 
 
-#Test list
+#------------------------------------------------------------------------------------------------
+# Add tests into test_list list
+#------------------------------------------------------------------------------------------------
 test_list = [
     "uart_base_test",
     "baud_rate_9600_test",
@@ -49,16 +52,28 @@ test_list = [
     "tx_enable_disable_test"
 ]
 
-def check_error(file_name,error_code):
-    file = open(file_name,"r")
-    content = file.readlines()
-    if(error_code in content):
-        print("This is some error")
-        return True
-    else :
+def check_error_code(code,text):
+    if(code in text):
         return False
-for test in test_list:
-    subprocess.run(["make","TEST_NAME="+test,"all"])
-    if (check_error("sim/error_detect.txt","# ** Fatal: found mismaches!!\n")):
-        print("There is error")
+    else:
+        return True
+
+for index in tqdm(range(len(test_list))):
+    test = test_list[index]
+    is_error = True
+    clean       =   subprocess.run(["make","clean"],capture_output=True)
+    output_text =   subprocess.run(["make","all",("TEST_NAME="+test)],capture_output=True)
+    output_arr  =   output_text.stdout.split(b'\n')
+    is_error    &=  check_error_code(b'# ** Fatal: Error_code : comparator_mismatches_1',output_arr)
+    is_error    &=  check_error_code(b'# ** Fatal: Error_code : udma_comparator_matches_2',output_arr)
+    # Stop the process
+    if(not is_error):
+        print("========================")
+        print("Failed one or more tests")
+        print("========================")
         break
+
+if(is_error):
+    print("===============")
+    print("Passed all test")
+    print("===============")

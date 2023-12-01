@@ -31,14 +31,14 @@ VMAP            ?= vmap
 SIM_TOP     = tb_top 
 
 TEST_NAME	?= uart_base_test
-
+MODE 		?= -c
 error_file:
 	@echo "errors" > error_detect.txt
 
 ## Compile RTL with Questasim
 all:error_file lib build opt
 	# vsim -c -do run.tcl
-	$(VSIM) -c -64 vopt_tb \
+	$(VSIM) $(MODE) -64 vopt_tb \
 	+UVM_TESTNAME=$(TEST_NAME) \
 	-do run.tcl 
 # @echo "no_errors" > error_detect.txt
