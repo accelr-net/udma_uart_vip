@@ -34,7 +34,6 @@
 //**************************************************************************************************
 class uart_driver extends uvm_driver #(uart_seq_item);
     `uvm_component_utils(uart_driver)
-    parameter               char_length = 8;
     virtual uart_if         uart_vif;
     int                     period;
     bit                     parity_error_inject = 1'b0;
