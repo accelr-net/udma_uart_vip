@@ -93,8 +93,6 @@ class uart_base_test extends uvm_test;
     //In build phase construct the cfg_env class using factory and
     //Get the virtual interface handle from test then set it config db for the env
     function void build_phase(uvm_phase phase);
-        $display("baud_rate %d",this.baud_rate);
-        $display("char_length %d",this.char_length);
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         
         //get values from top

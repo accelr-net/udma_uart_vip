@@ -94,8 +94,6 @@ class cfg_sequence extends uvm_sequence;
         reserved_1  = 'h0;
         rx_ena      = config_obj.rx_ena;
         tx_ena      = config_obj.tx_ena;
-        $display("tx_ena %b",tx_ena);
-        $display("rx_ena %b",rx_ena);
         reserved_2  = 2'b00;
         clean_fifo  = 1'b0;
         polling_en  = 1'b0;
@@ -136,7 +134,6 @@ class cfg_sequence extends uvm_sequence;
         cfg_item.addr           <= reg_offsets.setup_addr;
         cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
-        $display("%s cfg_item %p %s",RED, cfg_item,WHITE);
         finish_item(cfg_item);
         
     endtask: body

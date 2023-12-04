@@ -74,6 +74,6 @@ for index in tqdm(range(len(test_list))):
         break
 
 if(is_error):
-    print("===============")
-    print("Passed all test")
-    print("===============")
+    print("================")
+    print("Passed all tests")
+    print("================")
