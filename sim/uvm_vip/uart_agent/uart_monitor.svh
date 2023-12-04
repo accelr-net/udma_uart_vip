@@ -87,8 +87,12 @@ class uart_monitor extends uvm_monitor;
             end
             #(this.period/2);
             #this.period; // wait for start_bit
+            $display("%s this.period %d %s",RED,this.period,WHITE);
             //getting character
             for(int i=0; i < rx_config.char_length; i++) begin
+                if(rx_config.is_rx_agent == 1'b0) begin
+                    $display("char time : %0t",$realtime);
+                end
                 character[i] = rx_config.is_rx_agent? uart_vif.uart_rx_i:  uart_vif.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
                     #this.period;
@@ -97,9 +101,12 @@ class uart_monitor extends uvm_monitor;
 
             //get parity
             if(rx_config.parity_en == 1'b1) begin
+                #(this.period);
                 parity_en = 1'b1;
+                if(rx_config.is_rx_agent == 1'b0) begin
+                    $display("parity time : %0t",$realtime);
+                end
                 parity   = rx_config.is_rx_agent? uart_vif.uart_rx_i:uart_vif.uart_tx_o;
-                #this.period; 
             end else begin
                 parity_en = 1'b0;
             end
@@ -110,6 +117,10 @@ class uart_monitor extends uvm_monitor;
                 #this.period;
             end
             #(this.period/2); // wait for stop
+            $display("%s uart_rx_transaction : %p %s",BLUE,uart_rx_transaction,WHITE);
+            $display("%s character : %b %s",BLUE,character,WHITE);
+            $display("%s parity : %b %s",BLUE,parity,WHITE);
+            $display("%s is_rx_agent : %b %s",BLUE,rx_config.is_rx_agent,WHITE);
             uart_rx_analysis_port.write(uart_rx_transaction);
         end
     endtask: run_phase

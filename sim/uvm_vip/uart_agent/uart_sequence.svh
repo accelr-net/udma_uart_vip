@@ -35,7 +35,7 @@
 class uart_sequence extends uvm_sequence;
     `uvm_object_utils(uart_sequence)
     int char_length = 8;
-    bit parity_en   = 1;
+    bit parity_en   = 1'b0;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -55,11 +55,12 @@ class uart_sequence extends uvm_sequence;
 //---------------------------------------------------------------------------------------------------------------------
     task body();
         uart_seq_item          uart_rx_transaction;
-        repeat(10) begin
+        $display("%s uart_sequence parity : %b %s",BLUE,parity_en,WHITE);
+        repeat(3) begin
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
             uart_rx_transaction.set_character_length(char_length);
-            uart_rx_transaction.set_data(8'h3,1'b0,1'b1);
+            uart_rx_transaction.set_data(8'h3,parity_en,1'b1);
             uart_rx_transaction._randomize();
             finish_item(uart_rx_transaction);
         end

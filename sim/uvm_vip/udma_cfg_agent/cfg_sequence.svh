@@ -136,6 +136,7 @@ class cfg_sequence extends uvm_sequence;
         cfg_item.addr           <= reg_offsets.setup_addr;
         cfg_item.data           <= setup_value;
         cfg_item.rw             <= cfg_seq_item::WRITE;
+        $display("%s cfg_item %p %s",RED, cfg_item,WHITE);
         finish_item(cfg_item);
         
     endtask: body

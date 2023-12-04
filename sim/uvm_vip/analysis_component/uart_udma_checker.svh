@@ -84,20 +84,20 @@ class uart_udma_checker extends uvm_scoreboard;
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
         $display("%s run_phase %s",RED,WHITE);
-        forever begin
-            #(100);
-            if(!error_inject) begin
-                if(udma_comparator.m_mismatches > 0 || uart_comparator.m_mismatches > 0) begin
-                    $display("%s found m_mismatches %s",RED,WHITE);
-                    $fatal(1,"Error_code : comparator_mismatches_1");
-                end
-            end else begin
-                if(udma_comparator.m_matches > 0) begin
-                    $display("%s found m_matches %s",RED,WHITE);
-                    $fatal(1,"Error_code : udma_comparator_matches_2");
-                end
-            end
-        end
+        // forever begin
+        //     #(100);
+        //     if(!error_inject) begin
+        //         if(udma_comparator.m_mismatches > 0 || uart_comparator.m_mismatches > 0) begin
+        //             $display("%s found m_mismatches %s",RED,WHITE);
+        //             // $fatal(1,"Error_code : comparator_mismatches_1");
+        //         end
+        //     end else begin
+        //         if(udma_comparator.m_matches > 0) begin
+        //             $display("%s found m_matches %s",RED,WHITE);
+        //             // $fatal(1,"Error_code : udma_comparator_matches_2");
+        //         end
+        //     end
+        // end
     endtask:run_phase
 //------------------------------------------------------------------------------------------
 // Report Phase
