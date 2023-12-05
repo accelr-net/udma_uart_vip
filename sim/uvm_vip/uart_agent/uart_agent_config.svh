@@ -39,7 +39,7 @@ class uart_agent_config extends uvm_object;
     int                             stop_bits   = 1;
     bit                             parity_en   = 1'b1;
     int                             char_length = 8;
-    int                             period      = 10;
+    int                             clock_period= 10;
     bit                             is_rx_agent = 1'b1;
 
     function new(string name="uart_agent_config");

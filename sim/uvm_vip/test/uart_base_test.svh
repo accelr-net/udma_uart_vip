@@ -40,7 +40,7 @@ class uart_base_test extends uvm_test;
     int                                 frequency           = 50000000;
     int                                 stop_bits           = 1;
     bit                                 parity_en           = 1'b0;
-    int                                 period;
+    int                                 clock_period;
     bit                                 rx_ena              = 1'b1;
     bit                                 tx_ena              = 1'b1;
 
@@ -96,8 +96,8 @@ class uart_base_test extends uvm_test;
         `uvm_info("[TEST]","build_phase", UVM_LOW)
         
         //get values from top
-        if(!uvm_config_db #(int)::get(this,"","period",period)) begin
-            `uvm_fatal("[TEST]","Cannot find period value!");
+        if(!uvm_config_db #(int)::get(this,"","clock_period",clock_period)) begin
+            `uvm_fatal("[TEST]","Cannot find clock_period value!");
         end
         if(!uvm_config_db #(int)::get(this,"","clock_frequency",frequency)) begin
             `uvm_fatal("[TEST]","Cannot find clock frequency!");
@@ -110,7 +110,7 @@ class uart_base_test extends uvm_test;
         env_config_obj.frequency    = frequency;
         env_config_obj.char_length  = char_length;
         env_config_obj.stop_bits    = stop_bits;
-        env_config_obj.period       = period;
+        env_config_obj.clock_period = clock_period;
         env_config_obj.parity_en    = parity_en;
         env_config_obj.rx_ena       = rx_ena;
         env_config_obj.tx_ena       = tx_ena;

@@ -168,7 +168,7 @@ module tb_top();
         uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
-        uvm_config_db #(int)::set(null,"*","period",CLOCK_PERIOD);
+        uvm_config_db #(int)::set(null,"*","clock_period",CLOCK_PERIOD);
     end
 
     initial begin

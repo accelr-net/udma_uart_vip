@@ -106,14 +106,14 @@ class uart_env extends uvm_env;
         uart_rx_config.parity_en    = env_configs.parity_en;
         uart_rx_config.char_length  = env_configs.char_length;
         uart_rx_config.stop_bits    = env_configs.stop_bits;
-        uart_rx_config.period       = env_configs.period;
+        uart_rx_config.clock_period = env_configs.clock_period;
         uart_rx_config.is_rx_agent  = 1'b1;
 
         uart_tx_config.baud_rate    = env_configs.baud_rate;
         uart_tx_config.parity_en    = env_configs.parity_en;
         uart_tx_config.char_length  = env_configs.char_length;
         uart_tx_config.stop_bits    = env_configs.stop_bits;
-        uart_tx_config.period       = env_configs.period;
+        uart_tx_config.clock_period = env_configs.clock_period;
         uart_tx_config.is_rx_agent  = 1'b0;
 
         analysis_cf.parity_en       = env_configs.parity_en;     

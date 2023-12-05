@@ -38,7 +38,7 @@ class uart_monitor extends uvm_monitor;
     virtual uart_if                          uart_vif;
     
     uart_agent_config                        rx_config;
-    int                                      period;
+    int                                      uart_period;
     uvm_analysis_port #(uart_seq_item)       uart_rx_aport;
 
     function new(string name="uart_monitor", uvm_component parent);
@@ -57,16 +57,16 @@ class uart_monitor extends uvm_monitor;
         if(!uvm_config_db #(uart_agent_config)::get(this,"*","uart_config",rx_config)) begin
             `uvm_fatal("[MONITOR]","Cannot find uart_config. Please give configs from tb_top");
         end
-        calculate_period(rx_config.baud_rate);
+        calculate_uart_period(rx_config.baud_rate);
     endfunction
 
-    function void calculate_period(int baud_rate);
+    function void calculate_uart_period(int baud_rate);
         if(baud_rate != 0) begin
-            this.period = 10**9/baud_rate;
+            this.uart_period = 10**9/baud_rate;
         end else begin
-            `uvm_fatal("uart_driver/calculate_period","Please set baud_rate with non zero value");
+            `uvm_fatal("uart_driver/calculate_uart_period","Please set baud_rate with non zero value");
         end
-    endfunction: calculate_period;
+    endfunction: calculate_uart_period;
 
     virtual task run_phase(uvm_phase phase);
         uart_seq_item   uart_rx_transaction;
@@ -84,19 +84,19 @@ class uart_monitor extends uvm_monitor;
             end else begin
                 @(negedge uart_vif.uart_tx_o);
             end
-            #(this.period/2);   // purpose is to check in the middle of the half clock (middle of the pulse)
-            #this.period;       // wait for start_bit
+            #(this.uart_period/2);   // purpose is to check in the middle of the half clock (middle of the pulse)
+            #this.uart_period;       // wait for start_bit
             //get character
             for(int i=0; i < rx_config.char_length; i++) begin
                 character[i] = rx_config.is_rx_agent? uart_vif.uart_rx_i:  uart_vif.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
-                    #this.period;
+                    #this.uart_period;
                 end
             end
 
             //get parity
             if(rx_config.parity_en == 1'b1) begin
-                #(this.period);
+                #(this.uart_period);
                 parity_en = 1'b1;
                 parity   = rx_config.is_rx_agent? uart_vif.uart_rx_i:uart_vif.uart_tx_o;
             end else begin
@@ -106,9 +106,9 @@ class uart_monitor extends uvm_monitor;
             uart_rx_transaction.set_data(character,parity_en,parity);
             //delay for 2 stopbits 
             if(rx_config.stop_bits == 2) begin
-                #this.period;
+                #this.uart_period;
             end
-            #(this.period/2); // wait for stop
+            #(this.uart_period/2); // wait for stop
             uart_rx_aport.write(uart_rx_transaction);
         end
     endtask: run_phase

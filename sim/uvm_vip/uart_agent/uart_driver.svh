@@ -35,7 +35,7 @@
 class uart_driver extends uvm_driver #(uart_seq_item);
     `uvm_component_utils(uart_driver)
     virtual uart_if         uart_vif;
-    int                     period;
+    int                     uart_period;
     bit                     parity_error_inject = 1'b0;
 
     uart_agent_config       rx_config;
@@ -64,7 +64,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
             `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
         end
         `uvm_info("[DRIVER]","build_phase",UVM_HIGH);
-        calculate_period(rx_config.baud_rate); // calculate period there
+        calculate_uart_period(rx_config.baud_rate); // calculate uart_period there
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -80,13 +80,13 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         `uvm_info("[DRIVER]", "configure_phase", UVM_HIGH)
     endtask : configure_phase
 
-    function void calculate_period(int baud_rate);
+    function void calculate_uart_period(int baud_rate);
         if(baud_rate != 0) begin
-            this.period = 10**9/baud_rate;
+            this.uart_period = 10**9/baud_rate;
         end else begin
-            `uvm_fatal("uart_driver/calculate_period","Please set baud_rate with non zero value");
+            `uvm_fatal("uart_driver/calculate_uart_period","Please set baud_rate with non zero value");
         end
-    endfunction: calculate_period;
+    endfunction: calculate_uart_period;
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------
@@ -110,18 +110,18 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         if(parity_error_inject) begin
             parity = ~parity;
         end
-        #(this.period);
+        #(this.uart_period);
         uart_vif.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin
-            #(this.period);
+            #(this.uart_period);
             uart_vif.uart_rx_i   = character[i];
         end
         if(rx_config.parity_en == 1'b1) begin
-            #(this.period);
+            #(this.uart_period);
             uart_vif.uart_rx_i   = parity;
         end
         for(int j=0; j < rx_config.stop_bits; j++) begin
-            #(this.period);
+            #(this.uart_period);
             uart_vif.uart_rx_i = 1'b1; //stop bit
         end
     endtask: do_uart_rx
