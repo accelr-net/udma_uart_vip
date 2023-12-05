@@ -37,6 +37,11 @@ class udma_tx_seq_item extends uvm_sequence_item;
     rand logic [7:0]            uart_char;
     logic     [31:0]            data;
     rand int                    backoff_time;
+
+    constraint time_range{
+        backoff_time < 20000;
+        backoff_time > 100;
+    }
 //--------------------------------------------------------------------------------------------------
 // Construct
 //--------------------------------------------------------------------------------------------------
@@ -74,6 +79,10 @@ class udma_tx_seq_item extends uvm_sequence_item;
         this.backoff_time   = $urandom_range(max_time, min_time);
         this.data           = {24'h0,this.uart_char[7:0]};
     endfunction: _randomize
+
+    function void post_randomize();
+        this.data = {24'h0,this.uart_char};
+    endfunction: post_randomize
 
     function void do_print(uvm_printer printer);
         printer.m_string = convert2string();

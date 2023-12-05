@@ -40,15 +40,15 @@ class uart_env extends uvm_env;
     //udma_rx
     udma_rx_agent                                   udma_rx_agnt;
     uart_agent                                      uart_rx_agnt;
-    uart_udma_predictor                             predictor;
+    uart_udma_predictor                             udma_predictor;
 
     //udma_tx
     uart_agent                                      uart_tx_agnt;
     udma_tx_agent                                   udma_tx_agnt;
     udma_uart_predictor                             uart_predictor;
 
-    //Checker
-    uart_udma_checker                               uartudma_checker;
+    //uart_checker
+    uart_udma_checker                               uart_checker;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -69,13 +69,13 @@ class uart_env extends uvm_env;
         super.build_phase(phase);
     
         `uvm_info("[ENV]","build_phase",UVM_LOW)
-        cfg_agnt            = udma_cfg_agent::type_id::create("cfg_agent",this);
+        cfg_agnt            = udma_cfg_agent::type_id::create("cfg_agnt",this);
         uart_rx_agnt        = uart_agent::type_id::create("uart_rx_agnt",this);
         uart_tx_agnt        = uart_agent::type_id::create("uart_tx_agnt",this);
         udma_rx_agnt        = udma_rx_agent::type_id::create("udma_rx_agnt",this);
 
-        predictor           = uart_udma_predictor::type_id::create("predictor",this);
-        uartudma_checker    = uart_udma_checker::type_id::create("checker",this);
+        udma_predictor      = uart_udma_predictor::type_id::create("udma_predictor",this);
+        uart_checker        = uart_udma_checker::type_id::create("uart_checker",this);
 
         uart_predictor      = udma_uart_predictor::type_id::create("uart_predictor",this);
         
@@ -127,14 +127,13 @@ class uart_env extends uvm_env;
 
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        uart_rx_agnt.uart_rx_agent_analysis_port.connect(predictor.analysis_export); //ToDo: consistant name aport 
-        predictor.expected_udma_aport.connect(uartudma_checker.udma_before_export);
-        udma_rx_agnt.udma_rx_aport.connect(uartudma_checker.udma_after_export);
+        uart_rx_agnt.uart_rx_agent_aport.connect(udma_predictor.analysis_export);
+        udma_predictor.expected_udma_aport.connect(uart_checker.udma_before_export);
+        udma_rx_agnt.udma_rx_aport.connect(uart_checker.udma_after_export);
 
         udma_tx_agnt.udma_tx_aport.connect(uart_predictor.analysis_export);
-        uart_predictor.expected_uart_aport.connect(uartudma_checker.uart_before_export);
-        uart_tx_agnt.uart_rx_agent_analysis_port.connect(uartudma_checker.uart_after_export);
-
+        uart_predictor.expected_uart_aport.connect(uart_checker.uart_before_export);
+        uart_tx_agnt.uart_rx_agent_aport.connect(uart_checker.uart_after_export);
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------

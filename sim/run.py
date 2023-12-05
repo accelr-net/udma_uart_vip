@@ -58,22 +58,24 @@ def check_error_code(code,text):
     else:
         return True
 
+clean       =   subprocess.run(["make","clean"],capture_output=True)
+build       =   subprocess.run(["make","build"],capture_output=True)
+
 for index in tqdm(range(len(test_list))):
     test = test_list[index]
-    is_error = True
-    clean       =   subprocess.run(["make","clean"],capture_output=True)
-    output_text =   subprocess.run(["make","all",("TEST_NAME="+test)],capture_output=True)
+    no_error = True
+    output_text =   subprocess.run(["make","run",("TEST_NAME="+test)],capture_output=True)
     output_arr  =   output_text.stdout.split(b'\n')
-    is_error    &=  check_error_code(b'# ** Fatal: Error_code : comparator_mismatches_1',output_arr)
-    is_error    &=  check_error_code(b'# ** Fatal: Error_code : udma_comparator_matches_2',output_arr)
+    no_error    &=  check_error_code(b'# ** Fatal: Error_code : comparator_mismatches_1',output_arr)
+    no_error    &=  check_error_code(b'# ** Fatal: Error_code : udma_comparator_matches_2',output_arr)
     # Stop the process
-    if(not is_error):
+    if(not no_error):
         print("========================")
         print("Failed one or more tests")
         print("========================")
         break
 
-if(is_error):
+if(no_error):
     print("================")
     print("Passed all tests")
     print("================")

@@ -35,10 +35,10 @@
 class cfg_sequence extends uvm_sequence; 
     `uvm_object_utils(cfg_sequence)
     cfg_agent_config    config_obj;
+    bit                 parity;
     int                 frequency;
     int                 baud_rate;
     int                 char_length;
-    bit                 parity;
     int                 stop_bits_count;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor

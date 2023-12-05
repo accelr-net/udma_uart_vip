@@ -39,13 +39,13 @@ class uart_monitor extends uvm_monitor;
     
     uart_agent_config                        rx_config;
     int                                      period;
-    uvm_analysis_port #(uart_seq_item)       uart_rx_analysis_port;
+    uvm_analysis_port #(uart_seq_item)       uart_rx_aport;
 
     function new(string name="uart_monitor", uvm_component parent);
         super.new(name,parent);
         `uvm_info("[monitor]", "constructor", UVM_HIGH)
 
-        uart_rx_analysis_port   = new("uart_rx_analysis_port",this);
+        uart_rx_aport   = new("uart_rx_aport",this);
     endfunction: new
 
     function void build_phase(uvm_phase phase);
@@ -84,9 +84,9 @@ class uart_monitor extends uvm_monitor;
             end else begin
                 @(negedge uart_vif.uart_tx_o);
             end
-            #(this.period/2);
-            #this.period; // wait for start_bit
-            //getting character
+            #(this.period/2);   // purpose is to check in the middle of the half clock (middle of the pulse)
+            #this.period;       // wait for start_bit
+            //get character
             for(int i=0; i < rx_config.char_length; i++) begin
                 character[i] = rx_config.is_rx_agent? uart_vif.uart_rx_i:  uart_vif.uart_tx_o;
                 if(i != rx_config.char_length - 1) begin
@@ -109,7 +109,7 @@ class uart_monitor extends uvm_monitor;
                 #this.period;
             end
             #(this.period/2); // wait for stop
-            uart_rx_analysis_port.write(uart_rx_transaction);
+            uart_rx_aport.write(uart_rx_transaction);
         end
     endtask: run_phase
 endclass: uart_monitor

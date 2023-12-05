@@ -43,7 +43,7 @@ class uart_agent extends uvm_agent;
 
     uart_agent_config                                rx_config;
 
-    uvm_analysis_port #(uart_seq_item)               uart_rx_agent_analysis_port;
+    uvm_analysis_port #(uart_seq_item)               uart_rx_agent_aport;
     
     //virtual interface
     virtual uart_if                                  uart_vif;
@@ -67,9 +67,9 @@ class uart_agent extends uvm_agent;
         if(rx_config.is_rx_agent) begin
             driver                      = uart_driver::type_id::create("driver", this);
         end
-        monitor                     = uart_monitor::type_id::create("monitor",this);
-        sequencer                   = uvm_sequencer #(uart_seq_item)::type_id::create("sequencer",this);
-        uart_rx_agent_analysis_port = new("uart_rx_agent_analysis_port",this);
+        monitor               = uart_monitor::type_id::create("monitor",this);
+        sequencer             = uvm_sequencer #(uart_seq_item)::type_id::create("sequencer",this);
+        uart_rx_agent_aport   = new("uart_rx_agent_aport",this);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ class uart_agent extends uvm_agent;
         if(rx_config.is_rx_agent) begin
             driver.seq_item_port.connect(sequencer.seq_item_export);
         end
-        uart_rx_agent_analysis_port = monitor.uart_rx_analysis_port;
+        uart_rx_agent_aport = monitor.uart_rx_aport;
     endfunction: connect_phase
 
 //---------------------------------------------------------------------------------------------------------------------

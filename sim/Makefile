@@ -32,47 +32,27 @@ SIM_TOP     = tb_top
 
 TEST_NAME	?= uart_base_test
 MODE 		?= -c
-error_file:
-	@echo "errors" > error_detect.txt
+
 
 ## Compile RTL with Questasim
-all:error_file lib build opt
-	# vsim -c -do run.tcl
+all:build run
+
+.PHONY: run
+run:
 	$(VSIM) $(MODE) -64 vopt_tb \
 	+UVM_TESTNAME=$(TEST_NAME) \
 	-do run.tcl 
-# @echo "no_errors" > error_detect.txt
 
-## vsim targets
-.PHONY: sim
-## Simulate RTL with Questasim (GUI)
-sim:
-	$(VSIM) -64 -c vopt_tb \
-		$(VSIM_SUPPRESS) \
-		+UVM_NO_RELNOTES -stats -t ps \
-	        $(VSIM_FLAGS) \
-		-do "set StdArithNoWarnings 1; set NumericStdNoWarnings 1"
-.PHONY: simc
-## Simulate RTL with Questasim
-simc:
-	$(VSIM) -64 -c vopt_tb \
-		$(VSIM_SUPPRESS) \
-		+UVM_NO_RELNOTES -stats -t ps \
-		$(VSIM_FLAGS) \
-		-do "set StdArithNoWarnings 1; set NumericStdNoWarnings 1" \
-		-do "run -all" \
-		-do "quit -code [examine -radix decimal sim:/tb_pulp/exit_status]"
+.PHONY: build
+build: compile opt
 
 .PHONY: opt
 opt:
 	$(VOPT) $(VOPT_FLAGS) -o vopt_tb $(SIM_TOP) -work work 
 
-.PHONY: opt
-build:
+.PHONY: compile
+compile:
 	$(VSIM) -c -do 'source compile.tcl; quit'
-
-.PHONY: lib
-lib:
 
 
 .PHONY: clean
@@ -80,18 +60,4 @@ lib:
 clean:
 	$(RM) -r work 
 	$(RM) modelsim.ini
-
-
-.PHONY: help
-help: Makefile
-	@printf "PULPissimo\n"
-	@printf "Available targets\n\n"
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
-		helpMessage = match(lastLine, /^## (.*)/); \
-		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")-1); \
-			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "%-15s %s\n", helpCommand, helpMessage; \
-		} \
-	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
+	

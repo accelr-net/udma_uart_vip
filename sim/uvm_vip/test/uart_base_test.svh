@@ -84,7 +84,7 @@ class uart_base_test extends uvm_test;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="uart_base_test",uvm_component parent);
         super.new(name,parent);
-        `uvm_info("[TEST]","top level tconstructor", UVM_LOW)
+        `uvm_info("[TEST]","top level uart_base_test constructor", UVM_LOW)
     endfunction: new
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -123,17 +123,15 @@ class uart_base_test extends uvm_test;
         uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
         uvm_config_db #(bit)::set(null,"*","parity_error",parity_error_inject);
-        //set configuration for cfg_sequence
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------
 // Run phase
 //---------------------------------------------------------------------------------------------------------------------   
-    //Run phase create an cfg_sequence
     task run_phase(uvm_phase phase);
         // `uvm_info("[TEST]","run_phase",UVM_LOW)
         cfg_sequence        cfg_seq;
-        uart_sequence       rx_seq;
+        uart_sequence       uart_rx_seq;
         udma_rx_sequence    udma_rx_seq; 
         udma_tx_sequence    udma_tx_seq;
         phase.raise_objection(this, "Starting uvm sequence...");
@@ -143,11 +141,11 @@ class uart_base_test extends uvm_test;
         phase.drop_objection(this);
 
         phase.raise_objection(this,"rx_data");
-        rx_seq = uart_sequence::type_id::create("uart_rx_seq");
+        uart_rx_seq = uart_sequence::type_id::create("uart_rx_seq");
         udma_rx_seq = udma_rx_sequence::type_id::create("udma_rx_seq");
         udma_tx_seq = udma_tx_sequence::type_id::create("udma_tx_seq");
         fork
-            rx_seq.start(env.uart_rx_agnt.sequencer);
+            uart_rx_seq.start(env.uart_rx_agnt.sequencer);
             udma_rx_seq.start(env.udma_rx_agnt.sequencer);
             udma_tx_seq.start(env.udma_tx_agnt.sequencer);
         join_any

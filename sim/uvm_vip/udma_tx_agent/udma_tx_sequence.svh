@@ -51,7 +51,7 @@ class udma_tx_sequence extends uvm_sequence;
         forever begin
             udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
             start_item(udma_tx_transaction);
-            udma_tx_transaction._randomize();
+            udma_tx_transaction.randomize();
             finish_item(udma_tx_transaction);
         end
     endtask: body
