@@ -19,6 +19,7 @@ module tb_top();
 
     localparam HALF_CLOCK_PERIOD    = 10;
     localparam CLOCK_PERIOD         = HALF_CLOCK_PERIOD*2;
+    // ToDo: make clock_frequency here from CLOCK_PERIOD
     localparam L2_AWIDTH_NOAL       = 19;
     localparam TRANS_SIZE           = 20;
 
@@ -26,59 +27,60 @@ module tb_top();
     localparam BAUD_RATE            = 115200;
     localparam PARITY_EN            = 0;
 
+    //ToDo : add 
     //data
     int                        clock_frequency;
 
     logic                      sys_clk_i    = 1'b0;
-    logic                      periph_clk_i = 1'b0;
+    // logic                      periph_clk_i = 1'b0;
     logic   	               rstn_i;
 
-	logic                      uart_rx_i;
-	logic                      uart_tx_o;
+	// logic                      uart_rx_i;
+	// logic                      uart_tx_o;
 
-    logic                      rx_char_event_o;
-    logic                      err_event_o;
+    // logic                      rx_char_event_o;
+    // logic                      err_event_o;
 
-	logic               [31:0] cfg_data_i;
-    logic                [4:0] cfg_addr_i;
-	logic                      cfg_valid_i;
-	logic                      cfg_rwn_i;
-	logic                      cfg_ready_o;
-    logic               [31:0] cfg_data_o;
+	// logic               [31:0] cfg_data_i;
+    // logic                [4:0] cfg_addr_i;
+	// logic                      cfg_valid_i;
+	// logic                      cfg_rwn_i;
+	// logic                      cfg_ready_o;
+    // logic               [31:0] cfg_data_o;
 
-    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_startaddr_o;
-    logic     [TRANS_SIZE-1:0] cfg_rx_size_o;
-    logic                [1:0] cfg_rx_datasize_o;
-    logic                      cfg_rx_continuous_o;
-    logic                      cfg_rx_en_o;
-    logic                      cfg_rx_clr_o;
-    logic                      cfg_rx_en_i;
-    logic                      cfg_rx_pending_i;
-    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_curr_addr_i;
-    logic     [TRANS_SIZE-1:0] cfg_rx_bytes_left_i;
+    // logic [L2_AWIDTH_NOAL-1:0] cfg_rx_startaddr_o;
+    // logic     [TRANS_SIZE-1:0] cfg_rx_size_o;
+    // logic                [1:0] cfg_rx_datasize_o;
+    // logic                      cfg_rx_continuous_o;
+    // logic                      cfg_rx_en_o;
+    // logic                      cfg_rx_clr_o;
+    // logic                      cfg_rx_en_i;
+    // logic                      cfg_rx_pending_i;
+    // logic [L2_AWIDTH_NOAL-1:0] cfg_rx_curr_addr_i;
+    // logic     [TRANS_SIZE-1:0] cfg_rx_bytes_left_i;
 
-    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_startaddr_o;
-    logic     [TRANS_SIZE-1:0] cfg_tx_size_o;
-    logic                [1:0] cfg_tx_datasize_o;
-    logic                      cfg_tx_continuous_o;
-    logic                      cfg_tx_en_o;
-    logic                      cfg_tx_clr_o;
-    logic                      cfg_tx_en_i; 
-    logic                      cfg_tx_pending_i;
-    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_curr_addr_i;
-    logic     [TRANS_SIZE-1:0] cfg_tx_bytes_left_i;
+    // logic [L2_AWIDTH_NOAL-1:0] cfg_tx_startaddr_o;
+    // logic     [TRANS_SIZE-1:0] cfg_tx_size_o;
+    // logic                [1:0] cfg_tx_datasize_o;
+    // logic                      cfg_tx_continuous_o;
+    // logic                      cfg_tx_en_o;
+    // logic                      cfg_tx_clr_o;
+    // logic                      cfg_tx_en_i; 
+    // logic                      cfg_tx_pending_i;
+    // logic [L2_AWIDTH_NOAL-1:0] cfg_tx_curr_addr_i;
+    // logic     [TRANS_SIZE-1:0] cfg_tx_bytes_left_i;
 
-    logic                      data_tx_req_o;
-    logic                      data_tx_gnt_i;
-    logic                [1:0] data_tx_datasize_o;
-    logic               [31:0] data_tx_i;
-    logic                      data_tx_valid_i;
-    logic                      data_tx_ready_o;
+    // logic                      data_tx_req_o;
+    // logic                      data_tx_gnt_i;
+    // logic                [1:0] data_tx_datasize_o;
+    // logic               [31:0] data_tx_i;
+    // logic                      data_tx_valid_i;
+    // logic                      data_tx_ready_o;
              
-    logic                [1:0] data_rx_datasize_o;
-    logic               [31:0] data_rx_o;
-    logic                      data_rx_valid_o;
-    logic                      data_rx_ready_i;
+    // logic                [1:0] data_rx_datasize_o;
+    // logic               [31:0] data_rx_o;
+    // logic                      data_rx_valid_o;
+    // logic                      data_rx_ready_i;
 
     udma_if #(
         .L2_WIDTH_NOAL(L2_AWIDTH_NOAL),
@@ -96,7 +98,7 @@ module tb_top();
         .TRANS_SIZE     (TRANS_SIZE)
     ) uart (
         .sys_clk_i              (sys_clk_i                    ),
-        .periph_clk_i           (udma_vif.periph_clk_i        ),
+        .periph_clk_i           (udma_vif.periph_clk_i        ), // ToDo: remove interface connection
         .rstn_i                 (rstn_i                       ),
 
         .uart_rx_i              (uart_vif.uart_rx_i),
@@ -147,9 +149,12 @@ module tb_top();
         .data_rx_ready_i        (udma_vif.data_rx_ready_i     )
     );
 
+    //ToDo: name the clock block
     always begin
-        #HALF_CLOCK_PERIOD udma_vif.periph_clk_i <= ~udma_vif.periph_clk_i; 
+        #HALF_CLOCK_PERIOD udma_vif.periph_clk_i <= ~udma_vif.periph_clk_i; // ToDo: 
     end
+
+    //ToDo: name the clock block
     always begin
         #HALF_CLOCK_PERIOD sys_clk_i    <= ~sys_clk_i;
     end      
@@ -161,15 +166,16 @@ module tb_top();
     end
 
     initial begin
-        clock_frequency = 10**9/(CLOCK_PERIOD);
+        clock_frequency = 10**9/(CLOCK_PERIOD); 
         uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
         uvm_config_db #(int)::set(null,"*","clock_period",CLOCK_PERIOD);
+        //ToDo: make all initial begin into one initial begin 
     end
 
     initial begin
-        rstn_i                        <= 1'b0;
+        rstn_i                        <= 1'b0; //ToDo: make blocking assginment for reset and clock
         uart_vif.uart_rx_i            <= 1'b1;
         udma_vif.cfg_data_i           <= 1'b0;
         udma_vif.cfg_addr_i           <= 1'b0;
@@ -181,4 +187,5 @@ module tb_top();
         #(CLOCK_PERIOD);
         rstn_i                        <= 1'b1;
     end
+
 endmodule: tb_top

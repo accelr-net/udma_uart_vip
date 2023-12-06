@@ -99,7 +99,7 @@ interface udma_if #(
     input                        rstn_i
 );
     //udma_uart_top
-    logic                        periph_clk_i;
+    logic                        periph_clk_i; //ToDo: this should be input for the interface
 
     logic                        rx_char_event_o;
     logic                        err_event_o;

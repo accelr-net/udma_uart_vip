@@ -99,6 +99,7 @@ class uart_base_test extends uvm_test;
         if(!uvm_config_db #(int)::get(this,"","clock_period",clock_period)) begin
             `uvm_fatal("[TEST]","Cannot find clock_period value!");
         end
+        //ToDo: change frequency name to clock_frequency in all components 
         if(!uvm_config_db #(int)::get(this,"","clock_frequency",frequency)) begin
             `uvm_fatal("[TEST]","Cannot find clock frequency!");
         end
