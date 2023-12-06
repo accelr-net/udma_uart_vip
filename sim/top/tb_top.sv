@@ -7,9 +7,6 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
-// cfg_agent_pkg is a UVM agent
-// import cfg_agent_pkg::*;
-// import uart_agent_pkg::*;
 import udma_cfg_agent_pkg::*;
 import uart_agent_pkg::*;
 import env_pkg::*;
