@@ -59,7 +59,24 @@ def check_error_code(code,text):
         return True
 
 clean       =   subprocess.run(["make","clean"],capture_output=True)
+clean_arr   =   clean.stderr.split(b'\n')
+for clean_out in clean_arr:
+    if(clean_out[:9] == b'make: ***'):
+        print("==================================")
+        print("There is an error while make clean")
+        print("==================================")
+        exit()
+
+#build process
 build       =   subprocess.run(["make","build"],capture_output=True)
+build_arr = build.stderr.split(b'\n')
+print(build_arr)
+for build_out in build_arr:
+    if(build_out[:9] == b'make: ***'):
+        print("==================================")
+        print("There is an error while make build")
+        print("==================================")
+        exit()
 
 for index in tqdm(range(len(test_list))):
     test = test_list[index]
