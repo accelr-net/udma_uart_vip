@@ -14,4 +14,6 @@ pulp-rt-examples/
 pulp-runtime-examples/
 pulp-sdk/
 error_detect.txt
-
+vish_stacktrace.vstf
+vsim_stacktrace.vstf
+vsim1.wlf

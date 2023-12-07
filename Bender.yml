@@ -44,8 +44,6 @@ sources:
   - sim/uvm_vip/test
 
   files:
-  # - rtl/uart_vip/cfg_agent/cfg_agent_pkg.sv
-  # - rtl/uart_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_colors.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
@@ -56,7 +54,6 @@ sources:
   - sim/uvm_vip/analysis_component/analysis_components_pkg.sv
   - sim/uvm_vip/env/env_pkg.sv
   - sim/uvm_vip/test/test_pkg.sv
-  - sim/top/udma_sim.sv
   - sim/top/tb_top.sv
 
 
