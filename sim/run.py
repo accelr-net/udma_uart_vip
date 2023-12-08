@@ -53,7 +53,7 @@ test_list = [
     "parity_en_enable_error_inject_test"   
 ]
 
-def check_error_code(code,text):
+def has_error(code,text):
     if(code in text):
         return False
     else:
@@ -75,20 +75,21 @@ if(build.stderr != b''):
     exit()
 
 for index in tqdm(range(len(test_list))):
-    test = test_list[index]
-    no_error = True
+    test        =   test_list[index]
+    is_correct  =   True
     output_text =   subprocess.run(["make","run",("TEST_NAME="+test)],capture_output=True)
     output_arr  =   output_text.stdout.split(b'\n')
-    no_error    &=  check_error_code(b'# ** Fatal: Error_code : comparator_mismatches_1',output_arr) #ToDo: check_error_code() => has_error()
-    no_error    &=  check_error_code(b'# ** Fatal: Error_code : udma_comparator_matches_2',output_arr)
+    is_correct  &=  has_error(b'# ** Fatal: Error_code : comparator_mismatches_1',output_arr) 
+    is_correct  &=  has_error(b'# ** Fatal: Error_code : udma_comparator_matches_2',output_arr)
+    is_correct  &=  has_error(b'# ** Fatal:',output_arr[:11])
     # Stop the process
-    if(not no_error):
+    if(not is_correct):
         print("========================")
         print("Failed one or more tests")
         print("========================")
         break
 
-if(no_error):
+if(is_correct):
     print("================")
     print("Passed all tests")
     print("================")

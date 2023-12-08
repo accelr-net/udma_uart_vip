@@ -101,11 +101,11 @@ module tb_top();
 
     always begin : PERIPHIRAL_CLOCK_BLOCK
         #HALF_CLOCK_PERIOD periph_clk_i = ~periph_clk_i; 
-    end : PERIPHIRAL_CLOCK_BLOCK
+    end 
 
     always begin : SYS_CLOCK_CLOCK
         #HALF_CLOCK_PERIOD sys_clk_i    = ~sys_clk_i;
-    end : SYS_CLOCK_CLOCK
+    end 
 
     initial begin
         sys_clk_i                     = 1'b1;

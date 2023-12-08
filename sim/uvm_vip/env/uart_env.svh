@@ -95,7 +95,7 @@ class uart_env extends uvm_env;
         end
 
         cfg_config.baud_rate        = env_configs.baud_rate;
-        cfg_config.frequency        = env_configs.frequency;
+        cfg_config.clock_freq       = env_configs.clock_freq;
         cfg_config.char_length      = env_configs.char_length;
         cfg_config.stop_bits        = env_configs.stop_bits;
         cfg_config.parity_en        = env_configs.parity_en;

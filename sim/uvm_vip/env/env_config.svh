@@ -35,7 +35,7 @@
 class env_config extends uvm_object;
     `uvm_object_utils(env_config)
     int                                 baud_rate           = 115200;
-    int                                 frequency           = 50000000;
+    int                                 clock_freq          = 50000000;
     int                                 char_length         = 8;
     bit                                 parity_en           = 1'b1;
     int                                 stop_bits           = 1;

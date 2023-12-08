@@ -36,7 +36,7 @@ class cfg_sequence extends uvm_sequence;
     `uvm_object_utils(cfg_sequence)
     cfg_agent_config    config_obj;
     bit                 parity;
-    int                 frequency;
+    int                 clock_freq;
     int                 baud_rate;
     int                 char_length;
     int                 stop_bits_count;
@@ -48,11 +48,11 @@ class cfg_sequence extends uvm_sequence;
         if(!uvm_config_db #(int)::get(null,"*","baud_rate",baud_rate)) begin
             `uvm_fatal("Cannot find baud_rate","give sutable baud_rate");
         end
-        if(!uvm_config_db #(int)::get(null, "*","frequency",frequency)) begin
-            `uvm_fatal("Cannot find frequency","set frequency to config_db");
+        if(!uvm_config_db #(int)::get(null, "*","clock_freq",clock_freq)) begin
+            `uvm_fatal("Cannot find clock_freq","set clock_freq to config_db");
         end
         if(!uvm_config_db #(int)::get(null, "*","char_length",char_length)) begin
-            `uvm_fatal("Cannot find char_length","set frequency to config_db");
+            `uvm_fatal("Cannot find char_length","set char_length to config_db");
         end
         if(!uvm_config_db #(bit)::get(null, "*","parity_en",parity)) begin
             `uvm_fatal("Cannot find parity_en","set parity_en to config_db");
@@ -90,7 +90,7 @@ class cfg_sequence extends uvm_sequence;
         uart_reg_offsets    reg_offsets;
 
         //set setup values
-        clkdiv      = config_obj.frequency/config_obj.baud_rate; 
+        clkdiv      = config_obj.clock_freq/config_obj.baud_rate; 
         reserved_1  = 'h0;
         rx_ena      = config_obj.rx_ena;
         tx_ena      = config_obj.tx_ena;

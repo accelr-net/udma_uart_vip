@@ -37,7 +37,7 @@ class uart_base_test extends uvm_test;
     //primary configurations
     int                                 baud_rate           = 115200;
     int                                 char_length         = 8;
-    int                                 frequency           = 50000000;
+    int                                 clock_frequency     = 50000000;
     int                                 stop_bits           = 1;
     bit                                 parity_en           = 1'b0;
     int                                 clock_period;
@@ -99,8 +99,7 @@ class uart_base_test extends uvm_test;
         if(!uvm_config_db #(int)::get(this,"","clock_period",clock_period)) begin
             `uvm_fatal("[TEST]","Cannot find clock_period value!");
         end
-        //ToDo: change frequency name to clock_frequency in all components 
-        if(!uvm_config_db #(int)::get(this,"","clock_frequency",frequency)) begin
+        if(!uvm_config_db #(int)::get(this,"","clock_frequency",clock_frequency)) begin
             `uvm_fatal("[TEST]","Cannot find clock frequency!");
         end
         env_config_obj  = env_config::type_id::create("env_config_obj",this);
@@ -108,7 +107,7 @@ class uart_base_test extends uvm_test;
 
         //assign values to objects 
         env_config_obj.baud_rate    = baud_rate;
-        env_config_obj.frequency    = frequency;
+        env_config_obj.clock_freq   = clock_frequency;
         env_config_obj.char_length  = char_length;
         env_config_obj.stop_bits    = stop_bits;
         env_config_obj.clock_period = clock_period;
@@ -119,7 +118,7 @@ class uart_base_test extends uvm_test;
         //set environment configuration into the config_db
         uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);
         uvm_config_db #(int)::set(null,"*","baud_rate",baud_rate);
-        uvm_config_db #(int)::set(null,"*","frequency",frequency);
+        uvm_config_db #(int)::set(null,"*","clock_freq",clock_frequency);
         uvm_config_db #(int)::set(null,"*","char_length",char_length);
         uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
