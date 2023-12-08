@@ -20,7 +20,6 @@ module tb_top();
     localparam HALF_CLOCK_PERIOD    = 10;
     localparam CLOCK_PERIOD         = HALF_CLOCK_PERIOD*2;
     int        clock_frequency      = 10**9/(CLOCK_PERIOD); 
-    // ToDo: make clock_frequency here from CLOCK_PERIOD
     localparam L2_AWIDTH_NOAL       = 19;
     localparam TRANS_SIZE           = 20;
 
@@ -28,12 +27,8 @@ module tb_top();
     localparam BAUD_RATE            = 115200;
     localparam PARITY_EN            = 0;
 
-    //ToDo : add 
-    //data
-    // int                        clock_frequency;
-
     logic                      sys_clk_i    = 1'b0;
-    // logic                      periph_clk_i = 1'b0;
+    logic                      periph_clk_i = 1'b0;
     logic   	               rstn_i;
 
     udma_if #(
@@ -42,7 +37,8 @@ module tb_top();
         .DATA_SIZE(32)
     ) udma_vif(
         .sys_clk_i(sys_clk_i),
-        .rstn_i(rstn_i)
+        .rstn_i(rstn_i),
+        .periph_clk_i(periph_clk_i)
     );
 
     uart_if  uart_vif();
@@ -52,7 +48,7 @@ module tb_top();
         .TRANS_SIZE     (TRANS_SIZE)
     ) uart (
         .sys_clk_i              (sys_clk_i                    ),
-        .periph_clk_i           (udma_vif.periph_clk_i        ), // ToDo: remove interface connection
+        .periph_clk_i           (periph_clk_i                 ), 
         .rstn_i                 (rstn_i                       ),
 
         .uart_rx_i              (uart_vif.uart_rx_i),
@@ -103,32 +99,18 @@ module tb_top();
         .data_rx_ready_i        (udma_vif.data_rx_ready_i     )
     );
 
-    //ToDo: name the clock block
-    always begin
-        #HALF_CLOCK_PERIOD udma_vif.periph_clk_i <= ~udma_vif.periph_clk_i; // ToDo: 
-    end
+    always begin : PERIPHIRAL_CLOCK_BLOCK
+        #HALF_CLOCK_PERIOD periph_clk_i = ~periph_clk_i; 
+    end : PERIPHIRAL_CLOCK_BLOCK
 
-    //ToDo: name the clock block
-    always begin
-        #HALF_CLOCK_PERIOD sys_clk_i    <= ~sys_clk_i;
-    end      
+    always begin : SYS_CLOCK_CLOCK
+        #HALF_CLOCK_PERIOD sys_clk_i    = ~sys_clk_i;
+    end : SYS_CLOCK_CLOCK
 
     initial begin
-        sys_clk_i <= 1'b1;
-        udma_vif.periph_clk_i <= 1'b1;
-        run_test();      
-    end
-
-    initial begin
-        uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
-        uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
-        uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
-        uvm_config_db #(int)::set(null,"*","clock_period",CLOCK_PERIOD);
-        //ToDo: make all initial begin into one initial begin 
-    end
-
-    initial begin
-        rstn_i                        <= 1'b0; //ToDo: make blocking assginment for reset and clock
+        sys_clk_i                     = 1'b1;
+        periph_clk_i                  = 1'b1;
+        rstn_i                        = 1'b0; 
         uart_vif.uart_rx_i            <= 1'b1;
         udma_vif.cfg_data_i           <= 1'b0;
         udma_vif.cfg_addr_i           <= 1'b0;
@@ -136,9 +118,15 @@ module tb_top();
         udma_vif.cfg_rwn_i            <= 1'b0;
         udma_vif.cfg_rx_en_i          <= 1'b0; 
         udma_vif.cfg_rx_pending_i     <= 1'b0;
-
         #(CLOCK_PERIOD);
         rstn_i                        <= 1'b1;
     end
 
+    initial begin
+        uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
+        uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
+        uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
+        uvm_config_db #(int)::set(null,"*","clock_period",CLOCK_PERIOD);
+        run_test();
+    end
 endmodule: tb_top
