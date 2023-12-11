@@ -27,9 +27,9 @@ module tb_top();
     localparam BAUD_RATE            = 115200;
     localparam PARITY_EN            = 0;
 
-    logic                      sys_clk_i    = 1'b0;
-    logic                      periph_clk_i = 1'b0;
-    logic   	               rstn_i;
+    logic      sys_clk_i;
+    logic      periph_clk_i;
+    logic      rstn_i;
 
     udma_if #(
         .L2_WIDTH_NOAL(L2_AWIDTH_NOAL),
@@ -99,30 +99,38 @@ module tb_top();
         .data_rx_ready_i        (udma_vif.data_rx_ready_i     )
     );
 
-    always begin : PERIPHIRAL_CLOCK_BLOCK
-        #HALF_CLOCK_PERIOD periph_clk_i = ~periph_clk_i; 
-    end 
+    initial begin : PERIPHIRAL_CLOCK_BLOCK
+        periph_clk_i                        = 1'b1;
+        forever begin
+            #HALF_CLOCK_PERIOD periph_clk_i = ~periph_clk_i; 
+        end
+    end : PERIPHIRAL_CLOCK_BLOCK
 
-    always begin : SYS_CLOCK_CLOCK
-        #HALF_CLOCK_PERIOD sys_clk_i    = ~sys_clk_i;
-    end 
+    initial begin : SYS_CLOCK_BLOCK
+        sys_clk_i                           = 1'b1;
+        forever begin
+            #HALF_CLOCK_PERIOD sys_clk_i    = ~sys_clk_i; 
+        end
+    end : SYS_CLOCK_BLOCK
 
-    initial begin
-        sys_clk_i                     = 1'b1;
-        periph_clk_i                  = 1'b1;
-        rstn_i                        = 1'b0; 
-        uart_vif.uart_rx_i            <= 1'b1;
-        udma_vif.cfg_data_i           <= 1'b0;
-        udma_vif.cfg_addr_i           <= 1'b0;
-        udma_vif.cfg_valid_i          <= 1'b0;
-        udma_vif.cfg_rwn_i            <= 1'b0;
-        udma_vif.cfg_rx_en_i          <= 1'b0; 
-        udma_vif.cfg_rx_pending_i     <= 1'b0;
+    
+    initial begin : RESET_BLOCK
+        rstn_i                              = 1'b0; 
         #(CLOCK_PERIOD);
-        rstn_i                        <= 1'b1;
-    end
+        rstn_i                              = 1'b1;
+    end : RESET_BLOCK
 
     initial begin
+        //Initializing interface signals 
+        uart_vif.uart_rx_i                  = 1'b1;
+        udma_vif.cfg_data_i                 = 1'b0;
+        udma_vif.cfg_addr_i                 = 1'b0;
+        udma_vif.cfg_valid_i                = 1'b0;
+        udma_vif.cfg_rwn_i                  = 1'b0;
+        udma_vif.cfg_rx_en_i                = 1'b0; 
+        udma_vif.cfg_rx_pending_i           = 1'b0;
+
+        //add values to config_db 
         uvm_config_db #(virtual udma_if)::set(null,"*","udma_vif",udma_vif);
         uvm_config_db #(virtual uart_if)::set(null,"*","uart_vif",uart_vif);
         uvm_config_db #(int)::set(null,"*","clock_frequency",clock_frequency);
