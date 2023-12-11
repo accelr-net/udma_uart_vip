@@ -42,6 +42,6 @@ class analysis_configs extends uvm_object;
 //---------------------------------------------------------------------------------------------------------------------
     function new(string name="analysis_configs");
         super.new(name);
-        `uvm_info("[cfg_agent_config]","constructor",UVM_HIGH)
+        `uvm_info("[analysis_configs]","constructor",UVM_HIGH)
     endfunction: new
 endclass : analysis_configs

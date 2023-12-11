@@ -122,6 +122,8 @@ class uart_base_test extends uvm_test;
         uvm_config_db #(int)::set(null,"*","char_length",char_length);
         uvm_config_db #(int)::set(null,"*","stop_bits",stop_bits);
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
+        uvm_config_db #(bit)::set(null,"*","rx_ena",rx_ena);
+        uvm_config_db #(bit)::set(null,"*","tx_ena",tx_ena);
         uvm_config_db #(bit)::set(null,"*","parity_error",parity_error_inject);
     endfunction: build_phase
 

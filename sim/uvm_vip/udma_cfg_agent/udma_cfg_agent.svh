@@ -40,7 +40,6 @@ class udma_cfg_agent extends uvm_agent;
     cfg_driver                      driver;
     cfg_monitor                     monitor;
     uvm_sequencer #(cfg_seq_item)   sequencer;
-    cfg_agent_config                cfg_config;
     
     //virtual interface
     virtual udma_if vif;
