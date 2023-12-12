@@ -60,7 +60,7 @@ class uart_sequence extends uvm_sequence;
     task body();
         uart_seq_item          uart_rx_transaction;
         bit                    parity;
-        repeat(10) begin
+        repeat(1000) begin
             uart_rx_transaction = uart_seq_item::type_id::create("uart_rx_transaction");
             start_item(uart_rx_transaction);
             uart_rx_transaction.set_character_length(char_length);

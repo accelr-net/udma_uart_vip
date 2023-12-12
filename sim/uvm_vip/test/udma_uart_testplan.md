@@ -30,7 +30,7 @@
 
 We have to make individual test with hardcoded. Every test will be change with default position (only change single parameter others are constants). I take default position as {baud_rate : 115200, parity_en : Disable, stop_bits: 1, character_length : 8, TX enable : Enable, RX enable : Enable \}
  test classes has naming convention
-format is \<parameter\>\_test\_\<value\>.svh (ex: baud_rate_test_9600.svh).
+format is \<parameter>\_<value\>\_test.svh (ex: baud_rate_test_9600.svh).
 
 ## UNIT TEST SECTION
 
@@ -40,28 +40,26 @@ Evaluate new features and bug fixes introduced in this release
 
 ### TEST CASES
 
-| \# | OBJECTIVE              | INPUT TRNSACTION | EXPECTED RESULTS |
-| -- | ---------------------- | ---------------- | ---------------- |
-| 0  | uart_base_test         | 10000            | 10000            |
-| 1  | baud_rate_9600_test    | 1000             | 1000             |
-| 2  | baud_rate_19200_test   | 1000             | 1000             |
-| 3  | parity_en_enable_test  | 1000             | 1000             |
-| 4  | stop_bits_2_test       | 1000             | 1000             |
-| 5  | char_length_5_test     | 1000             | 1000             |
-| 6  | char_length_7_test     | 1000             | 1000             |
-| 7  | TX_enable_disable_test | 1000             | 1000             |
-| 8  | RX_enable_disable_test | 1000             | 1000             |
+| \# | OBJECTIVE                           | INPUT TRNSACTION | EXPECTED RESULTS |
+| -- | ----------------------------------- | ---------------- | ---------------- |
+| 1  | uart_base_test                      | 10000            | 10000            |
+| 2  | baud_rate_9600_test                 | 1000             | 1000             |
+| 3  | baud_rate_19200_test                | 1000             | 1000             |
+| 4  | baud_rate_38400_test                | 1000             | 1000             |
+| 5  | char_length_5_test                  | 1000             | 1000             |
+| 6  | char_length_6_test                  | 1000             | 1000             |
+| 7  | char_length_7_test                  | 1000             | 1000             |
+| 8  | parity_en_enable_test               | 1000             | 1000             |
+| 9  | stop_bits_2_test                    | 1000             | 1000             |
+| 10 | rx_enable_disable_test              | 1000             | 1000             |
+| 11 | tx_enable_disable_test              | 1000             | 1000             |
+| 12 | parity_en_enable_char_length_5_test | 1000             | 1000             |
+| 13 | parity_en_enable_error_inject_test  |   -              |   -              |
 
 ## REGRESSION TEST SECTION
 
-Ensure that previously developed and tested software still performs after change.
+Run all test cases which have mensioned about table will run in a single python script 
 
-### REGRESSION TEST STRATEGY
-
-Evaluate all reports introduced in previous releases
-
-### REGRESSION TEST CASES
-
-| # | OBJECTIVE | INPUT | EXPECTED RESULTS | OBSERVED |
-| - | --------- | ----- | ---------------- | -------- |
-| 1 |           |       |                  |          |
+```python
+python3 run.py
+```

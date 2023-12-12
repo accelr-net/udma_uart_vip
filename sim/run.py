@@ -43,13 +43,15 @@ test_list = [
     "uart_base_test",
     "baud_rate_9600_test",
     "baud_rate_19200_test",
+    "baud_rate_38400_test",
     "char_length_5_test",
     "char_length_6_test",
     "char_length_7_test",
     "parity_en_enable_test",
-    "rx_enable_disable_test",
     "stop_bits_2_test",
+    "rx_enable_disable_test",
     "tx_enable_disable_test",
+    "parity_en_enable_char_length_5_test",
     "parity_en_enable_error_inject_test"   
 ]
 
