@@ -107,9 +107,6 @@ class uart_driver extends uvm_driver #(uart_seq_item);
         bit [7:0]   character;
         uart_rx_transaction.get_data(character);
         uart_rx_transaction.get_parity(parity);
-        if(parity_error_inject) begin
-            parity = ~parity;
-        end
         #(this.uart_period);
         uart_vif.uart_rx_i = 1'b0; //start bit
         for(int i=0; i < rx_config.char_length; i++) begin

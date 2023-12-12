@@ -63,7 +63,14 @@ class uart_seq_item extends uvm_sequence_item;
         bit     [7:0]   character
     );
         this.character = character;
-    endfunction
+    endfunction: set_char
+
+    //set parity only manually
+    function void set_parity(
+        bit             parity
+    );
+        this.parity  = parity;
+    endfunction: set_parity
 
     //get data value
     function void get_data(

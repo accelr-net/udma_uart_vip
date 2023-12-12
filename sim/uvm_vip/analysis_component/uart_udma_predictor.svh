@@ -38,22 +38,37 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
     `uvm_component_utils(uart_udma_predictor)
 
     uvm_analysis_port   #(udma_rx_seq_item)     expected_udma_aport;
+    bit                                         parity_error_inject = 1'b0;
 
     function new(string name="uart_udma_predictor",uvm_component parent);
         super.new(name,parent);
         expected_udma_aport = new("expected_udma_aport",this);
+        if(!uvm_config_db #(bit)::get(this,"","parity_error",parity_error_inject)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+        end
     endfunction: new
 
     virtual function void write(uart_seq_item t);
         udma_rx_seq_item                            expected_udma_item;
         bit     [7:0]                               character;
+        bit                                         parity;
+        bit                                         expected_parity;
         expected_udma_item      = udma_rx_seq_item::type_id::create("expected_udma_txn",this);
         //make expected_udma_txn here
         t.get_data(character);
         expected_udma_item.set_data(character);
 
-        //write expected_udma_txn into analysis port
-        expected_udma_aport.write(expected_udma_item);
+        if(parity_error_inject) begin
+            t.get_parity(parity);
+            t.calculate_parity();
+            t.get_parity(expected_parity);
+            if(parity == expected_parity) begin
+                expected_udma_aport.write(expected_udma_item);
+            end
+        end else begin
+            //write expected_udma_txn into analysis port
+            expected_udma_aport.write(expected_udma_item);
+        end
     endfunction: write
 
 endclass: uart_udma_predictor
