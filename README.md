@@ -24,24 +24,7 @@ Getting the source
 ```bash
 git clone git@github.com:accelr-net/udma_uart_sim.git
 ```
-### Regression test 
-This for running all tests.
-
-1. cd to cloned directory(udma_uart_sim) and go to the /sim folder
-
-```bash
-cd sim
-```
-2. install dependencies
-```bash
-pip3 install -r requirements.txt # install (only once)
-```
-3. Run regression Test
-
-```bash
-python3 run.py
-```
-### Individual Test cases 
+### Running individual test cases 
 1. go to sim directory
 ```bash
 cd sim
@@ -61,28 +44,41 @@ make build
 make run TEST_NAME=<test_name>
 ```
 ex: make run TEST_NAME=char_length_5_test
+### Running regression tests 
+This for running all tests.
+1. cd to cloned directory and checkout the submodules
+```bash
+make checkout
+```
+2. go to the /sim folder
+
+```bash
+cd sim
+```
+3. install dependencies
+```bash
+pip3 install -r requirements.txt # install (only once)
+```
+4. run regression Test
+
+```bash
+python3 run.py
+```
+
 
 ## Directory stucture of this repo
-#### __sim__
-sim folder contains all verification sources
 
-#### __top__
-
-#### __uvm_vip__
-This folder contains all uvm components
-
-#### __analysis_component__
-
-#### __env__
-
-#### __if__
-
-#### __test__
-
-#### __uart_agent__
-
-#### __udma_cfg_agent__
-
-#### __udma_rx_agent__
-
-#### __udma_tx_agent__
+```
+  ../udma_uart_sim/
+      └── sim                             [contains all verification sources]
+           ├── top                        [contains top testbench]
+           └── uvm_vip                    [contains all uvm components]
+                 ├── analysis_component   [contains all checkers, predictors and scoreboards]
+                 ├── env                  [contains all uvm environments]
+                 ├── if                   [contains all interfaces]
+                 ├── test                 [contains all uvm tests]
+                 ├── uart_agent           [contains uvm components and objects related to uart rx and uart tx agent]
+                 ├── udma_cfg_agent       [contains uvm components and objects related to udma configuration agent]
+                 ├── udma_rx_agent        [contains uvm components and objects related to udma rx]
+                 └── udma_tx_agent        [contains uvm components and objects related to udma tx]
+```
