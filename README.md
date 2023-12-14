@@ -50,7 +50,7 @@ This for running all tests.
 ```bash
 make checkout
 ```
-2. go to the /sim folder
+2. go to the sim directory
 
 ```bash
 cd sim

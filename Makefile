@@ -230,6 +230,18 @@ test-gitlab2:
 	source configs/rtl.sh; \
 	cd ../tests && plptest --threads 16 --stdout
 
+.PHONY: show_test_list
+## List all uvm tests 
+show_test_list:
+	@echo "#######################################################"
+	@echo "##############  UVM TEST LIST  ########################"
+	@echo "#######################################################"
+	@cd sim/uvm_vip/test/ && \
+	ls | grep .svh
+	# ls *.svh | sed "s/\.[^.]*$//"
+	@echo "#######################################################"
+	@echo "Note : use TEST_NAME without .svh extension"
+
 .PHONY: lint
 ## Generate lint reports with Spyglass
 lint:

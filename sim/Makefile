@@ -61,3 +61,7 @@ clean:
 	$(RM) -r work 
 	$(RM) modelsim.ini
 	
+.PHONY: show_test_list
+## Show all uvm test list
+show_test_list: 
+	echo "example_Test"
