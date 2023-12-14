@@ -238,7 +238,7 @@ show_test_list:
 	@echo "#######################################################"
 	@cd sim/uvm_vip/test/ && \
 	ls | grep .svh
-	# ls *.svh | sed "s/\.[^.]*$//"
+	# ls *.svh | sed 's/\.[^.]*$//'
 	@echo "#######################################################"
 	@echo "Note : use TEST_NAME without .svh extension"
 

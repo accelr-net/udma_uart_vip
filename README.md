@@ -25,25 +25,34 @@ Getting the source
 git clone git@github.com:accelr-net/udma_uart_sim.git
 ```
 ### Running individual test cases 
-1. go to sim directory
+1. go to udma_uart_sim directory
 ```bash
-cd sim
+cd udma_uart_sim 
 ```
 
 2. clean the project
 ```bash
 make clean
 ```
-3. build the project
+3. checkout submodules
+```bash
+make checkout
+```
+4. build the project
 ```bash
 make build
 ```
 
-4. run specific test
+5. run specific test
 ```bash
 make run TEST_NAME=<test_name>
 ```
 ex: make run TEST_NAME=char_length_5_test
+
+To find TEST_NAME list run
+```bash
+make show_test_list
+```
 ### Running regression tests 
 This for running all tests.
 1. cd to cloned directory and checkout the submodules
