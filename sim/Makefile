@@ -33,6 +33,10 @@ SIM_TOP     = tb_top
 TEST_NAME	?= uart_base_test
 MODE 		?= -c
 
+.PHONY: show_test_list
+## List all uvm tests 
+show_test_list:
+	cd .. && $(MAKE) show_test_list
 
 ## Compile RTL with Questasim
 all:build run
