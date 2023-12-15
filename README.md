@@ -38,6 +38,10 @@ make clean
 ```bash
 make checkout
 ```
+4. cd to sim directory
+```bash
+cd sim
+```
 4. build the project
 ```bash
 make build
