@@ -12,3 +12,5 @@ transcript
 pulp-rt-examples/
 pulp-runtime-examples/
 pulp-sdk/
+*.wlf
+*.vstf
