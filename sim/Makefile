@@ -36,7 +36,14 @@ MODE 		?= -c
 .PHONY: show_test_list
 ## List all uvm tests 
 show_test_list:
-	cd .. && $(MAKE) show_test_list
+	@echo "#######################################################"
+	@echo "##############  UVM TEST LIST  ########################"
+	@echo "#######################################################"
+	@cd uvm_vip/test/ && \
+	ls | grep .svh
+	# ls *.svh | sed 's/\.[^.]*$//'
+	@echo "#######################################################"
+	@echo "Note : use TEST_NAME without .svh extension"
 
 ## Compile RTL with Questasim
 all:build run
@@ -65,7 +72,3 @@ clean:
 	$(RM) -r work 
 	$(RM) modelsim.ini
 	
-.PHONY: show_test_list
-## Show all uvm test list
-show_test_list: 
-	echo "example_Test"
