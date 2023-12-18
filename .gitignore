@@ -15,3 +15,6 @@ pulp-sdk/
 *.wlf
 *.vstf
 .vscode/
+*.d
+*.so
+*.o
