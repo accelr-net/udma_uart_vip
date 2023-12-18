@@ -1,2 +1,2 @@
-subprocess
+subprocess.run
 tqdm
