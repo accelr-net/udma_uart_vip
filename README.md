@@ -3,10 +3,10 @@
     <img src="https://avatars.githubusercontent.com/u/55974019?s=200&v=4" alt="Logo" width="80" height="80">
   </a>
 
-<h1 align="center">UVM-based UDMA UART VIP</h1>
+<h1 align="center">UVM-based µDMA UART VIP</h1>
 
 <p align="center">
-   Accelr VIP project based on UDMA and UART protocol
+   Accelr VIP project based on uDMA and UART protocol
     <br />
   </p>
 </div>
@@ -24,7 +24,7 @@ To be able to run UVM-based UDMA UART VIP, you need to have Siemens Questa simul
 
 Getting the source
 ```bash
-git clone git@github.com:accelr-net/udma_uart_sim.git
+git clone git@github.com:accelr-net/udma_uart_vip.git
 ```
 ### Running individual test cases 
 1. go to udma_uart_sim directory
