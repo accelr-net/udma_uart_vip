@@ -19,9 +19,9 @@
 //
 // PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   rx_enable_disable_test.svh
+// FILE         :   tx_enable_disable_test.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   Test with RX Disable end TX enable 
+// DESCRIPTION  :   Test with TX Disable end RX enable 
 //
 // ************************************************************************************************
 //
@@ -32,12 +32,12 @@
 //  15-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-class rx_enable_disable_test extends uart_base_test;
-    `uvm_component_utils(rx_enable_disable_test)
+class tx_enable_disabled_test extends uart_base_test;
+    `uvm_component_utils(tx_enable_disabled_test);
 
-    function new(string name="rx_enable_disable_test",uvm_component parent);
+    function new(string name="tx_enable_disabled_test",uvm_component parent);
         super.new(name,parent);
-        super.set_rx_ena(1'b0);
+        super.set_tx_ena(1'b0);
     endfunction: new
 
-endclass: rx_enable_disable_test
+endclass: tx_enable_disabled_test

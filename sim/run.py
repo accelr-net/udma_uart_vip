@@ -48,8 +48,8 @@ test_list = [
     "char_length_7_test",
     "parity_en_enable_test",
     "stop_bits_2_test",
-    "rx_enable_disable_test",
-    "tx_enable_disable_test",
+    "rx_enable_disabled_test",
+    "tx_enable_disabled_test",
     "parity_en_enable_char_length_5_test",
     "parity_en_enable_error_inject_test"   
 ]
