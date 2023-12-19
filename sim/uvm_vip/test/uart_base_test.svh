@@ -44,7 +44,7 @@ class uart_base_test extends uvm_test;
     bit                                 rx_ena              = 1'b1;
     bit                                 tx_ena              = 1'b1;
 
-    bit                                 parity_error_inject = 1'b0;
+    bit                                 error_inject_enabled = 1'b0;
 
     uart_env                            env;
     env_config                          env_config_obj;
@@ -76,9 +76,9 @@ class uart_base_test extends uvm_test;
         this.tx_ena = tx_ena;
     endfunction: set_tx_ena
 
-    virtual function void set_parity_error_inject(bit parity_error_inject);
-        this.parity_error_inject = parity_error_inject;
-    endfunction: set_parity_error_inject
+    virtual function void enable_error_injection(bit error_inject_enabled);
+        this.error_inject_enabled = error_inject_enabled;
+    endfunction: enable_error_injection
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ class uart_base_test extends uvm_test;
         uvm_config_db #(bit)::set(null,"*","parity_en",parity_en);
         uvm_config_db #(bit)::set(null,"*","rx_ena",rx_ena);
         uvm_config_db #(bit)::set(null,"*","tx_ena",tx_ena);
-        uvm_config_db #(bit)::set(null,"*","parity_error",parity_error_inject);
+        uvm_config_db #(bit)::set(null,"*","parity_error",error_inject_enabled);
     endfunction: build_phase
 
 //---------------------------------------------------------------------------------------------------------------------

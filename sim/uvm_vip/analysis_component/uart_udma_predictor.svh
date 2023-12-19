@@ -38,13 +38,13 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
     `uvm_component_utils(uart_udma_predictor)
 
     uvm_analysis_port   #(udma_rx_seq_item)     expected_udma_aport;
-    bit                                         parity_error_inject = 1'b0;
+    bit                                         error_inject_enabled = 1'b0;
 
     function new(string name="uart_udma_predictor",uvm_component parent);
         super.new(name,parent);
         expected_udma_aport = new("expected_udma_aport",this);
-        if(!uvm_config_db #(bit)::get(this,"","parity_error",parity_error_inject)) begin
-            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+        if(!uvm_config_db #(bit)::get(this,"","parity_error",error_inject_enabled)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set error_inject_enabled config");
         end
     endfunction: new
 
@@ -58,7 +58,7 @@ class uart_udma_predictor extends uvm_subscriber #(uart_seq_item);
         t.get_data(character);
         expected_udma_item.set_data(character);
 
-        if(parity_error_inject) begin
+        if(error_inject_enabled) begin
             t.get_parity(parity);
             t.calculate_parity();
             t.get_parity(expected_parity);

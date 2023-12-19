@@ -36,7 +36,7 @@ class uart_driver extends uvm_driver #(uart_seq_item);
     `uvm_component_utils(uart_driver)
     virtual uart_if         uart_vif;
     int                     uart_period;
-    bit                     parity_error_inject = 1'b0;
+    bit                     error_inject_enabled = 1'b0;
 
     uart_agent_config       rx_config;
 
@@ -60,8 +60,8 @@ class uart_driver extends uvm_driver #(uart_seq_item);
             `uvm_fatal("uart_driver/build_phase","Please set uart_rx_configs connot find uart_config from uvm_config_db");
         end
 
-        if(!uvm_config_db #(bit)::get(this,"","parity_error",parity_error_inject)) begin
-            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+        if(!uvm_config_db #(bit)::get(this,"","parity_error",error_inject_enabled)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set error_inject_enabled config");
         end
         `uvm_info("[DRIVER]","build_phase",UVM_HIGH);
         calculate_uart_period(rx_config.baud_rate); // calculate uart_period there

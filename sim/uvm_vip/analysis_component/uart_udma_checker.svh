@@ -58,7 +58,7 @@ class uart_udma_checker extends uvm_scoreboard;
 //------------------------------------------------------------------------------------------
     virtual function void build_phase(uvm_phase phase);
         if(!uvm_config_db #(bit)::get(this,"","parity_error",error_inject)) begin
-            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+            `uvm_fatal("uart_driver/build_phase","Please set error_inject_enabled config");
         end
         udma_before_export  = new("udma_before_export",this);
         udma_after_export   = new("udma_after_export",this);

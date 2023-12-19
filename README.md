@@ -15,7 +15,9 @@
 
 
 ## Introduction
-The UVM-based Functional verification UDMA UART verification IP is a crucial contribution to the open-source community. specially tailored for the PULPissimo platform. This innovative project serves as a pivotal tools for verifying and validating UART and other peripheral functionalities within the context of Universal Verification Methodology. 
+The UVM-based Functional verification UDMA UART verification IP is a crucial contribution to the open-source community. specially tailored for the PULPissimo platform. This innovative project serves as a pivotal tools for verifying and validating UART and other peripheral functionalities within the context of Universal Verification Methodology.
+
+At present, this project is exclusively developed for the UART protocal, with plans to integrate additional peripherals in the future
 ## Getting started
 ### Prerequisites
 To be able to run UVM-based UDMA UART VIP, you need to have Questasim RTL simulator which supports SystemVerilog and UVM 1.2. Please make sure the EDA tool environment is properly setup before running the VIP

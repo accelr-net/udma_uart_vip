@@ -36,7 +36,7 @@ class uart_sequence extends uvm_sequence;
     `uvm_object_utils(uart_sequence)
     int char_length         = 8;
     bit parity_en           = 1'b0;
-    bit parity_error_inject = 1'b0;
+    bit error_inject_enabled = 1'b0;
 //---------------------------------------------------------------------------------------------------------------------
 // Constructor
 //---------------------------------------------------------------------------------------------------------------------
@@ -49,8 +49,8 @@ class uart_sequence extends uvm_sequence;
         if(!uvm_config_db #(bit)::get(null,"*","parity_en",parity_en)) begin
             `uvm_fatal("[SEQUENCE]","Cannot find parity_en");
         end
-        if(!uvm_config_db #(bit)::get(null,"*","parity_error",parity_error_inject)) begin
-            `uvm_fatal("uart_driver/build_phase","Please set parity_error_inject config");
+        if(!uvm_config_db #(bit)::get(null,"*","parity_error",error_inject_enabled)) begin
+            `uvm_fatal("uart_driver/build_phase","Please set error_inject_enabled config");
         end
     endfunction: new
 
@@ -66,7 +66,7 @@ class uart_sequence extends uvm_sequence;
             uart_rx_transaction.set_character_length(char_length);
             uart_rx_transaction.set_data(8'h3,parity_en,1'b1);
             uart_rx_transaction.randomize();
-            if(parity_error_inject) begin
+            if(error_inject_enabled) begin
                 parity = $urandom_range(1,0);
                 uart_rx_transaction.set_parity(parity);
             end

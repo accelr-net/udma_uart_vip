@@ -39,7 +39,7 @@ class parity_en_enable_error_inject_test extends uart_base_test;
         super.new(name,parent);
         super.set_parity_en(1'b1);
         super.set_tx_ena(1'b0);
-        super.set_parity_error_inject(1'b1);
+        super.enable_error_injection(1'b1);
     endfunction
     
 endclass: parity_en_enable_error_inject_test
