@@ -20,7 +20,7 @@ The RISC-V domain is experiencing significant interest within the electronic com
 
 ## Getting started
 ### Prerequisites
-To be able to run UVM-based UDMA UART VIP, you need to have Siemens Questa RTL simulator which supports SystemVerilog and UVM 1.2. Please make sure the EDA tool environment is properly setup before running the VIP
+To be able to run UVM-based UDMA UART VIP, you need to have Siemens Questa simulator which supports SystemVerilog and UVM 1.2. Please make sure the EDA tool environment is properly setup before running the VIP
 
 Getting the source
 ```bash
