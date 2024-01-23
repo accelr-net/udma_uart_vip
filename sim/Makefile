@@ -28,10 +28,10 @@ VLIB            ?= vlib
 VMAP            ?= vmap
 
 # top-level (tesbench)
-SIM_TOP     = tb_top 
+SIM_TOP     = tb_top_spi 
 
 TEST_NAME	?= uart_base_test
-MODE 		?= -c
+MODE 		?= -gui
 
 .PHONY: show_test_list
 ## List all uvm tests 
@@ -51,8 +51,7 @@ all:build run
 .PHONY: run
 run:
 	$(VSIM) $(MODE) -64 vopt_tb \
-	+UVM_TESTNAME=$(TEST_NAME) \
-	-do run.tcl 
+	# -do run.tcl 
 
 .PHONY: build
 build: compile opt

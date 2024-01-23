@@ -15,6 +15,7 @@ package:
 dependencies:
   common_cells: {git: "https://github.com/pulp-platform/common_cells.git", version: 1.21.0}
   udma_uart: {git: "https://github.com/pulp-platform/udma_uart.git", version: 1.0.2}
+  udma_qspi: {git: "https://github.com/pulp-platform/udma_qspi.git", version: 1.0.3}
   tbtools: {git: "https://github.com/pulp-platform/tbtools.git", version: 0.2.1}
 
 workspace:
@@ -35,6 +36,7 @@ sources:
 # TB sources
 - target: any(test,simulation)
   include_dirs:
+  - models
   - sim/uvm_vip/uart_agent
   - sim/uvm_vip/udma_cfg_agent
   - sim/uvm_vip/udma_rx_agent
@@ -44,6 +46,8 @@ sources:
   - sim/uvm_vip/test
 
   files:
+  - models/spi_master_bfm.sv
+  - models/spi_slave_bfm.sv
   - sim/uvm_colors.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
@@ -55,6 +59,7 @@ sources:
   - sim/uvm_vip/env/env_pkg.sv
   - sim/uvm_vip/test/test_pkg.sv
   - sim/top/tb_top.sv
+  - sim/top/tb_top_spi.sv
 
 
 
