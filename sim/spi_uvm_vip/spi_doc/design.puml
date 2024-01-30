@@ -1,0 +1,62 @@
+@startuml spi_test
+
+set namespaceSeparator ::
+
+namespace spi_vip{
+
+    interface spi_if{}
+
+    interface udma_if{}
+
+   package "spi_agent_pkg" #DDDDDD {
+
+        class spi_seq_item{
+            +new()
+            +set_data() : void
+            +get_data(output : data) : void
+            +_randomize(): void
+            +convert2string() : string
+            +do_print(printer: uvm_printer) : void
+            +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
+        }
+
+        class spi_sequence{
+            +new()
+            +body() : task
+        }
+
+        class spi_driver{
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +do_spi(spi_transaction : spi_seq_item): task
+        }
+
+        class spi_monitor{
+            +new()
+            +build_phase(): void
+            +run_phase(): task
+        }
+
+        class spi_agent{
+            -driver : spi_dirver
+            -monitor : spi_monitor
+            -sequencer : spi_sequencer
+
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+        }
+
+        class spi_agent_config{
+
+        }
+    }
+
+' package com.plantuml {
+'   Object <|-- Demo1
+'   Demo1 *- Demo2
+' } 
+@enduml
