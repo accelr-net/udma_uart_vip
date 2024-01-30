@@ -99,9 +99,9 @@ module tb_top_spi;
         .clk_phase(0)
     ) spi_slave (
         .sclk(spi_clk_o),
-        .mosi(spi_sdo0_o),
-        .miso(spi_sdi0_i),
-        .ss(spi_csn0_o)
+        .mosi(spi_sdo1_o),
+        .miso(spi_sdi1_i),
+        .ss(spi_csn1_o)
     );
 
 
@@ -240,25 +240,25 @@ module tb_top_spi;
         cmd_gnt_i   = 1'b1;
         cmd_valid_i = 1'b1;
 
-        #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h0,18'h0,1'b1,1'b1,8'd100}; //  SPI_CMD_CFG
+        // sending_data_cmds();
+        
 
-        #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h1,26'h0,2'b00}; // SPI_CMD_SOT
-
-        #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h2,1'b0,1'b0,6'h0,4'h8,16'h50}; // SPI_CMD_SEND_CMD
-
-        #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h6,1'b0,1'b0,6'h0,4'h8,16'h50};
-        // cmd_i       = {4'h6,28'h0};  // SPI_CMD_TX_DATA
-
-        #(HALF_CLOCK_PERIOD);
-        cmd_gnt_i   = 1'b0;
-        cmd_valid_i = 1'b0;
-
-        #100;
+        // #100;
         // spi_slave.tx_miso_byte(.data("8'd2"));
+
+        // #(HALF_CLOCK_PERIOD);
+        // cmd_gnt_i   = 1'b1;
+        // cmd_valid_i = 1'b1;
+
+        // #(HALF_CLOCK_PERIOD*2);
+        // cmd_i       = {4'h9,26'h0,1'b0,1'b0};       // SPI_CMD_EOT
+
+        #100
+        receiving_data_cmds();
+    end
+
+    initial begin
+        data_rx_ready_i     = 1'b1;
     end
 
     initial begin
@@ -272,4 +272,48 @@ module tb_top_spi;
             data_tx_i        = 32'b11011011011011011011011011011011;
         end
     end
+    
+    task receiving_data_cmds;
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h0,18'h0,1'b1,1'b1,8'd100};        //  SPI_CMD_CFG
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h1,26'h0,2'b01};                   // SPI_CMD_SOT
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h2,1'b0,1'b0,6'h0,4'h8,16'h50};    // SPI_CMD_SEND_CMD
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h7,1'b0,1'b0,6'h0,4'h8,16'h50};    // SPI_CMD_RX_DATA
+
+        #(HALF_CLOCK_PERIOD);
+        cmd_gnt_i   = 1'b0;
+        cmd_valid_i = 1'b0;
+    endtask: receiving_data_cmds
+
+    task sending_data_cmds;
+        //starting 
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_gnt_i   = 1'b1;
+        cmd_valid_i = 1'b1;
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h0,18'h0,1'b1,1'b1,8'd100}; //  SPI_CMD_CFG
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h1,26'h0,2'b01}; // SPI_CMD_SOT
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h2,1'b0,1'b0,6'h0,4'h8,16'h50}; // SPI_CMD_SEND_CMD
+
+        #(HALF_CLOCK_PERIOD*2);
+        cmd_i       = {4'h6,1'b0,1'b0,6'h0,4'h8,16'h50};
+        // cmd_i       = {4'h6,28'h0};  // SPI_CMD_TX_DATA
+
+
+        #(HALF_CLOCK_PERIOD);
+        cmd_gnt_i   = 1'b0;
+        cmd_valid_i = 1'b0;
+        //ending
+    endtask: sending_data_cmds
 endmodule: tb_top_spi
