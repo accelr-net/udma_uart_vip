@@ -1,6 +1,5 @@
 @startuml spi_test
 
-set namespaceSeparator ::
 
 namespace spi_vip{
 
@@ -55,8 +54,132 @@ namespace spi_vip{
         }
     }
 
-' package com.plantuml {
-'   Object <|-- Demo1
-'   Demo1 *- Demo2
-' } 
+    package "cmd_agent_pkg" #DDDDDD{
+        class cmd_seq_item{
+            +new()
+            +set_data() : void
+            +get_data(output : data) : void
+            +_randomize(): void
+            +convert2string() : string
+            +do_print(printer: uvm_printer) : void
+            +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
+        }
+
+        class cmd_sequence {
+            +new()
+            +body() : task
+        }
+
+        class cmd_driver{
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +do_spi(cmd_transaction : cmd_seq_item): task
+        }
+
+        class cmd_monitor{
+            +new()
+            +build_phase(): void
+            +run_phase(): task
+        }
+
+        class cmd_agent{
+            -driver : cmd_dirver
+            -monitor : cmd_monitor
+            -sequencer : cmd_sequencer
+
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+        }
+
+        class cmd_agent_config{
+
+        }
+    }
+
+    package "udma_agent_pkg" #DDDDDD{
+        class udma_seq_item{
+            +new()
+            +set_data() : void
+            +get_data(output : data) : void
+            +_randomize(): void
+            +convert2string() : string
+            +do_print(printer: uvm_printer) : void
+            +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
+        }
+
+        class udma_sequence {
+            +new()
+            +body() : task
+        }
+
+        class udma_driver{
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +do_spi(udma_transaction : udma_seq_item): task
+        }
+
+        class udma_monitor{
+            +new()
+            +build_phase(): void
+            +run_phase(): task
+        }
+
+        class udma_agent{
+            -driver : udma_dirver
+            -monitor : udma_monitor
+            -sequencer : udma_sequencer
+
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+        }
+
+        class udma_agent_config{
+
+        }
+    }
+
+    package "analysis_components_pkg" #DDDDDD{
+        class spi_udma_predictor{
+            +new()
+            +write(t : spi_seq_item) : void
+        }
+
+        class udma_spi_predictor { 
+            +new()
+            +write(t: udma_seq_item): void
+        }
+
+        class spi_udma_checker {
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +report_phase() : void
+        }
+
+        class analysis_configs{
+
+        }
+    }
+
+    package "env_pkg" #DDDDDD{
+        class spi_env{
+            +new()
+            +build_phase(): void
+            +connect_phase(): void
+            +run_phase: task
+        }
+
+        class env_configs{
+
+        } 
+    }
 @enduml
