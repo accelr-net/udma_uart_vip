@@ -1,15 +1,14 @@
 @startuml spi_test
 
-
-namespace spi_vip{
+set namespaceSeparator ::
 
     interface spi_if{}
 
     interface udma_if{}
 
-   package "spi_agent_pkg" #DDDDDD {
-
+    package "spi_agent_pkg" #DDDDDD {
         class spi_seq_item{
+            -data : logic [31:0]
             +new()
             +set_data() : void
             +get_data(output : data) : void
@@ -50,12 +49,21 @@ namespace spi_vip{
         }
 
         class spi_agent_config{
-
+            -cpol : logic
+            -cpha : logic
+            -chip_select : logic [1:0]
+            -is_lsb : logic
+            -word_size : logic [3:0]
+            -word_count : logic [15:0]
+            -<color:purple> is_atomic_test : bit
+            -<color:purple> communication_mode : logic [2:0] 
         }
     }
 
     package "cmd_agent_pkg" #DDDDDD{
+
         class cmd_seq_item{
+            -data : logic [31:0]
             +new()
             +set_data() : void
             +get_data(output : data) : void
@@ -65,9 +73,9 @@ namespace spi_vip{
             +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
         }
 
-        class cmd_sequence {
+        class cmd_sequence_base {
             +new()
-            +body() : task
+            +send_cmd(register_offset: logic [31:0], cmd_data: logic [31:0]) : task
         }
 
         class cmd_driver{
@@ -88,6 +96,7 @@ namespace spi_vip{
             -driver : cmd_dirver
             -monitor : cmd_monitor
             -sequencer : cmd_sequencer
+            -cmd_done : event
 
             +new()
             +build_phase() : void
@@ -96,27 +105,35 @@ namespace spi_vip{
         }
 
         class cmd_agent_config{
-
+            -cpol : logic
+            -cpha : logic
+            -chip_select : logic [1:0]
+            -is_lsb : logic
+            -word_size : logic [3:0]
+            -word_count : logic [15:0]
+            -<color:purple> is_atomic_test : bit
+            -<color:purple> communication_mode : logic [2:0] 
         }
     }
 
-    package "udma_agent_pkg" #DDDDDD{
-        class udma_seq_item{
+    package "udma_agent_tx_pkg" #DDDDDD{
+        class udma_tx_seq_item{
+            -data : logic [31:0]
             +new()
             +set_data() : void
             +get_data(output : data) : void
-            +_randomize(): void
+            +_randomize() : void
             +convert2string() : string
             +do_print(printer: uvm_printer) : void
             +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
         }
 
-        class udma_sequence {
+        class udma_tx_sequence {
             +new()
             +body() : task
         }
 
-        class udma_driver{
+        class udma_tx_driver{
             +new()
             +build_phase() : void
             +connect_phase() : void
@@ -124,16 +141,17 @@ namespace spi_vip{
             +do_spi(udma_transaction : udma_seq_item): task
         }
 
-        class udma_monitor{
+        class udma_tx_monitor{
             +new()
             +build_phase(): void
             +run_phase(): task
         }
 
-        class udma_agent{
+        class udma_tx_agent{
             -driver : udma_dirver
             -monitor : udma_monitor
             -sequencer : udma_sequencer
+            -udma_tx_done : event
 
             +new()
             +build_phase() : void
@@ -141,12 +159,56 @@ namespace spi_vip{
             +run_phase() : task
         }
 
-        class udma_agent_config{
-
+        class udma_tx_agent_config{
+            -word_size  : logic [3:0]
+            -word_count : logic [15:0]
         }
     }
 
-    package "analysis_components_pkg" #DDDDDD{
+    package "udma_agent_rx_pkg" #DDDDDD{
+        class udma_rx_seq_item{
+            -data : logic [31:0]
+            +new()
+            +set_data() : void
+            +get_data(output : data) : void
+            +_randomize() : void
+            +convert2string() : string
+            +do_print(printer: uvm_printer): void
+            +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
+        }
+
+        class udma_rx_driver{
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +do_spi(udma_transaction : udma_seq_item): task
+        }
+
+        class udma_rx_monitor {
+            +new()
+            +build_phase(): void
+            +run_phase(): task
+        }
+
+        class udma_rx_agent{
+            -driver : udma_dirver
+            -monitor : udma_monitor
+            -udma_rx_done : event
+
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+        }
+
+        class udma_rx_agent_config{
+            -word_size  : logic [3:0]
+            -word_count : logic [15:0]
+        }
+    } 
+
+    package "spi_analysis_components_pkg" #DDDDDD{
         class spi_udma_predictor{
             +new()
             +write(t : spi_seq_item) : void
@@ -165,8 +227,18 @@ namespace spi_vip{
             +report_phase() : void
         }
 
-        class analysis_configs{
+        class udma_spi_checker{
+            +new()
+            +build_phase() : void
+            +connect_phase() : void
+            +run_phase() : task
+            +report_phase() : void
+        }
 
+        class analysis_configs{
+            -word_size : logic [3:0]
+            -word_count : logic [15:0]
+            -<color:purple> communication_mode : logic [2:0] 
         }
     }
 
@@ -175,11 +247,89 @@ namespace spi_vip{
             +new()
             +build_phase(): void
             +connect_phase(): void
-            +run_phase: task
+            +run_phase(): task
+        }
+
+        class spi_cmd_sequence_base{
+            'ToDo: add cmd offsets
+            'SPI_CMD_CFG
+            'SPI_CMD_SOT
+            'SPI_CMD_SEND_CMD
+            'SPI_CMD_DUMMY
+            'SPI_CMD_WAIT
+            'SPI_CMD_RX_DATA
+            'SPI_CMD_RPT
+            'SPI_CMD_EOT
+            cmd_list : Associative_array
+        }
+
+        class spi_cfg_rx_only_cmd_sequence{
+            -sequence_step : static int
+            +new()
+            +body() : task
+        }
+
+        class spi_cfg_tx_only_cmd_sequence{
+            -sequence_step : static int
+            +new()
+            +body() : task
+        }
+
+        class spi_cfg_fullduplex_cmd_sequence{
+            -sequence_step : static int
+            +new()
+            +body() : task
         }
 
         class env_configs{
+            -cpol : logic
+            -cpha : logic
+            -chip_select : logic [1:0]
+            -is_lsb : logic
+            -word_size : logic [3:0]
+            -word_count : logic [15:0]
+            -<color:purple> is_atomic_test : bit
+            -<color:purple> communication_mode : logic [1:0]
+        }
 
-        } 
+        spi_cmd_sequence_base   <|--  spi_cfg_rx_only_cmd_sequence 
+        spi_cmd_sequence_base   <|--  spi_cfg_tx_only_cmd_sequence 
+        spi_cmd_sequence_base   <|--  spi_cfg_fullduplex_cmd_sequence 
+        cmd_sequence_base       <|--  spi_cmd_sequence_base 
+    }
+
+    package "test_pkg" #DDDDDD{
+        class rx_test{
+            +new()
+        }
+
+        class tx_test{
+            +new()
+        }
+
+        class full_duplex_test{
+            +new()
+        }
+
+        class base_test{
+            'Following configs comes as plusargs
+            -cpol : logic
+            -cpha : logic
+            -chip_select : logic [1:0]
+            -is_lsb : logic
+            -word_size : logic [3:0]
+            -word_count : logic [15:0]
+            -<color:purple> is_atomic_test : bit
+            -<color:purple> communication_mode : logic [1:0]
+            +new()
+            +set_communication_mode(communication_mode : logic [1:0])
+            +set_atomic_run(is_atomic_test : bit)
+            +build_phase()
+            +run_phase() : task
+        }
+
+        base_test   <|--    rx_test   
+        base_test   <|--    tx_test   
+        base_test   <|--    full_duplex_test
     }
 @enduml

@@ -281,10 +281,10 @@ module tb_top_spi;
         cmd_i       = {4'h1,26'h0,2'b01};                   // SPI_CMD_SOT
 
         #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h2,1'b0,1'b0,6'h0,4'h8,16'h50};    // SPI_CMD_SEND_CMD
+        cmd_i       = {4'h2,1'b0,1'b0,6'h0,4'h8,16'h1};    // SPI_CMD_SEND_CMD
 
         #(HALF_CLOCK_PERIOD*2);
-        cmd_i       = {4'h7,1'b0,1'b0,6'h0,4'h8,16'h50};    // SPI_CMD_RX_DATA
+        cmd_i       = {4'h7,1'b0,1'b0,6'h0,4'h8,16'h1};    // SPI_CMD_RX_DATA
 
         #(HALF_CLOCK_PERIOD);
         cmd_gnt_i   = 1'b0;
