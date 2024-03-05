@@ -78,53 +78,53 @@ interface udma_spi_if #(
     input  logic                      periph_clk_i,
     input  logic                      rstn_i
 );
-    logic [L2_AWIDTH_NOAL-1:0] cfg_cmd_startaddr_o,
-    logic     [TRANS_SIZE-1:0] cfg_cmd_size_o,
-    logic                      cfg_cmd_continuous_o,
-    logic                      cfg_cmd_en_o,
-    logic                      cfg_cmd_clr_o,
-    logic                      cfg_cmd_en_i,
-    logic                      cfg_cmd_pending_i,
-    logic [L2_AWIDTH_NOAL-1:0] cfg_cmd_curr_addr_i,
-    logic     [TRANS_SIZE-1:0] cfg_cmd_bytes_left_i,
+    logic [L2_AWIDTH_NOAL-1:0] cfg_cmd_startaddr_o;
+    logic     [TRANS_SIZE-1:0] cfg_cmd_size_o;
+    logic                      cfg_cmd_continuous_o;
+    logic                      cfg_cmd_en_o;
+    logic                      cfg_cmd_clr_o;
+    logic                      cfg_cmd_en_i;
+    logic                      cfg_cmd_pending_i;
+    logic [L2_AWIDTH_NOAL-1:0] cfg_cmd_curr_addr_i;
+    logic     [TRANS_SIZE-1:0] cfg_cmd_bytes_left_i;
     
-    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_startaddr_o,
-    logic     [TRANS_SIZE-1:0] cfg_rx_size_o,
-    logic                      cfg_rx_continuous_o,
-    logic                      cfg_rx_en_o,
-    logic                      cfg_rx_clr_o,
-    logic                      cfg_rx_en_i,
-    logic                      cfg_rx_pending_i,
-    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_curr_addr_i,
-    logic     [TRANS_SIZE-1:0] cfg_rx_bytes_left_i,
+    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_startaddr_o;
+    logic     [TRANS_SIZE-1:0] cfg_rx_size_o;
+    logic                      cfg_rx_continuous_o;
+    logic                      cfg_rx_en_o;
+    logic                      cfg_rx_clr_o;
+    logic                      cfg_rx_en_i;
+    logic                      cfg_rx_pending_i;
+    logic [L2_AWIDTH_NOAL-1:0] cfg_rx_curr_addr_i;
+    logic     [TRANS_SIZE-1:0] cfg_rx_bytes_left_i;
     
-    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_startaddr_o,
-    logic     [TRANS_SIZE-1:0] cfg_tx_size_o,
-    logic                      cfg_tx_continuous_o,
-    logic                      cfg_tx_en_o,
-    logic                      cfg_tx_clr_o,
-    logic                      cfg_tx_en_i,
-    logic                      cfg_tx_pending_i,
-    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_curr_addr_i,
-    logic     [TRANS_SIZE-1:0] cfg_tx_bytes_left_i,
+    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_startaddr_o;
+    logic     [TRANS_SIZE-1:0] cfg_tx_size_o;
+    logic                      cfg_tx_continuous_o;
+    logic                      cfg_tx_en_o;
+    logic                      cfg_tx_clr_o;
+    logic                      cfg_tx_en_i;
+    logic                      cfg_tx_pending_i;
+    logic [L2_AWIDTH_NOAL-1:0] cfg_tx_curr_addr_i;
+    logic     [TRANS_SIZE-1:0] cfg_tx_bytes_left_i;
     
-    logic                      cmd_req_o,
-    logic                      cmd_gnt_i,
-    logic                [1:0] cmd_datasize_o,
-    logic               [31:0] cmd_i,
-    logic                      cmd_valid_i,
-    logic                      cmd_ready_o,
+    logic                      cmd_req_o;
+    logic                      cmd_gnt_i;
+    logic                [1:0] cmd_datasize_o;
+    logic               [31:0] cmd_i;
+    logic                      cmd_valid_i;
+    logic                      cmd_ready_o;
     
-    logic                      data_tx_req_o,
-    logic                      data_tx_gnt_i,
-    logic                [1:0] data_tx_datasize_o,
-    logic               [31:0] data_tx_i,
-    logic                      data_tx_valid_i,
-    logic                      data_tx_ready_o,
+    logic                      data_tx_req_o;
+    logic                      data_tx_gnt_i;
+    logic                [1:0] data_tx_datasize_o;
+    logic               [31:0] data_tx_i;
+    logic                      data_tx_valid_i;
+    logic                      data_tx_ready_o;
     
-    logic                [1:0] data_rx_datasize_o,
-    logic               [31:0] data_rx_o,
-    logic                      data_rx_valid_o,
-    logic                      data_rx_ready_i,
+    logic                [1:0] data_rx_datasize_o;
+    logic               [31:0] data_rx_o;
+    logic                      data_rx_valid_o;
+    logic                      data_rx_ready_i;
 
 endinterface : udma_spi_if

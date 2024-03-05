@@ -53,6 +53,8 @@ sources:
   - models/spi_master_bfm.sv
   - models/spi_slave_bfm.sv
   - sim/uvm_colors.sv
+  - sim/spi_uvm_vip/if/spi_if.sv
+  - sim/spi_uvm_vip/if/udma_spi_if.sv
   - sim/spi_uvm_vip/cmd_agent/cmd_agent_pkg.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
