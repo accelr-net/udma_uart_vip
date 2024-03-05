@@ -44,11 +44,16 @@ sources:
   - sim/uvm_vip/analysis_component
   - sim/uvm_vip/env
   - sim/uvm_vip/test
+  - sim/spi_uvm_vip/cmd_agent # SPI packages
+  - sim/spi_uvm_vip/env #
+  - sim/spi_uvm_vip/if #  
+  - sim/spi_uvm_vip/test #
 
   files:
   - models/spi_master_bfm.sv
   - models/spi_slave_bfm.sv
   - sim/uvm_colors.sv
+  - sim/spi_uvm_vip/cmd_agent/cmd_agent_pkg.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/udma_rx_agent/udma_rx_agent_pkg.sv

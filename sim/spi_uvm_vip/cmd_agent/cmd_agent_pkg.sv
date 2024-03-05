@@ -40,10 +40,12 @@ package cmd_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
+    import uvm_colors::*;
+
     //cmd header files
     `include "cmd_seq_item.svh"
     `include "cmd_agent_config.svh"
-    `include "cmd_sequence.svh"
+    `include "cmd_seq_base.svh"
     `include "cmd_monitor.svh"
     `include "cmd_driver.svh"
     `include "cmd_agent.svh"

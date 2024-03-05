@@ -37,7 +37,7 @@
 //**************************************************************************************************
 
 class cmd_monitor extends uvm_monitor;
-    `uvm_component_utils(cfg_monitor)
+    `uvm_component_utils(cmd_monitor)
 
     virtual udma_spi_if                     v_cmd_if;
     uvm_analysis_port   #(cmd_seq_item)     a_port;
@@ -63,7 +63,7 @@ class cmd_monitor extends uvm_monitor;
             cmd_transaction = cmd_seq_item::type_id::create("cmd_transaction",this);
 
             if(this.v_cmd_if.cmd_valid_i == 1'b1) begin
-                this.cmd_transaction.data = this.v_cmd_if.cmd_i;
+                cmd_transaction.data = this.v_cmd_if.cmd_i;
                 a_port.write(cmd_transaction);
             end
         end

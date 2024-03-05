@@ -46,14 +46,14 @@ class cmd_seq_item extends uvm_sequence_item;
 
     //set the value of the command
     function void set_data(
-        input int   data;
+        input [31:0]   data
     );
         this.data = data;
     endfunction: set_data
 
     //get value of the command
     function void get_data(
-        output logic [31:0]    data;
+        output logic [31:0]    data
     );
         data = this.data;
     endfunction: get_data

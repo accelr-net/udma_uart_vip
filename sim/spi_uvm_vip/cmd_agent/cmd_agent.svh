@@ -43,9 +43,9 @@ class cmd_agent extends uvm_agent;
     cmd_monitor                                 monitor;
     uvm_sequencer #(cmd_seq_item)               sequencer;
     cmd_agent_config                            cmd_config;
-    uvm_analysis_port #(cmd_seq_item)           cmd_aport
+    uvm_analysis_port #(cmd_seq_item)           cmd_aport;
 
-    virtual udma_if                             v_cmd_if;
+    virtual udma_spi_if                             v_cmd_if;
     
     function new(string name="cmd_agent",uvm_component parent);
         super.new(name, parent);

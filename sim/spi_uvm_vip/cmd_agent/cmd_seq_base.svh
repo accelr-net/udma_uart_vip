@@ -44,8 +44,8 @@ class cmd_seq_base extends uvm_sequence;
     endfunction: new
 
     task send_cmd(
-        input   logic [31:0]     register_offset;
-        input   logic [31:0]     data;
+        input   logic [31:0]     register_offset,
+        input   logic [31:0]     data
     );
         // send command
     endtask: send_cmd
