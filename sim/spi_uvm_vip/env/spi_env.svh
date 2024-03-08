@@ -39,7 +39,7 @@
 class spi_env extends uvm_env;
     `uvm_component_utils(spi_env)
 
-    env_config          configs;
+    env_configs         configs;
     //cmd
     cmd_agent           cmd_agnt;
 
@@ -55,11 +55,11 @@ class spi_env extends uvm_env;
 
         cmd_agnt    = cmd_agent::type_id::create("cmd_agnt",this); 
         cmd_config  = cmd_agent_config::type_id::create("cmd_config",this);
+
         
-        if(!uvm_config_db #(env_config)::get(this,"","env_configs",configs)) begin
+        if(!uvm_config_db #(env_configs)::get(this,"","env_configs",configs)) begin
             `uvm_fatal("[spi_env]","connot find configs")
         end
-
         cmd_config.cpol                 = configs.cpol;
         cmd_config.cpha                 = configs.cpha;
         cmd_config.chip_select          = configs.chip_select;
@@ -72,5 +72,4 @@ class spi_env extends uvm_env;
 
         uvm_config_db #(cmd_agent_config)::set(this,"cmd_agnt","cmd_config",cmd_config);
     endfunction: build_phase
-
 endclass : spi_env

@@ -52,7 +52,7 @@ class spi_base_test extends uvm_test;
     logic   [2:0]       communication_mode;
 
     spi_env             env;
-    env_config          env_config_obj;
+    env_configs         env_config_obj;
 
 //------------------------------------------------------------------------------------------------------------------
 // Set cmd parameters
@@ -78,7 +78,7 @@ class spi_base_test extends uvm_test;
     endfunction: set_word_size
 
     virtual function void set_word_count(logic [15:0]   word_count);
-        this.word_count         = word_count:
+        this.word_count         = word_count;
     endfunction: set_word_count
 
     virtual function void set_clkdiv(logic [7:0] clkdiv);
@@ -100,8 +100,8 @@ class spi_base_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         `uvm_info("[spi_test]","build_phase", UVM_LOW)
  
-        env                 = env_config::type_id::create("env",this);
-        env_config_obj      = env_config::type_id::create("env_config_obj",this);
+        env                 = spi_env::type_id::create("env",this);
+        env_config_obj      = env_configs::type_id::create("env_config_obj",this);
 
         env_config_obj.cpol                 = cpol;
         env_config_obj.cpha                 = cpha;
@@ -112,14 +112,14 @@ class spi_base_test extends uvm_test;
         env_config_obj.is_atomic_test       = is_atomic_test;
         env_config_obj.communication_mode   = communication_mode;
 
-        uvm_config_db #(env_config)::set(this,"env","env_configs",env_config_obj);
+        uvm_config_db #(env_configs)::set(this,"env","env_configs",env_config_obj);
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
         cmd_seq_base    cmd_sequence;
         phase.raise_objection(this,"Strating cmd sequence");
         cmd_sequence = cmd_seq_base::type_id::create("cmd_sequence");
-        cmd_seq.start(env.cmd_agnt.sequencer);
+        cmd_sequence.start(env.cmd_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
 

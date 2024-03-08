@@ -36,10 +36,10 @@
 //
 //**************************************************************************************************
 
-class env_config extends uvm_object;
-    `uvm_object_utils(env_config)
+class env_configs extends uvm_object;
+    `uvm_object_utils(env_configs)
 
-    logic               cpol;
+    bit                 cpol = 1'b1;
     logic               cpha;
     logic   [1:0]       chip_select;
     logic               is_lsb;
@@ -50,9 +50,8 @@ class env_config extends uvm_object;
     bit                 is_atomic_test;
     logic   [2:0]       communication_mode;
 
-    function new(string name="env_config");
-        super.new(name)
+    function new(string name="env_configs");
+        super.new(name);
         `uvm_info("[env_config]","constructor",UVM_LOW);
     endfunction: new
-
 endclass

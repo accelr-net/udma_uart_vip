@@ -40,8 +40,9 @@ package spi_env_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
+    import      uvm_colors::*;
     import      cmd_agent_pkg::*;
 
-    `include "env_config.svh"
+    `include "env_configs.svh"
     `include "spi_env.svh"
 endpackage : spi_env_pkg
