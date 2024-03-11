@@ -45,25 +45,27 @@ class cmd_agent extends uvm_agent;
     cmd_agent_config                            cmd_config;
     uvm_analysis_port #(cmd_seq_item)           cmd_aport;
 
-    virtual udma_spi_if                             v_cmd_if;
+    virtual udma_spi_if                         v_cmd_if;
     
     function new(string name="cmd_agent",uvm_component parent);
         super.new(name, parent);
-        `uvm_info("[cmd_agent]","constructor",UVM_HIGH)
+        `uvm_info("[cmd_agent]","constructor",UVM_LOW)
     endfunction: new
 
     function void build_phase(uvm_phase phase);
-        `uvm_info("[cmd_agent]","build_phase",UVM_HIGH)
+        `uvm_info("[cmd_agent]","build_phase",UVM_LOW)
         if(!uvm_config_db #(cmd_agent_config)::get(this,"","cmd_config",cmd_config)) begin
             `uvm_fatal("cmd_agent","Please set cmd_configs");
         end
         monitor     = cmd_monitor::type_id::create("monitor",this);
+        driver      = cmd_driver::type_id::create("driver",this);
         sequencer   = uvm_sequencer #(cmd_seq_item)::type_id::create("sequencer",this);
         cmd_aport   = new("cmd_aport",this);
     endfunction: build_phase
 
     function void connect_phase(uvm_phase phase);
-        `uvm_info("cmd_agent","connect_phase",UVM_HIGH)
+        `uvm_info("cmd_agent","connect_phase",UVM_LOW)
+        driver.seq_item_port.connect(sequencer.seq_item_export);
         cmd_aport   = monitor.a_port;
     endfunction: connect_phase
 

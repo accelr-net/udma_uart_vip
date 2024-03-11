@@ -45,18 +45,18 @@ class spi_env extends uvm_env;
 
     function new(string name="spi_env",uvm_component parent);
         super.new(name, parent);
-        `uvm_info("[ENV]","constructor",UVM_HIGH)
+        `uvm_info("[ENV]","constructor",UVM_LOW)
     endfunction: new
 
     function void build_phase(uvm_phase phase);
         cmd_agent_config        cmd_config;
 
         super.build_phase(phase);
+        `uvm_info("[ENV]","constructor",UVM_LOW)
 
         cmd_agnt    = cmd_agent::type_id::create("cmd_agnt",this); 
         cmd_config  = cmd_agent_config::type_id::create("cmd_config",this);
 
-        
         if(!uvm_config_db #(env_configs)::get(this,"","env_configs",configs)) begin
             `uvm_fatal("[spi_env]","connot find configs")
         end
@@ -72,4 +72,9 @@ class spi_env extends uvm_env;
 
         uvm_config_db #(cmd_agent_config)::set(this,"cmd_agnt","cmd_config",cmd_config);
     endfunction: build_phase
+
+    task run_phase(uvm_phase phase);
+        super.run_phase(phase);
+        `uvm_info("[ENV]","constructor",UVM_LOW)
+    endtask: run_phase
 endclass : spi_env

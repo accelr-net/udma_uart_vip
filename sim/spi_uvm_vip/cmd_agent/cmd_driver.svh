@@ -39,15 +39,17 @@
 class cmd_driver extends uvm_driver #(cmd_seq_item);
     `uvm_component_utils(cmd_driver)
 
-    virtual cmd_if    v_cmd_if;
+    virtual udma_spi_if    v_cmd_if;
 
     function new(string name="cmd_driver",uvm_component parent);
         super.new(name,parent);
+        `uvm_info("[cmd_driver]","constructor",UVM_LOW)
     endfunction: new
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual cmd_if)::get(this,"*","cmd_vif",v_cmd_if)) begin
+        `uvm_info("[cmd_driver]","build_phase",UVM_LOW)
+        if(!uvm_config_db #(virtual udma_spi_if)::get(this,"*","cmd_vif",v_cmd_if)) begin
             `uvm_fatal("cmd_driver","No virtual cmd_if found!");
         end
     endfunction: build_phase
@@ -61,6 +63,7 @@ class cmd_driver extends uvm_driver #(cmd_seq_item);
             cmd_transaction = cmd_seq_item::type_id::create("cmd_transaction");
             seq_item_port.try_next_item(cmd_transaction);
             if(cmd_transaction) begin
+                $display("cmd_transaction %p",cmd_transaction);
                 do_spi(cmd_transaction);
             end
             seq_item_port.item_done();
@@ -70,7 +73,7 @@ class cmd_driver extends uvm_driver #(cmd_seq_item);
     task do_spi(
         cmd_seq_item    cmd_transaction
     );
-        @(this.v_cmd_if);
+        @(this.v_cmd_if.sys_clk_i);
         this.v_cmd_if.cmd_i         <= cmd_transaction.data;
         this.v_cmd_if.cmd_valid_i   <= 1'b1;
         this.v_cmd_if.data_tx_gnt_i <= 1'b1;

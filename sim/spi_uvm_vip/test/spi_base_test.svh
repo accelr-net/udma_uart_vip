@@ -38,7 +38,7 @@
 
 class spi_base_test extends uvm_test;
     `uvm_component_utils(spi_base_test)
-    
+
     //default values
     logic               cpol                    = 1'b1;
     logic               cpha                    = 1'b1;
@@ -117,7 +117,8 @@ class spi_base_test extends uvm_test;
 
     task run_phase(uvm_phase phase);
         cmd_seq_base    cmd_sequence;
-        phase.raise_objection(this,"Strating cmd sequence");
+        `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
+        phase.raise_objection(this,"Strating cmd sequence");    
         cmd_sequence = cmd_seq_base::type_id::create("cmd_sequence");
         cmd_sequence.start(env.cmd_agnt.sequencer);
         phase.drop_objection(this);

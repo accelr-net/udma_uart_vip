@@ -37,10 +37,17 @@
 //**************************************************************************************************
 class cmd_seq_base extends uvm_sequence;
     `uvm_object_utils(cmd_seq_base)
-    // static int      sequence_step;
+    static int      sequence_step = 0;
+    bit [31:0]      cmd_mem [0:3] = {
+        {4'h0,18'h0,1'b1,1'b1,8'd100},      // SPI_CMD_CFG
+        {4'h1,26'h0,2'b01},                 // SPI_CMD_SOT
+        {4'h2,1'b0,1'b0,6'h0,4'h8,16'h1},   // SPI_CMD_SEND_CMD
+        {4'h7,1'b0,1'b0,6'h0,4'h8,16'h1}    // SPI_CMD_RX_DATA
+    };
 
     function new(string name="cmd_seq_base");
         super.new(name);
+        `uvm_info("cmd_seq_base","constructor",UVM_LOW)
     endfunction: new
 
     task send_cmd(
@@ -54,9 +61,13 @@ class cmd_seq_base extends uvm_sequence;
         cmd_seq_item       cmd_txn;
         
         cmd_txn = cmd_seq_item::type_id::create("cmd_txn");
-        start_item(cmd_txn);
-        cmd_txn.data    <= 32'h5;
-        finish_item(cmd_txn);
+        repeat (4) begin
+            start_item(cmd_txn);
+            cmd_txn.data    = cmd_mem[sequence_step];
+            $display("cmd_txn %p",cmd_txn);
+            finish_item(cmd_txn);
+            sequence_step += 1;
+        end
     endtask: body
 
 endclass: cmd_seq_base

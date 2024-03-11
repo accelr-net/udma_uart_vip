@@ -69,6 +69,7 @@ sources:
   - sim/uvm_vip/test/test_pkg.sv
   - sim/top/tb_top.sv
   - sim/top/tb_top_spi.sv
+  - sim/top/tb_top_spi_uvm.sv
 
 
 

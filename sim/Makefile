@@ -28,7 +28,7 @@ VLIB            ?= vlib
 VMAP            ?= vmap
 
 # top-level (tesbench)
-SIM_TOP     = tb_top_spi 
+SIM_TOP     = tb_top_spi_uvm 
 
 TEST_NAME	?= uart_base_test
 MODE 		?= -gui

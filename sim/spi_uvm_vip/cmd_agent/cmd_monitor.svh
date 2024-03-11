@@ -44,12 +44,14 @@ class cmd_monitor extends uvm_monitor;
 
     function new(string name="cmd_monitor", uvm_component parent);
         super.new(name,parent);
+        `uvm_info("cmd_monitor","constructor",UVM_LOW)
         a_port = new("a_port",this);
     endfunction: new
 
     function void build_phase(uvm_phase phase);
         cmd_seq_item    cmd_transaction;
-        if(!uvm_config_db #(virtual udma_spi_if)::get(this,"*","udma_spi_if",v_cmd_if)) begin
+        `uvm_info("cmd_monitor","build_phase",UVM_LOW)
+        if(!uvm_config_db #(virtual udma_spi_if)::get(this,"*","cmd_vif",v_cmd_if)) begin
             `uvm_fatal("[cmd_monitor]","No virtual interace has found");
         end
     endfunction: build_phase

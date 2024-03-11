@@ -78,6 +78,21 @@ interface udma_spi_if #(
     input  logic                      periph_clk_i,
     input  logic                      rstn_i
 );
+
+    logic                      dft_test_mode_i;
+    logic                      dft_cg_enable_i;
+    
+    logic                      spi_eot_o;
+    
+    logic                [3:0] spi_event_i;
+    
+    logic               [31:0] cfg_data_i;
+    logic                [4:0] cfg_addr_i;
+    logic                      cfg_valid_i;
+    logic                      cfg_rwn_i;
+    logic               [31:0] cfg_data_o;
+    logic                      cfg_ready_o;
+
     logic [L2_AWIDTH_NOAL-1:0] cfg_cmd_startaddr_o;
     logic     [TRANS_SIZE-1:0] cfg_cmd_size_o;
     logic                      cfg_cmd_continuous_o;
