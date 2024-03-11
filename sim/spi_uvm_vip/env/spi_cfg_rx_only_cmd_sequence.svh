@@ -22,30 +22,47 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   spi_env_pkg.sv
+// FILE         :   spi_cfg_rx_only_cmd_sequence.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   this is package for spi uvm environment 
+// DESCRIPTION  :   This is uvm sequence item for spi rx command. 
 //
 // ************************************************************************************************
 //
-// REVISIONS:
+// REVISIONS
 //
-//  Date            Developer     Descriptio
+//  Date            Developer     Description
 //  -----------     ---------     -----------
-//  02-Mar-2024      Kasun        creation
+//  11-Mar-2024     Kasun         creation
 //
 //**************************************************************************************************
 
-package spi_env_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class spi_cfg_rx_only_cmd_sequence extends cmd_seq_base;
+    `uvm_object_utils(spi_cfg_rx_only_cmd_sequence)
 
-    import      uvm_colors::*;
-    import      cmd_agent_pkg::*;
+    static int      sequence_step = 0;
+    bit [31:0]      rx_cmd_arr [0:3];
 
-    `include "env_configs.svh"
-    `include "spi_cfg_rx_only_cmd_sequence.svh"
-    `include "spi_cfg_tx_only_cmd_sequence.svh"
-    `include "spi_cfg_fullduplex_cmd_sequence.svh"
-    `include "spi_env.svh"
-endpackage : spi_env_pkg
+    function new(string name="spi_cfg_rx_only_cmd_sequence ");
+        super.new(name);
+        `uvm_info("spi_cfg_rx_only_cmd_sequence","constructor",UVM_LOW)
+
+        rx_cmd_arr[0] = {4'h0,18'h0,super.cpol,super.cpha,super.clkdiv}; 
+        rx_cmd_arr[1] = {4'h1,26'h0,super.chip_select}; 
+        rx_cmd_arr[2] = {4'h2,1'b0,super.is_lsb,6'h0,super.word_size,super.word_count}; 
+        rx_cmd_arr[3] = {4'h7,1'b0,super.is_lsb,6'h0,super.word_size,super.word_count}; 
+    endfunction: new
+
+    task body();
+        cmd_seq_item       cmd_txn;
+        
+        cmd_txn = cmd_seq_item::type_id::create("cmd_txn");
+        repeat (4) begin
+            start_item(cmd_txn);
+            cmd_txn.data    = rx_cmd_arr[sequence_step];
+            $display("cmd_txn %p",cmd_txn);
+            finish_item(cmd_txn);
+            sequence_step += 1;
+        end
+    endtask : body
+
+endclass: spi_cfg_rx_only_cmd_sequence

@@ -112,15 +112,23 @@ class spi_base_test extends uvm_test;
         env_config_obj.is_atomic_test       = is_atomic_test;
         env_config_obj.communication_mode   = communication_mode;
 
+        uvm_config_db #(logic)::set(null,"*","cpol",cpol);
+        uvm_config_db #(logic)::set(null,"*","cpha",cpha);
+        uvm_config_db #(logic [1:0])::set(null,"*","chip_select",chip_select);
+        uvm_config_db #(logic)::set(null,"*","is_lsb",is_lsb);
+        uvm_config_db #(logic [3:0])::set(null,"*","word_size",word_size);
+        uvm_config_db #(logic [15:0])::set(null,"*","word_count",word_count);
+        uvm_config_db #(logic [7:0])::set(null,"*","clkdiv",clkdiv);
+
         uvm_config_db #(env_configs)::set(this,"env","env_configs",env_config_obj);
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        cmd_seq_base    cmd_sequence;
+        spi_cfg_rx_only_cmd_sequence    rx_sequence;
         `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
         phase.raise_objection(this,"Strating cmd sequence");    
-        cmd_sequence = cmd_seq_base::type_id::create("cmd_sequence");
-        cmd_sequence.start(env.cmd_agnt.sequencer);
+        rx_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence");
+        rx_sequence.start(env.cmd_agnt.sequencer);
         phase.drop_objection(this);
     endtask: run_phase
 
