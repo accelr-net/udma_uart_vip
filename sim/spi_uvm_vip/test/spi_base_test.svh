@@ -48,8 +48,8 @@ class spi_base_test extends uvm_test;
     logic   [15:0]      word_count              = 16'h1;
     logic   [7:0]       clkdiv                  = 8'd100;
 
-    bit                 is_atomic_test;
-    logic   [2:0]       communication_mode;
+    bit                 is_atomic_test          = 1'b1;
+    logic   [2:0]       communication_mode      = 3'b000;
 
     spi_env             env;
     env_configs         env_config_obj;
@@ -112,6 +112,7 @@ class spi_base_test extends uvm_test;
         env_config_obj.is_atomic_test       = is_atomic_test;
         env_config_obj.communication_mode   = communication_mode;
 
+        //putting configuration to the db
         uvm_config_db #(logic)::set(null,"*","cpol",cpol);
         uvm_config_db #(logic)::set(null,"*","cpha",cpha);
         uvm_config_db #(logic [1:0])::set(null,"*","chip_select",chip_select);
@@ -124,8 +125,35 @@ class spi_base_test extends uvm_test;
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        spi_cfg_rx_only_cmd_sequence    rx_sequence;
+        spi_cfg_rx_only_cmd_sequence        rx_sequence;
+        spi_cfg_tx_only_cmd_sequence        tx_sequence;
+        spi_cfg_fullduplex_cmd_sequence     fullduplex_sequence;
         `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
+        if(is_atomic_test) begin
+            case(communication_mode)
+                3'b001 : begin
+                    phase.raise_objection(this,"Strating cmd rx sequence");    
+                    rx_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence");
+                    rx_sequence.start(env.cmd_agnt.sequencer);
+                    phase.drop_objection(this);
+                end
+                3'b010 : begin
+                    phase.raise_objection(this,"Strating cmd tx sequence");    
+                    tx_sequence = spi_cfg_tx_only_cmd_sequence::type_id::create("spi_cfg_tx_only_cmd_sequence");
+                    tx_sequence.start(env.cmd_agnt.sequencer);
+                    phase.drop_objection(this);
+                end
+                3'b100 : begin
+                    phase.raise_objection(this,"Strating cmd fullduplex sequence");    
+                    fullduplex_sequence = spi_cfg_fullduplex_cmd_sequence::type_id::create("spi_cfg_fullduplex_cmd_sequence");
+                    fullduplex_sequence.start(env.cmd_agnt.sequencer);
+                    phase.drop_objection(this);
+                end
+                default : begin
+                    $display("didn't implemented");
+                end
+            endcase
+        end
         phase.raise_objection(this,"Strating cmd sequence");    
         rx_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence");
         rx_sequence.start(env.cmd_agnt.sequencer);

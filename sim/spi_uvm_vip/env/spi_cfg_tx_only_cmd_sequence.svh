@@ -54,7 +54,7 @@ class spi_cfg_tx_only_cmd_sequence extends cmd_seq_base;
         tx_cmd_arr[0] = {4'h0,18'h0,super.cpol,super.cpha,super.clkdiv};                    // SPI_CMD_CFG
         tx_cmd_arr[1] = {4'h1,26'h0,super.chip_select};                                     // SPI_CMD_SOT
         tx_cmd_arr[2] = {4'h2,1'b0,super.is_lsb,6'h0,super.word_size,super.word_count};     // SPI_CMD_SEND_CMD
-        tx_cmd_arr[3] = {4'h7,1'b0,super.is_lsb,6'h0,super.word_size,super.word_count};     // SPI_CMD_RX_DATA
+        tx_cmd_arr[3] = {4'h6,1'b0,super.is_lsb,6'h0,super.word_size,super.word_count};     // SPI_CMD_RX_DATA
     endfunction: new
 
     task body();
