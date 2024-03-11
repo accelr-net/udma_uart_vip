@@ -89,6 +89,9 @@ class spi_base_test extends uvm_test;
         this.is_atomic_test     = is_atomic_test;
     endfunction: set_atomic_test
 
+    virtual function void set_communication_mode(logic [2:0] communication_mode);
+        this.communication_mode = communication_mode;
+    endfunction: set_communication_mode
 //------------------------------------------------------------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------------------------------------------------------------
