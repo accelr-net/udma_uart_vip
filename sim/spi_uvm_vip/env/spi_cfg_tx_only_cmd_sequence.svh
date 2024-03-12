@@ -24,7 +24,7 @@
 // PRODUCT      :   N/A
 // FILE         :   spi_cfg_tx_only_cmd_sequence.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi tx command. 
+// DESCRIPTION  :   This is uvm sequence for spi tx command. 
 //
 // ************************************************************************************************
 //
@@ -40,12 +40,7 @@ class spi_cfg_tx_only_cmd_sequence extends cmd_seq_base;
     `uvm_object_utils(spi_cfg_tx_only_cmd_sequence)
 
     static int      sequence_step = 0;
-    bit [31:0]      tx_cmd_arr [0:3] = {
-        {4'h0,18'h0,1'b1,1'b1,8'd100}, 
-        {4'h1,26'h0,2'b01},
-        {4'h2,1'b0,1'b0,6'h0,4'h8,16'h50},
-        {4'h6,1'b0,1'b0,6'h0,4'h8,16'h50}
-    };
+    bit [31:0]      tx_cmd_arr [0:3];
 
     function new(string name="spi_cfg_tx_only_cmd_sequence ");
         super.new(name);
@@ -67,6 +62,8 @@ class spi_cfg_tx_only_cmd_sequence extends cmd_seq_base;
             $display("cmd_txn %p",cmd_txn);
             finish_item(cmd_txn);
             sequence_step += 1;
+
+            $display("sequence_step %d",sequence_step);
         end
     endtask : body
 

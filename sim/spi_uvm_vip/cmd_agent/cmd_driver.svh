@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   cmd_driver.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is uvm command driver spi. 
 //
 // ************************************************************************************************
 //
@@ -39,7 +39,7 @@
 class cmd_driver extends uvm_driver #(cmd_seq_item);
     `uvm_component_utils(cmd_driver)
 
-    virtual udma_spi_if    v_cmd_if;
+    virtual udma_spi_if         v_cmd_if;
 
     function new(string name="cmd_driver",uvm_component parent);
         super.new(name,parent);
@@ -78,4 +78,5 @@ class cmd_driver extends uvm_driver #(cmd_seq_item);
         this.v_cmd_if.cmd_valid_i   <= 1'b1;
         this.v_cmd_if.data_tx_gnt_i <= 1'b1;
     endtask: do_spi
+
 endclass: cmd_driver

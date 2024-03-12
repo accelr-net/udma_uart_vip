@@ -24,7 +24,7 @@
 // PRODUCT      :   N/A
 // FILE         :   cmd_monitor.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is uvm monitor for spi command. 
 //
 // ************************************************************************************************
 //
@@ -70,4 +70,5 @@ class cmd_monitor extends uvm_monitor;
             end
         end
     endtask: run_phase
+    
 endclass : cmd_monitor

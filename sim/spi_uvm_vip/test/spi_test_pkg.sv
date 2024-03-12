@@ -24,7 +24,7 @@
 // PRODUCT      :   N/A
 // FILE         :   spi_test_pkg.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is packages for spi command. 
 //
 // ************************************************************************************************
 //
@@ -43,4 +43,7 @@ package spi_test_pkg;
     import      spi_env_pkg::*;
 
     `include    "spi_base_test.svh"
+    `include    "rx_test.svh"
+    `include    "tx_test.svh"
+    `include    "full_duplex_test.svh"
 endpackage: spi_test_pkg

@@ -62,6 +62,8 @@ class spi_cfg_rx_only_cmd_sequence extends cmd_seq_base;
             $display("cmd_txn %p",cmd_txn);
             finish_item(cmd_txn);
             sequence_step += 1;
+
+            $display("sequence_step %d",sequence_step);
         end
     endtask : body
 

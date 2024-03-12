@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   spi_env.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is uvm environment for spi command. 
 //
 // ************************************************************************************************
 //

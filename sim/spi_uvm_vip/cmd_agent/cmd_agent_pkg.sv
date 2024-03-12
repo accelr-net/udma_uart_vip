@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   cmd_agent_pkg.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is the package of command agent spi. 
 //
 // ************************************************************************************************
 //

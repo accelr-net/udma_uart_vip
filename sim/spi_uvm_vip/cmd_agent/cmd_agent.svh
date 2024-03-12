@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   cmd_agent.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is uvm command agent for spi command. 
 //
 // ************************************************************************************************
 //
@@ -72,4 +72,5 @@ class cmd_agent extends uvm_agent;
     task run_phase(uvm_phase phase);
         super.run_phase(phase);
     endtask: run_phase
+
 endclass : cmd_agent

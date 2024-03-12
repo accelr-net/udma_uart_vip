@@ -92,6 +92,7 @@ class spi_base_test extends uvm_test;
     virtual function void set_communication_mode(logic [2:0] communication_mode);
         this.communication_mode = communication_mode;
     endfunction: set_communication_mode
+
 //------------------------------------------------------------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------------------------------------------------------------
@@ -128,10 +129,12 @@ class spi_base_test extends uvm_test;
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        spi_cfg_rx_only_cmd_sequence        rx_sequence;
-        spi_cfg_tx_only_cmd_sequence        tx_sequence;
-        spi_cfg_fullduplex_cmd_sequence     fullduplex_sequence;
+        spi_cfg_rx_only_cmd_sequence            rx_sequence;
+        spi_cfg_tx_only_cmd_sequence            tx_sequence;
+        spi_cfg_fullduplex_cmd_sequence         fullduplex_sequence;
+
         `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
+
         if(is_atomic_test) begin
             case(communication_mode)
                 3'b001 : begin
@@ -157,10 +160,7 @@ class spi_base_test extends uvm_test;
                 end
             endcase
         end
-        phase.raise_objection(this,"Strating cmd sequence");    
-        rx_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence");
-        rx_sequence.start(env.cmd_agnt.sequencer);
-        phase.drop_objection(this);
+
     endtask: run_phase
 
 endclass: spi_base_test

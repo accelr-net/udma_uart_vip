@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   cmd_agent_config.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is cmd configurations spi command. 
 //
 // ************************************************************************************************
 //
@@ -38,6 +38,7 @@
 
 class cmd_agent_config extends uvm_object;
     `uvm_object_utils(cmd_agent_config)
+
     logic               cpol;
     logic               cpha;
     logic   [1:0]       chip_select;

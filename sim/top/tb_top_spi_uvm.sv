@@ -264,7 +264,7 @@ module tb_top_spi_uvm;
         // spi_sdi3_i  = 1'b0;
 
         uvm_config_db #(virtual udma_spi_if)::set(null,"*","cmd_vif",udma_spi_vif);
-        run_test("spi_base_test");
+        run_test("tx_test");
         $display("ending");
     end
 endmodule: tb_top_spi_uvm

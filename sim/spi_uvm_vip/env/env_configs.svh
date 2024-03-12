@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_seq_item.svh
+// FILE         :   env_configs.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is uvm sequence item for spi command. 
+// DESCRIPTION  :   This is environment configs for spi command. 
 //
 // ************************************************************************************************
 //
@@ -39,7 +39,7 @@
 class env_configs extends uvm_object;
     `uvm_object_utils(env_configs)
 
-    bit                 cpol = 1'b1;
+    bit                 cpol;
     logic               cpha;
     logic   [1:0]       chip_select;
     logic               is_lsb;
