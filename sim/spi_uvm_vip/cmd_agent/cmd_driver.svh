@@ -61,7 +61,7 @@ class cmd_driver extends uvm_driver #(cmd_seq_item);
         forever begin
             @(v_cmd_if.sys_clk_i);
             cmd_transaction = cmd_seq_item::type_id::create("cmd_transaction");
-            seq_item_port.try_next_item(cmd_transaction);
+            seq_item_port.get_next_item(cmd_transaction);
             if(cmd_transaction) begin
                 $display("cmd_transaction %p",cmd_transaction);
                 do_spi(cmd_transaction);

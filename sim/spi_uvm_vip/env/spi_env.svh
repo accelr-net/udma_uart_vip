@@ -42,6 +42,7 @@ class spi_env extends uvm_env;
     env_configs         configs;
     //cmd
     cmd_agent           cmd_agnt;
+    udma_tx_agent       udma_tx_agnt;
 
     function new(string name="spi_env",uvm_component parent);
         super.new(name, parent);
@@ -56,6 +57,8 @@ class spi_env extends uvm_env;
 
         cmd_agnt    = cmd_agent::type_id::create("cmd_agnt",this); 
         cmd_config  = cmd_agent_config::type_id::create("cmd_config",this);
+
+        udma_tx_agnt = udma_tx_agent::type_id::create("udma_tx_agnt",this);
 
         if(!uvm_config_db #(env_configs)::get(this,"","env_configs",configs)) begin
             `uvm_fatal("[spi_env]","connot find configs")

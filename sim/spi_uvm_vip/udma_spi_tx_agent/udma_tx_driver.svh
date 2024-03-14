@@ -38,7 +38,7 @@
 class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
     `uvm_component_utils(udma_tx_driver)
 
-    virtual udma_spi_if         vif;
+    virtual udma_if         vif;
 
 //--------------------------------------------------------------------------------------------------
 // Constructor 
@@ -52,7 +52,7 @@ class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
 //--------------------------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if(!uvm_config_db #(virtual udma_spi_if)::get(this,"","cmd_vif",vif)) begin
+        if(!uvm_config_db #(virtual udma_if)::get(this,"","udma_vif",vif)) begin
             `uvm_fatal("[udma_tx_driver]","No virtual interface found!")
         end
     endfunction: build_phase
@@ -73,7 +73,6 @@ class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
     endtask
 
     task do_udma_tx(udma_tx_seq_item txn);
-        $display("udma_tx_driver is working!!!!!");
         @(vif.tx_data_cbd);
         this.vif.tx_data_cbd.data_tx_i          <= txn.data;
         this.vif.tx_data_cbd.data_tx_valid_i    <= 1'b1;
@@ -83,4 +82,4 @@ class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
         this.vif.tx_data_cbd.data_tx_gnt_i      <= 1'b0;
         #(txn.backoff_time);
     endtask: do_udma_tx
-endclass
+endclass 

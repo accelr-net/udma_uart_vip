@@ -20,31 +20,30 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   SPI Verification Env
+// PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   spi_test_pkg.sv
+// FILE         :   udma_tx_config.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is packages for spi command. 
+// DESCRIPTION  :   This is contain all configuration for  udma_tx
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Description
+//  Date            Developer     Descriptio
 //  -----------     ---------     -----------
-//  01-March-2024     Kasun         creation
+//  17-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-package spi_test_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class udma_tx_config extends uvm_object;
+    `uvm_object_utils(udma_tx_config)
+    int    char_length = 8;
 
-    import      cmd_agent_pkg::*;
-    import      udma_tx_agent_pkg::*;
-    import      spi_env_pkg::*;
-
-    `include    "spi_base_test.svh"
-    `include    "rx_test.svh"
-    `include    "tx_test.svh"
-    `include    "full_duplex_test.svh"
-endpackage: spi_test_pkg
+//---------------------------------------------------------------------------------------------------------------------
+// Constructor
+//---------------------------------------------------------------------------------------------------------------------
+    function new(string name="udma_tx_config");
+        super.new(name);
+        `uvm_info("[udma_tx_config]","constructor",UVM_HIGH)
+    endfunction: new
+endclass : udma_tx_config

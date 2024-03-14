@@ -55,13 +55,13 @@ sources:
   - sim/uvm_colors.sv
   - sim/spi_uvm_vip/if/spi_if.sv
   - sim/spi_uvm_vip/if/udma_spi_if.sv
+  - sim/uvm_vip/udma_tx_agent/udma_tx_agent_pkg.sv
   - sim/spi_uvm_vip/cmd_agent/cmd_agent_pkg.sv
   - sim/spi_uvm_vip/env/spi_env_pkg.sv
   - sim/spi_uvm_vip/test/spi_test_pkg.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv
   - sim/uvm_vip/uart_agent/uart_agent_pkg.sv
   - sim/uvm_vip/udma_rx_agent/udma_rx_agent_pkg.sv
-  - sim/uvm_vip/udma_tx_agent/udma_tx_agent_pkg.sv
   - sim/uvm_vip/if/uart_if.sv
   - sim/uvm_vip/if/udma_if.sv
   - sim/uvm_vip/analysis_component/analysis_components_pkg.sv

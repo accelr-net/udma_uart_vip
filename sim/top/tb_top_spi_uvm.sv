@@ -146,8 +146,8 @@ module tb_top_spi_uvm;
         .clk_phase(0)
     ) spi_slave (
         .sclk(spi_clk_o),
-        .mosi(spi_sdo1_o),
-        .miso(spi_sdi1_i),
+        .mosi(spi_sdo0_o),
+        .miso(spi_sdi0_i),
         .ss(spi_csn1_o)
     );
 

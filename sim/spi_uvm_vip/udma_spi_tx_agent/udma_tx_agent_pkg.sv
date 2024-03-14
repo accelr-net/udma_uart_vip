@@ -20,11 +20,11 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   SPI Verification Env
+// PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   spi_test_pkg.sv
+// FILE         :   udma_tx_pkg.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is packages for spi command. 
+// DESCRIPTION  :   This is for udma_rx agent
 //
 // ************************************************************************************************
 //
@@ -32,19 +32,19 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  01-March-2024     Kasun         creation
+//  4-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-package spi_test_pkg;
+package udma_tx_agent_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
-    import      cmd_agent_pkg::*;
-    import      udma_tx_agent_pkg::*;
-    import      spi_env_pkg::*;
+    import uvm_colors::*;
 
-    `include    "spi_base_test.svh"
-    `include    "rx_test.svh"
-    `include    "tx_test.svh"
-    `include    "full_duplex_test.svh"
-endpackage: spi_test_pkg
+    //all uvm uart_tx header files
+    `include "udma_tx_seq_item.svh"
+    `include "udma_tx_sequence.svh"
+    `include "udma_tx_driver.svh"
+    `include "udma_tx_monitor.svh"
+    `include "udma_tx_agent.svh"
+endpackage : udma_tx_agent_pkg

@@ -142,4 +142,23 @@ interface udma_spi_if #(
     logic                      data_rx_valid_o;
     logic                      data_rx_ready_i;
 
+    //Clocking blocks for driver
+    clocking tx_data_cbd @(posedge sys_clk_i);
+        input                  data_tx_req_o;
+        output                 data_tx_gnt_i;
+        input                  data_tx_datasize_o;
+        output                 data_tx_i;
+        output                 data_tx_valid_i;
+        input                  data_tx_ready_o;    
+    endclocking
+
+    //Clocking blocks for monitor
+    clocking tx_data_cbm @(posedge sys_clk_i);
+        input                   data_tx_req_o;
+        input                   data_tx_gnt_i;
+        input                   data_tx_datasize_o;
+        input                   data_tx_i;
+        input                   data_tx_valid_i;
+        input                   data_tx_ready_o;
+    endclocking   
 endinterface : udma_spi_if

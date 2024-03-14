@@ -44,12 +44,12 @@ class spi_base_test extends uvm_test;
     logic               cpha                    = 1'b1;
     logic   [1:0]       chip_select             = 2'b01;
     logic               is_lsb                  = 1'b0;
-    logic   [3:0]       word_size               = 4'h8;
+    logic   [3:0]       word_size               = 4'h7;
     logic   [15:0]      word_count              = 16'h1;
     logic   [7:0]       clkdiv                  = 8'd100;
 
     bit                 is_atomic_test          = 1'b1;
-    logic   [2:0]       communication_mode      = 3'b000;
+    logic   [2:0]       communication_mode      = 3'b010;
 
     spi_env             env;
     env_configs         env_config_obj;
@@ -133,6 +133,8 @@ class spi_base_test extends uvm_test;
         spi_cfg_tx_only_cmd_sequence            tx_sequence;
         spi_cfg_fullduplex_cmd_sequence         fullduplex_sequence;
 
+        udma_tx_sequence                        udma_tx_seq;
+
         `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
 
         if(is_atomic_test) begin
@@ -144,10 +146,19 @@ class spi_base_test extends uvm_test;
                     phase.drop_objection(this);
                 end
                 3'b010 : begin
+                    //tx command sequence
                     phase.raise_objection(this,"Strating cmd tx sequence");    
                     tx_sequence = spi_cfg_tx_only_cmd_sequence::type_id::create("spi_cfg_tx_only_cmd_sequence");
                     tx_sequence.start(env.cmd_agnt.sequencer);
                     phase.drop_objection(this);
+                    $display("tx_sequence dropped");
+                    // udma tx data flow 
+                    $display("udma_tx_sequence starting");
+                    phase.raise_objection(this,"Starting udma_tx sequence");
+                    udma_tx_seq = udma_tx_sequence::type_id::create("udma_tx_sequence");
+                    udma_tx_seq.start(env.udma_tx_agnt.sequencer);
+                    phase.drop_objection(this);
+                    $display("udma_tx_sequence dropped");
                 end
                 3'b100 : begin
                     phase.raise_objection(this,"Strating cmd fullduplex sequence");    
@@ -160,7 +171,6 @@ class spi_base_test extends uvm_test;
                 end
             endcase
         end
-
     endtask: run_phase
 
 endclass: spi_base_test

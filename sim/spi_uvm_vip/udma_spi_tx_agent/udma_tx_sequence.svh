@@ -20,11 +20,11 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   SPI Verification Env
+// PROJECT      :   UART Verification Env
 // PRODUCT      :   N/A
-// FILE         :   spi_test_pkg.sv
+// FILE         :   udma_tx_sequence.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is packages for spi command. 
+// DESCRIPTION  :   This is for udma_tx_sequence 
 //
 // ************************************************************************************************
 //
@@ -32,19 +32,30 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  01-March-2024     Kasun         creation
+//  4-Nov-2023      Kasun        creation
 //
 //**************************************************************************************************
-package spi_test_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
+class udma_tx_sequence extends uvm_sequence;
+    `uvm_object_utils(udma_tx_sequence)
 
-    import      cmd_agent_pkg::*;
-    import      udma_tx_agent_pkg::*;
-    import      spi_env_pkg::*;
+//---------------------------------------------------------------------------------------------------------------------
+// Constructor
+//---------------------------------------------------------------------------------------------------------------------
+    function new(string name="udma_tx_sequence");
+        super.new(name);
+        `uvm_info("[SEQUENCE]","constructor",UVM_HIGH);
+    endfunction
 
-    `include    "spi_base_test.svh"
-    `include    "rx_test.svh"
-    `include    "tx_test.svh"
-    `include    "full_duplex_test.svh"
-endpackage: spi_test_pkg
+//---------------------------------------------------------------------------------------------------------------------
+// Body
+//---------------------------------------------------------------------------------------------------------------------
+    task body();
+        udma_tx_seq_item    udma_tx_transaction;
+        forever begin
+            udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
+            start_item(udma_tx_transaction);
+            udma_tx_transaction.randomize();
+            finish_item(udma_tx_transaction);
+        end
+    endtask: body
+endclass

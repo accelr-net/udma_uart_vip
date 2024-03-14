@@ -42,6 +42,7 @@ package spi_env_pkg;
 
     import      uvm_colors::*;
     import      cmd_agent_pkg::*;
+    import      udma_tx_agent_pkg::*;
 
     `include "env_configs.svh"
     `include "spi_cfg_rx_only_cmd_sequence.svh"
