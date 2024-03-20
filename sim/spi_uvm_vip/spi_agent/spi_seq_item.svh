@@ -22,9 +22,9 @@
 //
 // PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   cmd_agent_config.svh
+// FILE         :   spi_seq_item.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is cmd configurations spi command. 
+// DESCRIPTION  :   This is spi sequence item. 
 //
 // ************************************************************************************************
 //
@@ -32,26 +32,56 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  20-Feb-2024     Kasun         creation
+//  15-Mar-2024     Kasun         creation
 //
 //**************************************************************************************************
 
-class cmd_agent_config extends uvm_object;
-    `uvm_object_utils(cmd_agent_config)
+class spi_seq_item extends uvm_sequence_item;
+    `uvm_object_utils(spi_seq_item)
+    local int           word_length;
+    rand  bit [31:0]    data;        
 
-    logic               cpol;
-    logic               cpha;
-    logic   [1:0]       chip_select;
-    logic               is_lsb;
-    logic   [3:0]       word_size;
-    logic   [15:0]      word_count;
-    logic   [7:0]       clkdiv;
-
-    bit                 is_atomic_test;
-    logic   [2:0]       communication_mode;
-
-    function new(string name="cmd_agent_config");
+    function new(string name="spi_seq_item");
         super.new(name);
-        `uvm_info("[cmd_agent_config]","constructor",UVM_LOW);
     endfunction: new
-endclass: cmd_agent_config
+
+    function void set_data(
+        bit [31:0] data
+    );
+        this.data   = data;
+    endfunction : set_data
+
+    function void set_word_length(
+        int     word_length
+    );
+        this.word_length = word_length;
+    endfunction : set_word_length
+
+    function void get_data(
+        output bit [31:0]   data
+    );
+        data = this.data;
+    endfunction: get_data
+
+    function void do_print(uvm_printer printer);
+        printer.m_string = convert2string();
+    endfunction : do_print
+
+    function string convert2string();
+        string s;
+        s = super.convert2string();
+        $sformat(s," Data %d",this.data);
+    endfunction: convert2string
+
+    function bit do_compare(uvm_object rhs, uvm_comparer comparer);
+        spi_seq_item    tr;
+        bit             eq = 1'b1;
+
+        if(!$cast(tr,rhs)) begin
+            `uvm_fatal("FTR","Illegal do_compare cast")
+        end
+        eq &= comparer.compare_field("data",this.data,tr.data,$bits(data));
+        return eq;
+    endfunction: do_compare
+
+endclass : spi_seq_item

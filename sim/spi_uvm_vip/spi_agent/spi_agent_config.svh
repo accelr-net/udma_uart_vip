@@ -20,11 +20,11 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   UART Verification Env
+// PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   udma_tx_sequence.svh
+// FILE         :   spi_agent_config.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is for udma_tx_sequence 
+// DESCRIPTION  :   This is spi agent configs. 
 //
 // ************************************************************************************************
 //
@@ -32,30 +32,18 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  4-Nov-2023      Kasun        creation
+//  15-Mar-2024     Kasun         creation
 //
 //**************************************************************************************************
-class udma_tx_sequence extends uvm_sequence;
-    `uvm_object_utils(udma_tx_sequence)
 
-//---------------------------------------------------------------------------------------------------------------------
-// Constructor
-//---------------------------------------------------------------------------------------------------------------------
-    function new(string name="udma_tx_sequence");
+class spi_agent_config extends uvm_object;
+    `uvm_object_utils(spi_agent_config)
+
+    logic   [3:0]       word_size;
+
+    function new(string name="cmd_agent_config");
         super.new(name);
-        `uvm_info("[SEQUENCE]","constructor",UVM_HIGH);
-    endfunction
+        `uvm_info("[cmd_agent_config]","constructor",UVM_LOW);
+    endfunction: new
 
-//---------------------------------------------------------------------------------------------------------------------
-// Body
-//---------------------------------------------------------------------------------------------------------------------
-    task body();
-        udma_tx_seq_item    udma_tx_transaction;
-        forever begin
-            udma_tx_transaction = udma_tx_seq_item::type_id::create("udma_tx_transaction");
-            start_item(udma_tx_transaction);
-            udma_tx_transaction.randomize();
-            finish_item(udma_tx_transaction);
-        end
-    endtask: body
-endclass
+endclass: spi_agent_config

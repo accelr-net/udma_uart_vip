@@ -121,23 +121,23 @@ module tb_top_spi_uvm;
         .data_rx_valid_o        (udma_spi_vif.data_rx_valid_o     ),
         .data_rx_ready_i        (udma_spi_vif.data_rx_ready_i     ),
 
-        .spi_clk_o              (spi_clk_o           ),
-        .spi_csn0_o             (spi_csn0_o          ),
-        .spi_csn1_o             (spi_csn1_o          ),
-        .spi_csn2_o             (spi_csn2_o          ),
-        .spi_csn3_o             (spi_csn3_o          ),
-        .spi_oen0_o             (spi_oen0_o          ),
-        .spi_oen1_o             (spi_oen1_o          ),
-        .spi_oen2_o             (spi_oen2_o          ),
-        .spi_oen3_o             (spi_oen3_o          ),
-        .spi_sdo0_o             (spi_sdo0_o          ),
-        .spi_sdo1_o             (spi_sdo1_o          ),
-        .spi_sdo2_o             (spi_sdo2_o          ),
-        .spi_sdo3_o             (spi_sdo3_o          ),
-        .spi_sdi0_i             (spi_sdi0_i          ),
-        .spi_sdi1_i             (spi_sdi1_i          ),
-        .spi_sdi2_i             (spi_sdi2_i          ),
-        .spi_sdi3_i             (spi_sdi3_i          )
+        .spi_clk_o              (spi_vif.spi_clk_o           ),
+        .spi_csn0_o             (spi_vif.spi_csn0_o          ),
+        .spi_csn1_o             (spi_vif.spi_csn1_o          ),
+        .spi_csn2_o             (spi_vif.spi_csn2_o          ),
+        .spi_csn3_o             (spi_vif.spi_csn3_o          ),
+        .spi_oen0_o             (spi_vif.spi_oen0_o          ),
+        .spi_oen1_o             (spi_vif.spi_oen1_o          ),
+        .spi_oen2_o             (spi_vif.spi_oen2_o          ),
+        .spi_oen3_o             (spi_vif.spi_oen3_o          ),
+        .spi_sdo0_o             (spi_vif.spi_sdo0_o          ),
+        .spi_sdo1_o             (spi_vif.spi_sdo1_o          ),
+        .spi_sdo2_o             (spi_vif.spi_sdo2_o          ),
+        .spi_sdo3_o             (spi_vif.spi_sdo3_o          ),
+        .spi_sdi0_i             (spi_vif.spi_sdi0_i          ),
+        .spi_sdi1_i             (spi_vif.spi_sdi1_i          ),
+        .spi_sdi2_i             (spi_vif.spi_sdi2_i          ),
+        .spi_sdi3_i             (spi_vif.spi_sdi3_i          )
     );
         
     
@@ -145,10 +145,10 @@ module tb_top_spi_uvm;
         .clk_polarity(0),
         .clk_phase(0)
     ) spi_slave (
-        .sclk(spi_clk_o),
-        .mosi(spi_sdo0_o),
+        .sclk(spi_vif.spi_clk_o),
+        .mosi(spi_vif.spi_sdo0_o),
         .miso(spi_sdi0_i),
-        .ss(spi_csn1_o)
+        .ss(spi_vif.spi_csn1_o)
     );
 
     initial begin
@@ -264,6 +264,7 @@ module tb_top_spi_uvm;
         // spi_sdi3_i  = 1'b0;
 
         uvm_config_db #(virtual udma_spi_if)::set(null,"*","cmd_vif",udma_spi_vif);
+        uvm_config_db #(virtual spi_if)::set(null,"*","spi_vif",spi_vif);
         run_test("tx_test");
         $display("ending");
     end

@@ -40,6 +40,7 @@ package spi_test_pkg;
     `include "uvm_macros.svh"
 
     import      cmd_agent_pkg::*;
+    import      spi_agent_pkg::*;
     import      udma_tx_agent_pkg::*;
     import      spi_env_pkg::*;
 

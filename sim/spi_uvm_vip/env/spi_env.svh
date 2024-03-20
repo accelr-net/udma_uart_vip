@@ -43,6 +43,7 @@ class spi_env extends uvm_env;
     //cmd
     cmd_agent           cmd_agnt;
     udma_tx_agent       udma_tx_agnt;
+    spi_agent           spi_agnt;
 
     function new(string name="spi_env",uvm_component parent);
         super.new(name, parent);
@@ -51,14 +52,17 @@ class spi_env extends uvm_env;
 
     function void build_phase(uvm_phase phase);
         cmd_agent_config        cmd_config;
+        spi_agent_config        spi_config;
 
         super.build_phase(phase);
         `uvm_info("[ENV]","constructor",UVM_LOW)
 
         cmd_agnt    = cmd_agent::type_id::create("cmd_agnt",this); 
         cmd_config  = cmd_agent_config::type_id::create("cmd_config",this);
+        spi_config  = spi_agent_config::type_id::create("spi_config",this);
 
         udma_tx_agnt = udma_tx_agent::type_id::create("udma_tx_agnt",this);
+        spi_agnt     = spi_agent::type_id::create("spi_agnt",this);
 
         if(!uvm_config_db #(env_configs)::get(this,"","env_configs",configs)) begin
             `uvm_fatal("[spi_env]","connot find configs")
@@ -73,7 +77,10 @@ class spi_env extends uvm_env;
         cmd_config.is_atomic_test       = configs.is_atomic_test;
         cmd_config.communication_mode   = configs.communication_mode;
 
+        spi_config.word_size            = configs.word_size;
+
         uvm_config_db #(cmd_agent_config)::set(this,"cmd_agnt","cmd_config",cmd_config);
+        uvm_config_db #(spi_agent_config)::set(this,"spi_agnt.*","spi_config",spi_config);
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);

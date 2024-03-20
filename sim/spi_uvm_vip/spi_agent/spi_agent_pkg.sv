@@ -20,30 +20,33 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   UART Verification Env
+// PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   udma_tx_config.svh
+// FILE         :   spi_agent_pkg.sv
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is contain all configuration for  udma_tx
+// DESCRIPTION  :   This is spi agent package. 
 //
 // ************************************************************************************************
 //
 // REVISIONS:
 //
-//  Date            Developer     Descriptio
+//  Date            Developer     Description
 //  -----------     ---------     -----------
-//  17-Nov-2023      Kasun        creation
+//  15-Mar-2024     Kasun         creation
 //
 //**************************************************************************************************
-class udma_tx_config extends uvm_object;
-    `uvm_object_utils(udma_tx_config)
-    int    char_length = 8;
 
-//---------------------------------------------------------------------------------------------------------------------
-// Constructor
-//---------------------------------------------------------------------------------------------------------------------
-    function new(string name="udma_tx_config");
-        super.new(name);
-        `uvm_info("[udma_tx_config]","constructor",UVM_HIGH)
-    endfunction: new
-endclass : udma_tx_config
+package spi_agent_pkg;
+    import uvm_pkg::*;
+    `include "uvm_macros.svh"
+
+    import uvm_colors::*;
+
+    `include "spi_agent_config.svh"
+    `include "spi_seq_item.svh"
+    `include "spi_sequence.svh"
+    `include "spi_monitor.svh"
+    `include "spi_driver.svh"
+    `include "spi_agent.svh"
+
+endpackage: spi_agent_pkg

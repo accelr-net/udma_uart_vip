@@ -45,6 +45,7 @@ sources:
   - sim/uvm_vip/env
   - sim/uvm_vip/test
   - sim/spi_uvm_vip/cmd_agent # SPI packages
+  - sim/spi_uvm_vip/spi_agent # SPI packages
   - sim/spi_uvm_vip/env #
   - sim/spi_uvm_vip/if #  
   - sim/spi_uvm_vip/test #
@@ -57,6 +58,7 @@ sources:
   - sim/spi_uvm_vip/if/udma_spi_if.sv
   - sim/uvm_vip/udma_tx_agent/udma_tx_agent_pkg.sv
   - sim/spi_uvm_vip/cmd_agent/cmd_agent_pkg.sv
+  - sim/spi_uvm_vip/spi_agent/spi_agent_pkg.sv
   - sim/spi_uvm_vip/env/spi_env_pkg.sv
   - sim/spi_uvm_vip/test/spi_test_pkg.sv
   - sim/uvm_vip/udma_cfg_agent/udma_cfg_agent_pkg.sv

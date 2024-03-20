@@ -134,6 +134,7 @@ class spi_base_test extends uvm_test;
         spi_cfg_fullduplex_cmd_sequence         fullduplex_sequence;
 
         udma_tx_sequence                        udma_tx_seq;
+        spi_sequence                            spi_seq;
 
         `uvm_info("[spi_base_test]","run_phase", UVM_LOW)
 
@@ -149,16 +150,17 @@ class spi_base_test extends uvm_test;
                     //tx command sequence
                     phase.raise_objection(this,"Strating cmd tx sequence");    
                     tx_sequence = spi_cfg_tx_only_cmd_sequence::type_id::create("spi_cfg_tx_only_cmd_sequence");
-                    tx_sequence.start(env.cmd_agnt.sequencer);
-                    phase.drop_objection(this);
-                    $display("tx_sequence dropped");
-                    // udma tx data flow 
-                    $display("udma_tx_sequence starting");
-                    phase.raise_objection(this,"Starting udma_tx sequence");
                     udma_tx_seq = udma_tx_sequence::type_id::create("udma_tx_sequence");
-                    udma_tx_seq.start(env.udma_tx_agnt.sequencer);
+                    spi_seq     = spi_sequence::type_id::create("spi_sequence");
+                    tx_sequence.start(env.cmd_agnt.sequencer);
+                    `uvm_info("spi_test_base","starting spi_seq",UVM_LOW)
+                    fork
+                        // udma tx data flow 
+                        udma_tx_seq.start(env.udma_tx_agnt.sequencer);
+                        //spi tx data flow
+                        spi_seq.start(env.spi_agnt.sequencer);
+                    join_any
                     phase.drop_objection(this);
-                    $display("udma_tx_sequence dropped");
                 end
                 3'b100 : begin
                     phase.raise_objection(this,"Strating cmd fullduplex sequence");    

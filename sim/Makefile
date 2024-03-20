@@ -50,7 +50,7 @@ all:build run
 
 .PHONY: run
 run:
-	$(VSIM) $(MODE) -64 vopt_tb \
+	$(VSIM) $(MODE) -64 vopt_tb -do sim.do 
 	# -do run.tcl 
 
 .PHONY: build

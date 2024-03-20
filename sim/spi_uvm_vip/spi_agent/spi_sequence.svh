@@ -20,11 +20,11 @@
 //
 // ************************************************************************************************
 //
-// PROJECT      :   UART Verification Env
+// PROJECT      :   SPI Verification Env
 // PRODUCT      :   N/A
-// FILE         :   udma_tx_pkg.svh
+// FILE         :   spi_sequence.svh
 // AUTHOR       :   Kasun Buddhi
-// DESCRIPTION  :   This is for udma_rx agent
+// DESCRIPTION  :   This is spi uvm sequence. 
 //
 // ************************************************************************************************
 //
@@ -32,19 +32,26 @@
 //
 //  Date            Developer     Description
 //  -----------     ---------     -----------
-//  4-Nov-2023      Kasun        creation
+//  15-Mar-2024     Kasun         creation
 //
 //**************************************************************************************************
-package udma_tx_agent_pkg;
-    import uvm_pkg::*;
-    `include "uvm_macros.svh"
 
-    import uvm_colors::*;
+class spi_sequence extends uvm_sequence #(spi_seq_item);
+    `uvm_object_utils(spi_sequence)
 
-    //all uvm uart_tx header files
-    `include "udma_tx_seq_item.svh"
-    `include "udma_tx_sequence.svh"
-    `include "udma_tx_driver.svh"
-    `include "udma_tx_monitor.svh"
-    `include "udma_tx_agent.svh"
-endpackage : udma_tx_agent_pkg
+    function new(string name="spi_sequence");
+        super.new(name);
+    endfunction: new
+
+    task body();
+        spi_seq_item    spi_txn;
+
+        spi_txn = spi_seq_item::type_id::create("spi_txn");
+
+        repeat (100) begin
+            start_item(spi_txn);
+            finish_item(spi_txn);
+        end
+
+    endtask: body
+endclass : spi_sequence
