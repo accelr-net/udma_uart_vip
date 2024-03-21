@@ -40,9 +40,9 @@ class spi_base_test extends uvm_test;
     `uvm_component_utils(spi_base_test)
 
     //default values
-    logic               cpol                    = 1'b1;
+    logic               cpol                    = 1'b0;
     logic               cpha                    = 1'b1;
-    logic   [1:0]       chip_select             = 2'b00;
+    logic   [1:0]       chip_select             = 2'b01;
     logic               is_lsb                  = 1'b0;
     logic   [3:0]       word_size               = 4'h7;
     logic   [15:0]      word_count              = 16'h1;
@@ -158,7 +158,7 @@ class spi_base_test extends uvm_test;
                         // udma tx data flow 
                         udma_tx_seq.start(env.udma_tx_agnt.sequencer);
                         //spi tx data flow
-                        spi_seq.start(env.spi_agnt.sequencer);
+                        spi_seq.start(env.spi_rx_agnt.sequencer);
                     join_any
                     phase.drop_objection(this);
                 end

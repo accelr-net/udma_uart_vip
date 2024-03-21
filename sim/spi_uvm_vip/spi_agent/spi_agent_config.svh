@@ -38,8 +38,12 @@
 
 class spi_agent_config extends uvm_object;
     `uvm_object_utils(spi_agent_config)
-
+    bit                 cpol;
+    logic               cpha;
+    logic               is_lsb;
     logic   [3:0]       word_size;
+    bit                 is_rx_agent;
+
 
     function new(string name="cmd_agent_config");
         super.new(name);

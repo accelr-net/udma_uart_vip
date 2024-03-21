@@ -40,7 +40,7 @@ class spi_driver extends uvm_driver #(spi_seq_item);
     `uvm_component_utils(spi_driver)
 
     virtual spi_if          spi_vif;
-    spi_agent_config        configs;
+    spi_agent_config        rx_configs;
 
     function new(string name="spi_driver",uvm_component parent);
         super.new(name,parent);
@@ -51,8 +51,8 @@ class spi_driver extends uvm_driver #(spi_seq_item);
         if(!uvm_config_db #(virtual spi_if)::get(this,"*","spi_vif",spi_vif)) begin
             `uvm_fatal("spi_driver","No virtual interace has found");
         end        
-        if(!uvm_config_db #(spi_agent_config)::get(this,"*","spi_config",configs)) begin
-            `uvm_fatal("spi_driver","No spi_config has found");
+        if(!uvm_config_db #(spi_agent_config)::get(this,"*","spi_config",rx_configs)) begin
+            `uvm_fatal("spi_driver","No spi_rx_config has found");
         end        
     endfunction: build_phase
 
@@ -65,17 +65,21 @@ class spi_driver extends uvm_driver #(spi_seq_item);
         super.run_phase(phase);
         `uvm_info("spi_driver","run_phase",UVM_LOW);
         forever begin
-            spi_transaction = spi_seq_item::type_id::create("spi_transaction");
-            seq_item_port.get_next_item(spi_transaction);
-            $display("driver spi_transaction %b",spi_transaction.data);
-            do_spi_rx(spi_transaction);
-            seq_item_port.item_done();
+                spi_transaction = spi_seq_item::type_id::create("spi_transaction");
+                seq_item_port.get_next_item(spi_transaction);
+                $display("driver spi_transaction %b",spi_transaction.data);
+                do_spi_rx(spi_transaction);
+                seq_item_port.item_done();
         end
     endtask : run_phase
 
     task do_spi_rx(spi_seq_item txn);
-        for(int x=configs.word_size; x>=0; x--) begin
-            @(posedge spi_vif.spi_clk_o);
+        for(int x=rx_configs.word_size; x>=0; x--) begin
+            if((rx_configs.cpol && rx_configs.cpha) || (!rx_configs.cpol && !rx_configs.cpha)) begin
+                @(posedge spi_vif.spi_clk_o);
+            end else begin
+                @(negedge spi_vif.spi_clk_o);
+            end
             spi_vif.spi_sdi0_i  = txn.data[x];
         end
     endtask: do_spi_rx

@@ -68,7 +68,11 @@ class spi_monitor extends uvm_monitor;
         forever begin
             spi_transaction = spi_seq_item::type_id::create("spi_transaction",this);
             repeat (configs.word_size+1) begin
-                @(posedge spi_vif.spi_clk_o);
+                if((configs.cpol && configs.cpha) || (!configs.cpol && !configs.cpha)) begin
+                    @(posedge spi_vif.spi_clk_o);
+                end else begin
+                    @(negedge spi_vif.spi_clk_o);
+                end
                 spi_transaction.data    = spi_transaction.data << 1;
                 spi_transaction.data    |= {31'h0,this.spi_vif.spi_sdo0_o};
                 $display("spi_sdo0 %p",spi_vif.spi_sdo0_o);

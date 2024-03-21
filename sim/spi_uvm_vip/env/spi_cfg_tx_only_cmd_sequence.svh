@@ -59,11 +59,8 @@ class spi_cfg_tx_only_cmd_sequence extends cmd_seq_base;
         repeat (4) begin
             start_item(cmd_txn);
             cmd_txn.data    = tx_cmd_arr[sequence_step];
-            $display("cmd_txn %p",cmd_txn);
             finish_item(cmd_txn);
             sequence_step += 1;
-
-            $display("sequence_step %d",sequence_step);
         end
     endtask : body
 
