@@ -111,7 +111,7 @@ class spi_base_test extends uvm_test;
         env_config_obj.cpha                 = cpha;
         env_config_obj.chip_select          = chip_select;
         env_config_obj.is_lsb               = is_lsb;
-        env_config_obj.word_size            = word_count;
+        env_config_obj.word_size            = word_size;
         env_config_obj.clkdiv               = clkdiv;
         env_config_obj.is_atomic_test       = is_atomic_test;
         env_config_obj.communication_mode   = communication_mode;
