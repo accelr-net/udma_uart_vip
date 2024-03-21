@@ -67,7 +67,6 @@ class spi_monitor extends uvm_monitor;
         wait (spi_vif.spi_csn1_o == 1'b0);
         forever begin
             spi_transaction = spi_seq_item::type_id::create("spi_transaction",this);
-            $display("configs.word_size %d",configs.word_size);
             repeat (configs.word_size+1) begin
                 @(posedge spi_vif.spi_clk_o);
                 spi_transaction.data    = spi_transaction.data << 1;

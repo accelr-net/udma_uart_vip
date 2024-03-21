@@ -40,6 +40,7 @@ class spi_driver extends uvm_driver #(spi_seq_item);
     `uvm_component_utils(spi_driver)
 
     virtual spi_if          spi_vif;
+    spi_agent_config        configs;
 
     function new(string name="spi_driver",uvm_component parent);
         super.new(name,parent);
@@ -48,7 +49,10 @@ class spi_driver extends uvm_driver #(spi_seq_item);
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         if(!uvm_config_db #(virtual spi_if)::get(this,"*","spi_vif",spi_vif)) begin
-            `uvm_fatal("spi_monitor","No virtual interace has found");
+            `uvm_fatal("spi_driver","No virtual interace has found");
+        end        
+        if(!uvm_config_db #(spi_agent_config)::get(this,"*","spi_config",configs)) begin
+            `uvm_fatal("spi_driver","No spi_config has found");
         end        
     endfunction: build_phase
 
@@ -63,16 +67,16 @@ class spi_driver extends uvm_driver #(spi_seq_item);
         forever begin
             spi_transaction = spi_seq_item::type_id::create("spi_transaction");
             seq_item_port.get_next_item(spi_transaction);
-            do_spi_tx(spi_transaction);
+            $display("driver spi_transaction %b",spi_transaction.data);
+            do_spi_rx(spi_transaction);
             seq_item_port.item_done();
         end
     endtask : run_phase
 
-    task do_spi_tx(spi_seq_item txn);
-        for(int data_index = 8; data_index >= 0; data_index--) begin
-            @(this.spi_vif.spi_clk_o);
-            this.spi_vif.spi_csn1_o = 1'b0;
+    task do_spi_rx(spi_seq_item txn);
+        for(int x=configs.word_size; x>=0; x--) begin
+            @(posedge spi_vif.spi_clk_o);
+            spi_vif.spi_sdi0_i  = txn.data[x];
         end
-    endtask: do_spi_tx
-
+    endtask: do_spi_rx
 endclass: spi_driver

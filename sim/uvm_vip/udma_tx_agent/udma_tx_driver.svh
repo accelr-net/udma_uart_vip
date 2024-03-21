@@ -73,7 +73,6 @@ class udma_tx_driver extends uvm_driver #(udma_tx_seq_item);
     endtask
 
     task do_udma_tx(udma_tx_seq_item txn);
-        $display("udma_tx_driver is working!!!!!");
         @(vif.tx_data_cbd);
         this.vif.tx_data_cbd.data_tx_i          <= txn.data;
         this.vif.tx_data_cbd.data_tx_valid_i    <= 1'b1;

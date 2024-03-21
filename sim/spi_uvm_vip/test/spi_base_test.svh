@@ -42,7 +42,7 @@ class spi_base_test extends uvm_test;
     //default values
     logic               cpol                    = 1'b1;
     logic               cpha                    = 1'b1;
-    logic   [1:0]       chip_select             = 2'b01;
+    logic   [1:0]       chip_select             = 2'b00;
     logic               is_lsb                  = 1'b0;
     logic   [3:0]       word_size               = 4'h7;
     logic   [15:0]      word_count              = 16'h1;
