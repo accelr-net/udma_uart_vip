@@ -43,6 +43,7 @@ class spi_env extends uvm_env;
     //cmd
     cmd_agent           cmd_agnt;
     udma_tx_agent       udma_tx_agnt;
+    udma_rx_agent       udma_rx_agnt;
     //for spi tx
     spi_agent           spi_agnt;
 
@@ -68,6 +69,7 @@ class spi_env extends uvm_env;
         spi_rx_config   = spi_agent_config::type_id::create("spi_rx_config",this);
 
         udma_tx_agnt = udma_tx_agent::type_id::create("udma_tx_agnt",this);
+        udma_rx_agnt = udma_rx_agent::type_id::create("udma_rx_agnt",this);
         spi_agnt     = spi_agent::type_id::create("spi_agnt",this);
 
         spi_rx_agnt  = spi_agent::type_id::create("spi_rx_agnt",this);

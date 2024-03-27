@@ -161,4 +161,18 @@ interface udma_spi_if #(
         input                   data_tx_valid_i;
         input                   data_tx_ready_o;
     endclocking   
+
+    clocking rx_data_cbm @(posedge sys_clk_i);
+        input                   data_rx_datasize_o;
+        input                   data_rx_o;
+        input                   data_rx_valid_o;
+        input                   data_rx_ready_i;
+    endclocking
+
+    clocking rx_data_cbd @(posedge sys_clk_i);
+        input                   data_rx_datasize_o;
+        input                   data_rx_o;
+        input                   data_rx_valid_o;
+        output                  data_rx_ready_i;
+    endclocking
 endinterface : udma_spi_if

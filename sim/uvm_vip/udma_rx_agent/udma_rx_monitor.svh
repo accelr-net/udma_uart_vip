@@ -39,7 +39,7 @@
 class udma_rx_monitor extends uvm_monitor;
     `uvm_component_utils(udma_rx_monitor)
 
-    virtual udma_if                         vif;
+    virtual udma_spi_if                         vif;
     uvm_analysis_port #(udma_rx_seq_item)   udma_aport;
 
     function new(string name="udma_rx_monitor",uvm_component parent);
@@ -50,7 +50,7 @@ class udma_rx_monitor extends uvm_monitor;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         `uvm_info("MONITOR","build_phase",UVM_HIGH)
-        if(!uvm_config_db #(virtual udma_if)::get(this,"","udma_vif",vif)) begin
+        if(!uvm_config_db #(virtual udma_spi_if)::get(this,"","cmd_vif",vif)) begin
             `uvm_fatal("[MONITOR]","No virtual interface specified for this monitor instance")
         end
     endfunction: build_phase
@@ -65,6 +65,7 @@ class udma_rx_monitor extends uvm_monitor;
             if(this.vif.rx_data_cbm.data_rx_valid_o && this.vif.rx_data_cbm.data_rx_ready_i) begin
                 udma_rx_transaction.set_data(this.vif.rx_data_cbm.data_rx_o);
                 udma_aport.write(udma_rx_transaction);
+                $display("udma_rx_transaction %p :",udma_rx_transaction);
             end
         end
     endtask: run_phase

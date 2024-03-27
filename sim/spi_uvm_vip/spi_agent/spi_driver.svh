@@ -67,20 +67,23 @@ class spi_driver extends uvm_driver #(spi_seq_item);
         forever begin
                 spi_transaction = spi_seq_item::type_id::create("spi_transaction");
                 seq_item_port.get_next_item(spi_transaction);
-                $display("driver spi_transaction %b",spi_transaction.data);
+                $display("driver spi_transaction %0d",spi_transaction.data);
                 do_spi_rx(spi_transaction);
                 seq_item_port.item_done();
         end
     endtask : run_phase
 
     task do_spi_rx(spi_seq_item txn);
+        $display("spi_transaction.data %0d",txn.data);
+    
         for(int x=rx_configs.word_size; x>=0; x--) begin
+            wait(spi_vif.spi_csn1_o == 1'b0);
             if((rx_configs.cpol && rx_configs.cpha) || (!rx_configs.cpol && !rx_configs.cpha)) begin
                 @(posedge spi_vif.spi_clk_o);
             end else begin
                 @(negedge spi_vif.spi_clk_o);
             end
-            spi_vif.spi_sdi0_i  = txn.data[x];
+            spi_vif.spi_sdi1_i  = txn.data[x];
         end
     endtask: do_spi_rx
 endclass: spi_driver

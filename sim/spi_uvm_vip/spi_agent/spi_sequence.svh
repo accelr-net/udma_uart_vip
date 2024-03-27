@@ -50,7 +50,7 @@ class spi_sequence extends uvm_sequence #(spi_seq_item);
 
         repeat (100) begin
             start_item(spi_txn);
-            spi_txn.data = 32'h5;
+            spi_txn.data = {24'h0,8'b11000000};
             finish_item(spi_txn);
         end
 

@@ -43,6 +43,7 @@ package spi_env_pkg;
     import      uvm_colors::*;
     import      cmd_agent_pkg::*;
     import      udma_tx_agent_pkg::*;
+    import      udma_rx_agent_pkg::*;
     import      spi_agent_pkg::*;
 
     `include "env_configs.svh"

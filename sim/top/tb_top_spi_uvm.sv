@@ -258,14 +258,9 @@ module tb_top_spi_uvm;
     // endtask: sending_data_cmds
 
     initial begin
-        // spi_sdi0_i  = 1'b0;
-        // spi_sdi1_i  = 1'b0;
-        // spi_sdi2_i  = 1'b0;
-        // spi_sdi3_i  = 1'b0;
-
         uvm_config_db #(virtual udma_spi_if)::set(null,"*","cmd_vif",udma_spi_vif);
         uvm_config_db #(virtual spi_if)::set(null,"*","spi_vif",spi_vif);
-        run_test("tx_test");
+        run_test("rx_test");
         $display("ending");
     end
 endmodule: tb_top_spi_uvm

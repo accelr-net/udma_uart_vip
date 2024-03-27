@@ -54,7 +54,7 @@ class spi_cfg_rx_only_cmd_sequence extends cmd_seq_base;
 
     task body();
         cmd_seq_item       cmd_txn;
-        
+
         cmd_txn = cmd_seq_item::type_id::create("cmd_txn");
         repeat (4) begin
             start_item(cmd_txn);
