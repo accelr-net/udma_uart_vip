@@ -45,7 +45,7 @@ class spi_base_test extends uvm_test;
     logic   [1:0]       chip_select             = 2'b01;
     logic               is_lsb                  = 1'b0;
     logic   [3:0]       word_size               = 4'h7;
-    logic   [15:0]      word_count              = 16'h1;
+    logic   [15:0]      word_count              = 16'h5;
     logic   [7:0]       clkdiv                  = 8'd100;
 
     bit                 is_atomic_test          = 1'b1;
@@ -129,8 +129,8 @@ class spi_base_test extends uvm_test;
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        spi_cfg_rx_only_cmd_sequence            rx_sequence;
-        spi_cfg_tx_only_cmd_sequence            tx_sequence;
+        spi_cfg_rx_only_cmd_sequence            rx_cmd_sequence;
+        spi_cfg_tx_only_cmd_sequence            tx_cmd_sequence;
         spi_cfg_fullduplex_cmd_sequence         fullduplex_sequence;
 
         udma_tx_sequence                        udma_tx_seq;
@@ -144,10 +144,14 @@ class spi_base_test extends uvm_test;
                 3'b001 : begin
                     //rx command sequence
                     phase.raise_objection(this,"Strating cmd rx sequence");    
-                    rx_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence");
+                    rx_cmd_sequence = spi_cfg_rx_only_cmd_sequence::type_id::create("spi_cfg_rx_only_cmd_sequence"); // ToDo : change the name rx_cmd_sequence
                     spi_seq     = spi_sequence::type_id::create("spi_sequence");
                     udma_rx_seq = udma_rx_sequence::type_id::create("udma_tx_sequence");
-                    rx_sequence.start(env.cmd_agnt.sequencer);
+                    rx_cmd_sequence.start(env.cmd_agnt.sequencer);
+                    phase.drop_objection(this);
+
+                    //rx data sequence
+                    phase.raise_objection(this,"starting rx_data sequence");
                     fork 
                         // spi rx sequence
                         spi_seq.start(env.spi_rx_agnt.sequencer);
@@ -160,11 +164,11 @@ class spi_base_test extends uvm_test;
                 3'b010 : begin
                     //tx command sequence
                     phase.raise_objection(this,"Strating cmd tx sequence");    
-                    tx_sequence = spi_cfg_tx_only_cmd_sequence::type_id::create("spi_cfg_tx_only_cmd_sequence");
+                    tx_cmd_sequence = spi_cfg_tx_only_cmd_sequence::type_id::create("spi_cfg_tx_only_cmd_sequence");
                     udma_tx_seq = udma_tx_sequence::type_id::create("udma_tx_sequence");
                     udma_rx_seq = udma_rx_sequence::type_id::create("udma_tx_sequence");
                     spi_seq     = spi_sequence::type_id::create("spi_sequence");
-                    tx_sequence.start(env.cmd_agnt.sequencer);
+                    tx_cmd_sequence.start(env.cmd_agnt.sequencer);
                     `uvm_info("spi_test_base","starting spi_seq",UVM_LOW)
                     fork
                         // udma tx data flow 

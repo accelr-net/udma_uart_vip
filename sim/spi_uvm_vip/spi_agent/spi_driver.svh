@@ -64,6 +64,11 @@ class spi_driver extends uvm_driver #(spi_seq_item);
         spi_seq_item        spi_transaction;
         super.run_phase(phase);
         `uvm_info("spi_driver","run_phase",UVM_LOW);
+        //wait to end tx word count due to command sequence
+        repeat (rx_configs.word_size) begin
+            @(posedge spi_vif.spi_clk_o);
+        end
+
         forever begin
                 spi_transaction = spi_seq_item::type_id::create("spi_transaction");
                 seq_item_port.get_next_item(spi_transaction);
