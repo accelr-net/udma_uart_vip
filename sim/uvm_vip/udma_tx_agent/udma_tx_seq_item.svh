@@ -74,6 +74,13 @@ class udma_tx_seq_item extends uvm_sequence_item;
         uart_char = data[7:0];
     endfunction
     
+    //get data
+    function void get_data(
+        output logic [31:0]    data
+    );
+        data = this.data;
+    endfunction: get_data
+    
     //randomize data 
     function void _randomize();
         int         max_time    =  20000;
